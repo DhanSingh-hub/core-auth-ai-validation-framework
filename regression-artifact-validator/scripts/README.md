@@ -544,6 +544,96 @@ No canonical BR/TC/TD counts, model weights, execution gates or coverage are pro
 Rebuilding replaces generated files; return BA edits separately and persist approved
 decisions through the existing SME workflow before updating curated input.
 
+### EMV guide ingestion verification
+
+From the module root, run `.\framework.ps1 -Task emv-guide-ingestion-check` and
+`.\framework.ps1 -Task emv-guide-ingestion-test`.
+`verify-emv-guide-ingestion.py` checks the EMV companion
+[training record](../specifications/ATL105/docs/test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md)
+for the guide that ATL105 Section 10.14 requires. Record checks always run:
+- pinned rule, scenario, SME query, gap and backlog counts
+- every rule not marked INFO has a scenario
+- links resolve
+- the seven integration documents link the record
+- Section 2 acknowledges the guide's image-only pages
+
+Source checks run only when the guide PDF is in `specifications/ATL105/docs/specs/`.
+The PDF is kept locally and never committed, because this repository is public. With it, the script checks:
+- the SHA-256
+- coverage of all 92 body RQs and their page citations
+- Tables 7, 10, 14/15, 25 and 28
+- the AID lists, in both directions
+- the EBT field list
+- every quotation of 18 characters or more
+
+Exit code `2` means the PDF or `pypdf` is unavailable and the source checks are
+NOT_ASSESSED. `--json OUT` also writes the results.
+
+The test always runs the record mutations; it skips the source mutations when the
+PDF is absent.
+
+Executable training (a `referenceTraining` entry and an EMV source oracle) is
+reported as INFO only. A pass verifies ingestion fidelity, not execution readiness,
+and promotes no coverage, counts or model weights.
+
+### Secure Transport ingestion
+
+ATL105 Section 3.3 sends Internet connectivity to the Secure Transport (Datawire)
+documentation. Three tasks cover the 13 supplied documents; run them from the module root:
+
+| Task | Command |
+| --- | --- |
+| Rebuild the split and the manifest | `.\framework.ps1 -Task secure-transport-ingestion-build` |
+| Verify | `.\framework.ps1 -Task secure-transport-ingestion-check` |
+| Run the regressions | `.\framework.ps1 -Task secure-transport-ingestion-test` |
+
+The sources are First Data/Fiserv confidential and this repository is public. They are
+kept in the git-ignored `specifications/ATL105/docs/specs/secure-transport/`.
+
+`build-secure-transport-ingestion.py` does the following:
+
+- checks each supplied file against its pinned SHA-256
+- extracts page-marked text; PDFs use `pypdf`, and the two Word forms use Word read-only with macros disabled
+- splits every document at pinned chapter or phase headings into 107 verbatim files
+- renders the 19 image pages
+- writes the tracked
+  [manifest](../specifications/ATL105/docs/specs/kb/secure-transport/secure-transport-source-manifest.json),
+  which holds identities, hashes, page ranges and chapter hashes but no source text
+
+The build fails unless every anchor is found exactly once and each document's chapters
+concatenate to exactly its full text.
+
+`verify-secure-transport-ingestion.py` checks the
+[training record](../specifications/ATL105/docs/test-validation-strategy/SecureTransport-Training-Knowledge.md)
+and the [rule catalog](../specifications/ATL105/docs/specs/kb/secure-transport/secure-transport-rule-catalog.md).
+
+Record checks always run:
+
+- the pinned document, page, chapter, rule, scenario, conflict, query, gap and backlog counts
+- chapter-map page ranges against the manifest
+- every rule cites an existing page, phase or line
+- every testable rule has a scenario
+- links resolve, and the integration documents link the record
+- the git-ignore rules are present
+- the ATL105 Section 3.3 anchor lines
+- the `referenceTraining.secureTransport` entry
+
+Source checks run only when the local split exists:
+
+- source and text hashes
+- `pypdf` re-extraction of every PDF
+- chapter hashes and concatenation
+- every quotation of 18 characters or more is verbatim
+- every rule quotation is on its cited location
+- the rendered images exist
+
+Exit code `2` means the local split is unavailable and the source checks are
+NOT_ASSESSED. `--json OUT` also writes the results. The test always runs the record
+mutations; it skips the source mutations when the split is absent.
+
+A pass verifies ingestion fidelity at documentation level. It promotes no ATL105
+coverage, counts or model weights.
+
 ### Mastercard BA reference review
 
 From the module root, run `.\framework.ps1 -Task mastercard-review-build`,
@@ -563,6 +653,25 @@ weights, canonical BR counts, SME decisions or execution gates are promoted.
 BA edits belong in a separate returned copy of the CSV; rebuilding replaces generated
 outputs. Persist authorized outcomes through the existing SME decision workflow
 before revising the curated input.
+
+### Dev Team Mastercard BR coverage review
+
+From the module root, run `.\framework.ps1 -Task dev-br-mc-coverage-build`,
+`.\framework.ps1 -Task dev-br-mc-coverage-check`, and
+`.\framework.ps1 -Task dev-br-mc-coverage-test`.
+`validate-dev-br-mastercard-coverage.py` validates the Dev Team BR delivery at the
+repository root (`BUSINESS_REQUIREMENTS.md`, `business_scenarios.csv`: BR1 BUYPASS
+ATL105 MasterCard, 108 scenarios, 212 exclusions) for structural completeness, then
+measures its coverage of a 78-item source-verified ATL105 2026-4 Mastercard inventory
+and of the trained Mastercard Credit Purchase solution (8 FRs, 134 business scenarios,
+189 BRs, 17 all-network contextual BRs). Dispositions come from the curated
+[review input](../specifications/ATL105/docs/specs/kb/segment-100/dev-br-mastercard-coverage-review.json):
+COVERED/PARTIAL need Dev evidence the script finds, absence claims must survive a search,
+and every ATL105 quote must resolve on its cited 2026-4 page. The script refuses to run
+when the Dev delivery bytes differ from the reviewed SHA-256 values. Outputs (README,
+CSVs, JSON, workbook) are under
+[dev-br-mc-coverage-v1](../specifications/ATL105/test-output/ai-solution-independent-review/dev-br-mc-coverage-v1).
+Results are draft review evidence, not SME approval or execution.
 
 | Group | Tools | Ownership |
 |---|---|---|

@@ -1,0 +1,891 @@
+{
+ "meta": {
+  "layer": "business_model",
+  "filter_name": "interlink-debit",
+  "build_id": "interlink-debit-47c4cd511f",
+  "run_id": "20261105T084557368444Z",
+  "state": "CANDIDATE",
+  "selection": {
+   "platform": [
+    "BUYPASS"
+   ],
+   "spec": [
+    "ATL105"
+   ],
+   "network": [
+    "INTERLINK"
+   ],
+   "program": [
+    "DEBIT"
+   ]
+  },
+  "built_at": "2026-11-05T08:46:01.583445+00:00",
+  "mapping_status": "candidate",
+  "knowledge_base_hash": "39d0588c33815a520d41a01db76c871d303aad50f45f26e9f9020c401687f393",
+  "mapping_matches_knowledge_base": false,
+  "inputs_combined": "c3ef85bd7162bfec3d2db974579d3f1232e312a198a1469cc7ec073675b05c7a",
+  "parent_build": null,
+  "dimension_mapping_hash": "dd3fc6438ea2f4d4b45ec52699c45076955203e89680b6b93c2cad75c687b2e2",
+  "spec": "ATL105",
+  "spec_version": "2026-4",
+  "config": "src/pipeline/config/business_model.json",
+  "br_kind": "NETWORK"
+ },
+ "questions": [
+  {
+   "question_id": "Q-program-entry_mode-DEBIT-CONTACTLESS_MAGSTRIPE",
+   "pair": "program-entry_mode",
+   "a_dim": "program",
+   "a": "DEBIT",
+   "a_label": "Debit",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MAGSTRIPE",
+   "b_label": "Contactless Magnetic Stripe",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS4",
+    "BR1_TS10",
+    "BR1_TS16",
+    "BR1_TS22"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 639,
+     "score": 8,
+     "matched": [
+      "contactless",
+      "contactless magnetic stripe",
+      "debit",
+      "magnetic",
+      "stripe"
+     ],
+     "snippet": "If no Contactless MSR is attached, and the POS device has the PIN debit feature enabled, then all transactions will use Terminal"
+    },
+    {
+     "page": 638,
+     "score": 6,
+     "matched": [
+      "91",
+      "contactless",
+      "contactless magnetic stripe",
+      "debit",
+      "magnetic",
+      "stripe"
+     ],
+     "snippet": "02 Magnetic stripe read with partial track data1 sent to the host"
+    },
+    {
+     "page": 159,
+     "score": 4,
+     "matched": [
+      "contactless",
+      "debit",
+      "magnetic",
+      "stripe"
+     ],
+     "snippet": "There are two types of chip card technology - contact and contactless:"
+    }
+   ],
+   "scenario_count": 4,
+   "question": "Does Debit support entry mode Contactless Magnetic Stripe?"
+  },
+  {
+   "question_id": "Q-program-entry_mode-DEBIT-CONTACTLESS_MOBILE",
+   "pair": "program-entry_mode",
+   "a_dim": "program",
+   "a": "DEBIT",
+   "a_label": "Debit",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MOBILE",
+   "b_label": "Contactless Mobile Commerce Device",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS6",
+    "BR1_TS12",
+    "BR1_TS18",
+    "BR1_TS24"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 638,
+     "score": 7,
+     "matched": [
+      "82",
+      "commerce",
+      "contactless",
+      "debit",
+      "digital wallet",
+      "mobile",
+      "mobile commerce"
+     ],
+     "snippet": "07 Contactless chip read (used for contactless chip)"
+    },
+    {
+     "page": 639,
+     "score": 6,
+     "matched": [
+      "contactless",
+      "debit",
+      "mobile"
+     ],
+     "snippet": "If no Contactless MSR is attached, and the POS device has the PIN debit feature enabled, then all transactions will use Terminal"
+    },
+    {
+     "page": 657,
+     "score": 4,
+     "matched": [
+      "commerce",
+      "debit",
+      "mobile",
+      "mobile commerce"
+     ],
+     "snippet": "Not Present Pinless eComm/Mobile Commerce"
+    }
+   ],
+   "scenario_count": 4,
+   "question": "Does Debit support entry mode Contactless Mobile Commerce Device?"
+  },
+  {
+   "question_id": "Q-program-entry_mode-DEBIT-EMV_FALLBACK",
+   "pair": "program-entry_mode",
+   "a_dim": "program",
+   "a": "DEBIT",
+   "a_label": "Debit",
+   "b_dim": "entry_mode",
+   "b": "EMV_FALLBACK",
+   "b_label": "Chip Fallback",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS5",
+    "BR1_TS11",
+    "BR1_TS17",
+    "BR1_TS23"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 162,
+     "score": 6,
+     "matched": [
+      "chip",
+      "debit",
+      "fallback"
+     ],
+     "snippet": "initiated from chip cards for credit and signature debit must have the capability to submit a PIN"
+    },
+    {
+     "page": 160,
+     "score": 5,
+     "matched": [
+      "chip",
+      "debit"
+     ],
+     "snippet": "M/Chip (for US Maestro AID) and D-PAS (for DNA Shared Debit AID and Discover Common"
+    },
+    {
+     "page": 576,
+     "score": 5,
+     "matched": [
+      "debit",
+      "fallback"
+     ],
+     "snippet": "Purpose: Identifies the Alternate Routing Fallback Indicator for Debit Card Not Present (CNP)"
+    }
+   ],
+   "scenario_count": 4,
+   "question": "Does Debit support entry mode Chip Fallback?"
+  },
+  {
+   "question_id": "Q-program-entry_mode-DEBIT-MAGSTRIPE",
+   "pair": "program-entry_mode",
+   "a_dim": "program",
+   "a": "DEBIT",
+   "a_label": "Debit",
+   "b_dim": "entry_mode",
+   "b": "MAGSTRIPE",
+   "b_label": "Magnetic Stripe",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS3",
+    "BR1_TS9",
+    "BR1_TS15",
+    "BR1_TS21"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 105,
+     "score": 4,
+     "matched": [
+      "debit",
+      "magnetic",
+      "magnetic stripe",
+      "stripe"
+     ],
+     "snippet": "• The merchant device must not store full magnetic stripe data."
+    },
+    {
+     "page": 159,
+     "score": 4,
+     "matched": [
+      "debit",
+      "magnetic",
+      "magnetic stripe",
+      "stripe"
+     ],
+     "snippet": "• Chip stores more information than magnetic stripe cards"
+    },
+    {
+     "page": 162,
+     "score": 4,
+     "matched": [
+      "debit",
+      "magnetic",
+      "magnetic stripe",
+      "stripe"
+     ],
+     "snippet": "cards via magnetic-stripe processing at a chip-capable device. EMV POS Solutions must"
+    }
+   ],
+   "scenario_count": 4,
+   "question": "Does Debit support entry mode Magnetic Stripe?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-AUTH_ONLY-CONTACTLESS_MAGSTRIPE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "AUTH_ONLY",
+   "a_label": "Authorization Only",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MAGSTRIPE",
+   "b_label": "Contactless Magnetic Stripe",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS10"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 638,
+     "score": 6,
+     "matched": [
+      "91",
+      "authorization",
+      "contactless",
+      "contactless magnetic stripe",
+      "magnetic",
+      "stripe"
+     ],
+     "snippet": "02 Magnetic stripe read with partial track data1 sent to the host"
+    },
+    {
+     "page": 86,
+     "score": 5,
+     "matched": [
+      "authorization",
+      "contactless",
+      "magnetic",
+      "rfid",
+      "stripe"
+     ],
+     "snippet": "Radio frequency identification (RFID) service is an optional service. It is a contactless data"
+    },
+    {
+     "page": 142,
+     "score": 5,
+     "matched": [
+      "authorization",
+      "contactless"
+     ],
+     "snippet": "Merchant submits the authorization as a contactless transaction exactly as they do today."
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Authorization Only with entry mode Contactless Magnetic Stripe for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-AUTH_ONLY-CONTACTLESS_MOBILE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "AUTH_ONLY",
+   "a_label": "Authorization Only",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MOBILE",
+   "b_label": "Contactless Mobile Commerce Device",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS12"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 142,
+     "score": 9,
+     "matched": [
+      "authorization",
+      "contactless",
+      "digital wallet",
+      "in app",
+      "mobile",
+      "nfc"
+     ],
+     "snippet": "Merchant submits the authorization as a contactless transaction exactly as they do today."
+    },
+    {
+     "page": 638,
+     "score": 7,
+     "matched": [
+      "82",
+      "authorization",
+      "commerce",
+      "contactless",
+      "digital wallet",
+      "mobile",
+      "mobile commerce"
+     ],
+     "snippet": "07 Contactless chip read (used for contactless chip)"
+    },
+    {
+     "page": 141,
+     "score": 4,
+     "matched": [
+      "authorization",
+      "commerce",
+      "digital wallet",
+      "mobile"
+     ],
+     "snippet": "With the introduction of new payments, such as, mobile phones, and tablets, etc., the need for"
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Authorization Only with entry mode Contactless Mobile Commerce Device for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-AUTH_ONLY-EMV_FALLBACK",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "AUTH_ONLY",
+   "a_label": "Authorization Only",
+   "b_dim": "entry_mode",
+   "b": "EMV_FALLBACK",
+   "b_label": "Chip Fallback",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS11"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 162,
+     "score": 6,
+     "matched": [
+      "authorization",
+      "chip",
+      "fallback"
+     ],
+     "snippet": "such in the authorization message. Fallback transactions are less secure than EMV but"
+    },
+    {
+     "page": 638,
+     "score": 4,
+     "matched": [
+      "authorization",
+      "chip",
+      "chip fallback",
+      "fallback"
+     ],
+     "snippet": "05 Integrated circuit card (ICC) read - CVV data reliable (used for EMV chip"
+    },
+    {
+     "page": 108,
+     "score": 3,
+     "matched": [
+      "authorization",
+      "authorization only",
+      "chip"
+     ],
+     "snippet": "• Card must support all entry modes, such as, manual, swiped, contact chip, and contactless"
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Authorization Only with entry mode Chip Fallback for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-BALANCE_INQUIRY-CONTACTLESS_MAGSTRIPE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "BALANCE_INQUIRY",
+   "a_label": "Balance Inquiry",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MAGSTRIPE",
+   "b_label": "Contactless Magnetic Stripe",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS22"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 108,
+     "score": 3,
+     "matched": [
+      "contactless",
+      "inquiry",
+      "stripe"
+     ],
+     "snippet": "• Card must support all entry modes, such as, manual, swiped, contact chip, and contactless"
+    },
+    {
+     "page": 125,
+     "score": 3,
+     "matched": [
+      "balance",
+      "magnetic",
+      "stripe"
+     ],
+     "snippet": "If the POS device is unable to read the card's magnetic stripe, it should prompt the user to"
+    },
+    {
+     "page": 426,
+     "score": 2,
+     "matched": [
+      "balance",
+      "rfid"
+     ],
+     "snippet": "service entry mode (swiped/manual/RFID) is included here."
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Balance Inquiry with entry mode Contactless Magnetic Stripe for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-BALANCE_INQUIRY-CONTACTLESS_MOBILE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "BALANCE_INQUIRY",
+   "a_label": "Balance Inquiry",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MOBILE",
+   "b_label": "Contactless Mobile Commerce Device",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS24"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 30,
+     "score": 2,
+     "matched": [
+      "balance",
+      "nfc"
+     ],
+     "snippet": "12.19 NFC Payment Tokenization Data Segment .................................................. 12-50"
+    },
+    {
+     "page": 108,
+     "score": 2,
+     "matched": [
+      "contactless",
+      "inquiry"
+     ],
+     "snippet": "• Card must support all entry modes, such as, manual, swiped, contact chip, and contactless"
+    },
+    {
+     "page": 344,
+     "score": 2,
+     "matched": [
+      "balance",
+      "nfc"
+     ],
+     "snippet": "CAVV Revised Format 195 NFC Payment Tokenization Data 12-50"
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Balance Inquiry with entry mode Contactless Mobile Commerce Device for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-BALANCE_INQUIRY-EMV_FALLBACK",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "BALANCE_INQUIRY",
+   "a_label": "Balance Inquiry",
+   "b_dim": "entry_mode",
+   "b": "EMV_FALLBACK",
+   "b_label": "Chip Fallback",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS23"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 108,
+     "score": 2,
+     "matched": [
+      "chip",
+      "inquiry"
+     ],
+     "snippet": "• Card must support all entry modes, such as, manual, swiped, contact chip, and contactless"
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Balance Inquiry with entry mode Chip Fallback for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-BALANCE_INQUIRY-MAGSTRIPE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "BALANCE_INQUIRY",
+   "a_label": "Balance Inquiry",
+   "b_dim": "entry_mode",
+   "b": "MAGSTRIPE",
+   "b_label": "Magnetic Stripe",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS21"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 125,
+     "score": 4,
+     "matched": [
+      "balance",
+      "magnetic",
+      "magnetic stripe",
+      "stripe"
+     ],
+     "snippet": "If the POS device is unable to read the card's magnetic stripe, it should prompt the user to"
+    },
+    {
+     "page": 108,
+     "score": 2,
+     "matched": [
+      "inquiry",
+      "stripe"
+     ],
+     "snippet": "• The transactions must be card present, full mag-stripe data, or full EMV chip data."
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Balance Inquiry with entry mode Magnetic Stripe for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-PURCHASE-CONTACTLESS_MAGSTRIPE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "PURCHASE",
+   "a_label": "Purchase/Capture",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MAGSTRIPE",
+   "b_label": "Contactless Magnetic Stripe",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS4"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 86,
+     "score": 5,
+     "matched": [
+      "contactless",
+      "magnetic",
+      "purchase/capture",
+      "rfid",
+      "stripe"
+     ],
+     "snippet": "Radio frequency identification (RFID) service is an optional service. It is a contactless data"
+    },
+    {
+     "page": 108,
+     "score": 3,
+     "matched": [
+      "contactless",
+      "purchase/capture",
+      "stripe"
+     ],
+     "snippet": "• Card must support all entry modes, such as, manual, swiped, contact chip, and contactless"
+    },
+    {
+     "page": 135,
+     "score": 2,
+     "matched": [
+      "magnetic",
+      "purchase/capture"
+     ],
+     "snippet": "magnetic strip, it should prompt the user to swipe the card again-up to three times. If unable"
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Purchase/Capture with entry mode Contactless Magnetic Stripe for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-PURCHASE-CONTACTLESS_MOBILE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "PURCHASE",
+   "a_label": "Purchase/Capture",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MOBILE",
+   "b_label": "Contactless Mobile Commerce Device",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS6"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 86,
+     "score": 2,
+     "matched": [
+      "contactless",
+      "purchase/capture"
+     ],
+     "snippet": "Radio frequency identification (RFID) service is an optional service. It is a contactless data"
+    },
+    {
+     "page": 108,
+     "score": 2,
+     "matched": [
+      "contactless",
+      "purchase/capture"
+     ],
+     "snippet": "• Card must support all entry modes, such as, manual, swiped, contact chip, and contactless"
+    },
+    {
+     "page": 403,
+     "score": 2,
+     "matched": [
+      "82",
+      "purchase/capture"
+     ],
+     "snippet": "Number: 82 Name: Redial Count"
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Purchase/Capture with entry mode Contactless Mobile Commerce Device for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-PURCHASE-EMV_FALLBACK",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "PURCHASE",
+   "a_label": "Purchase/Capture",
+   "b_dim": "entry_mode",
+   "b": "EMV_FALLBACK",
+   "b_label": "Chip Fallback",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS5"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 86,
+     "score": 2,
+     "matched": [
+      "chip",
+      "purchase/capture"
+     ],
+     "snippet": "An RFID card has a chip embedded in the card that transmits Track 2 data wirelessly when the"
+    },
+    {
+     "page": 108,
+     "score": 2,
+     "matched": [
+      "chip",
+      "purchase/capture"
+     ],
+     "snippet": "• Card must support all entry modes, such as, manual, swiped, contact chip, and contactless"
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Purchase/Capture with entry mode Chip Fallback for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-RETURN-CONTACTLESS_MAGSTRIPE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "RETURN",
+   "a_label": "Merchandise Return",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MAGSTRIPE",
+   "b_label": "Contactless Magnetic Stripe",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS16"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 106,
+     "score": 5,
+     "matched": [
+      "contactless",
+      "merchandise",
+      "merchandise return",
+      "refund",
+      "return"
+     ],
+     "snippet": "• For EMV, the card may be dipped or tapped for contact or contactless transactions"
+    },
+    {
+     "page": 2,
+     "score": 2,
+     "matched": [
+      "91",
+      "refund"
+     ],
+     "snippet": "NA 13-91 Added processing rule for data element"
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Merchandise Return with entry mode Contactless Magnetic Stripe for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-RETURN-CONTACTLESS_MOBILE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "RETURN",
+   "a_label": "Merchandise Return",
+   "b_dim": "entry_mode",
+   "b": "CONTACTLESS_MOBILE",
+   "b_label": "Contactless Mobile Commerce Device",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS18"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [
+    {
+     "page": 106,
+     "score": 5,
+     "matched": [
+      "contactless",
+      "merchandise",
+      "merchandise return",
+      "refund",
+      "return"
+     ],
+     "snippet": "• For EMV, the card may be dipped or tapped for contact or contactless transactions"
+    },
+    {
+     "page": 372,
+     "score": 4,
+     "matched": [
+      "commerce",
+      "merchandise",
+      "merchandise return",
+      "return"
+     ],
+     "snippet": "commerce and one-time bill payment transactions. Effective May"
+    },
+    {
+     "page": 2,
+     "score": 2,
+     "matched": [
+      "82",
+      "refund"
+     ],
+     "snippet": "Incremental Auth NA I-88 Added table ID '82' (Incremental Auth"
+    }
+   ],
+   "scenario_count": 1,
+   "question": "Does the spec allow Merchandise Return with entry mode Contactless Mobile Commerce Device for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-RETURN-EMV_FALLBACK",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "RETURN",
+   "a_label": "Merchandise Return",
+   "b_dim": "entry_mode",
+   "b": "EMV_FALLBACK",
+   "b_label": "Chip Fallback",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS17"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [],
+   "scenario_count": 1,
+   "question": "Does the spec allow Merchandise Return with entry mode Chip Fallback for Debit?"
+  },
+  {
+   "question_id": "Q-txn_category-entry_mode-RETURN-MAGSTRIPE",
+   "pair": "txn_category-entry_mode",
+   "a_dim": "txn_category",
+   "a": "RETURN",
+   "a_label": "Merchandise Return",
+   "b_dim": "entry_mode",
+   "b": "MAGSTRIPE",
+   "b_label": "Magnetic Stripe",
+   "program": "DEBIT",
+   "scenarios": [
+    "BR1_TS15"
+   ],
+   "inherited_by": [],
+   "spec": "ATL105",
+   "pending_sme_basis": false,
+   "existing_note": null,
+   "candidate_evidence": [],
+   "scenario_count": 1,
+   "question": "Does the spec allow Merchandise Return with entry mode Magnetic Stripe for Debit?"
+  }
+ ]
+}

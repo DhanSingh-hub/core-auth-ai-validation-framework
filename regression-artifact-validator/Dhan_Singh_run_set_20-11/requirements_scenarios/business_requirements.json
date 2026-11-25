@@ -1,0 +1,4811 @@
+{
+ "meta": {
+  "layer": "business_model",
+  "filter_name": "buypass-atl105-mastercard-credit-generated",
+  "build_id": "buypass-atl105-mastercard-credit-generated-42c2d5f6ba",
+  "run_id": "20261119T163049432850Z",
+  "state": "CANDIDATE",
+  "selection": {
+   "platform": [
+    "BUYPASS"
+   ],
+   "spec": [
+    "ATL105"
+   ],
+   "network": [
+    "MASTERCARD"
+   ],
+   "program": [
+    "CREDIT"
+   ]
+  },
+  "built_at": "2026-11-19T16:30:52.930140+00:00",
+  "mapping_status": "candidate",
+  "knowledge_base_hash": "8b39880d400f37cfa0383a3f2f3067a87d0a94e731899727ed0baeb4d36ba0eb",
+  "mapping_matches_knowledge_base": true,
+  "inputs_combined": "b21b5d7a5b3ca9518868a57f851e8def71050a8bea3f27020fade73a1e0064b6",
+  "parent_build": "buypass-atl105-mastercard-credit-generated-0b5aa9ec6e",
+  "dimension_mapping_hash": "76d4890063464fd02625ed19dbbc3a508aa71bcabede107984d42ab9197b01d7",
+  "spec": "ATL105",
+  "spec_version": "2026-4",
+  "config": "src/pipeline/config/business_model.json",
+  "br_kind": "NETWORK"
+ },
+ "business_requirements": [
+  {
+   "id": "BR-12B94100",
+   "display_id": "BR1",
+   "name": "BUYPASS ATL105 MasterCard Credit",
+   "platform": "BUYPASS",
+   "platform_label": "BUYPASS",
+   "spec": {
+    "id": "ATL105",
+    "label": "ATL105",
+    "version": "2026-4",
+    "source_id": "SRC-ATL105-PDF-001"
+   },
+   "selection": {
+    "platform": [
+     "BUYPASS"
+    ],
+    "spec": [
+     "ATL105"
+    ],
+    "network": [
+     "MASTERCARD"
+    ],
+    "program": [
+     "CREDIT"
+    ]
+   },
+   "acceptance_contexts": [
+    {
+     "id": "GENERAL",
+     "kind": "general",
+     "industry": "4.1",
+     "industry_label": "General Retail",
+     "industry_page": 50,
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_present",
+     "mcc": null,
+     "status": "general",
+     "tier": "verified",
+     "reason": "the mapping's own card-present scenarios on the spec's first listed industry",
+     "themes": [],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY",
+      "RETURN",
+      "BALANCE_INQUIRY"
+     ],
+     "base": true,
+     "basis": [],
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "capabilities": [],
+     "short_label": "General Retail · attended POS"
+    },
+    {
+     "id": "CARD_NOT_PRESENT-0100",
+     "kind": "channel",
+     "industry": null,
+     "industry_label": "Credential on File",
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_not_present",
+     "mcc": null,
+     "status": "active",
+     "tier": "verified",
+     "reason": null,
+     "themes": [
+      "SRC-ATL105-PDF-001:Appendix AD",
+      "SRC-ATL105-PDF-001:Appendix AE"
+     ],
+     "rules": [],
+     "categories": [
+      "AUTH_ONLY",
+      "BALANCE_INQUIRY",
+      "PURCHASE",
+      "RETURN"
+     ],
+     "base": true,
+     "scenario_ids": [
+      "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CREDENTIAL_ON_FILE",
+      "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CREDENTIAL_ON_FILE",
+      "TS-ATL105-CREDIT-MASTERCARD-RETURN-CREDENTIAL_ON_FILE",
+      "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-CREDENTIAL_ON_FILE"
+     ],
+     "presentation": {
+      "code": "0100",
+      "meaning": "Customer present; card not present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "basis": [
+      {
+       "theme_id": "SRC-ATL105-PDF-001:Appendix AD",
+       "quote": "The transaction must be from a participating acquirer and must be a card not present transaction"
+      },
+      {
+       "theme_id": "SRC-ATL105-PDF-001:Appendix AE",
+       "quote": "estimated/incremental authorizations allowed only for Card Not Present transactions"
+      },
+      {
+       "page": 696,
+       "quote": "0100 Customer present; card not present"
+      }
+     ],
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "capabilities": [
+      "purchase_card_data"
+     ],
+     "short_label": "Credential on File · customer present; card not present"
+    },
+    {
+     "id": "CARD_NOT_PRESENT-2100",
+     "kind": "channel",
+     "industry": "4.4",
+     "industry_label": "Mail Order",
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_not_present",
+     "mcc": null,
+     "status": "active",
+     "tier": "verified",
+     "reason": null,
+     "themes": [
+      "SRC-ATL105-PDF-001:Appendix AD",
+      "SRC-ATL105-PDF-001:Appendix AE"
+     ],
+     "rules": [],
+     "categories": [
+      "MOTO_AUTH_ONLY",
+      "MOTO_PURCHASE"
+     ],
+     "base": true,
+     "scenario_ids": [
+      "TS-ATL105-CREDIT-MASTERCARD-MOTO_PURCHASE-MANUAL",
+      "TS-ATL105-CREDIT-MASTERCARD-MOTO_PURCHASE-CREDENTIAL_ON_FILE",
+      "TS-ATL105-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-MANUAL",
+      "TS-ATL105-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-CREDENTIAL_ON_FILE"
+     ],
+     "presentation": {
+      "code": "2100",
+      "meaning": "Mail and/or telephone order",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "basis": [
+      {
+       "theme_id": "SRC-ATL105-PDF-001:Appendix AD",
+       "quote": "The transaction must be from a participating acquirer and must be a card not present transaction"
+      },
+      {
+       "theme_id": "SRC-ATL105-PDF-001:Appendix AE",
+       "quote": "estimated/incremental authorizations allowed only for Card Not Present transactions"
+      },
+      {
+       "page": 696,
+       "quote": "2100 Mail and/or telephone order"
+      }
+     ],
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "capabilities": [
+      "purchase_card_data"
+     ],
+     "short_label": "Mail Order · mail and/or telephone order"
+    },
+    {
+     "id": "GENERAL_RETAIL-ATTENDED",
+     "kind": "industry",
+     "industry": "4.1",
+     "industry_label": "General Retail",
+     "industry_page": 50,
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [
+      "SRC-ATL105-PDF-001:Appendix N",
+      "SRC-ATL105-TRANSARMOR-PDF-001:2.4",
+      "SRC-BUYPASS-PIPS-PDF-001:3.5"
+     ],
+     "rules": [],
+     "categories": [],
+     "base": false,
+     "basis": [],
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "status": "merged_into_general",
+     "tier": "verified",
+     "reason": "the general context's own industry and attendance (its themes run on it)",
+     "capabilities": [],
+     "short_label": "General Retail · attended POS"
+    },
+    {
+     "id": "GENERAL_RETAIL-UNATTENDED",
+     "kind": "industry",
+     "industry": "4.1",
+     "industry_label": "General Retail",
+     "industry_page": 50,
+     "attendance": "unattended",
+     "terminal_type": "CAT",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY"
+     ],
+     "base": false,
+     "basis": [],
+     "terminal_profile": {
+      "attendance": "unattended",
+      "operator": "customer",
+      "premise": "on",
+      "device": "pos_terminal"
+     },
+     "profile": {
+      "class_code": "100",
+      "type_code": "01",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Unattended on premise customer-operated point-of-service terminal",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "point-of-service terminal",
+      "device_distinct": false
+     },
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "status": "candidate",
+     "tier": "candidate",
+     "pending_sme": true,
+     "reason": "no verified rule or theme profile binds this industry and attendance: built with baseline tests for SME review",
+     "capabilities": [],
+     "short_label": "General Retail · unattended CAT"
+    },
+    {
+     "id": "HOSPITALITY-ATTENDED",
+     "kind": "industry",
+     "industry": "4.2",
+     "industry_label": "Hospitality",
+     "industry_page": 50,
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [
+      "SRC-ATL105-PDF-001:8.2",
+      "SRC-ATL105-PDF-001:Appendix AF"
+     ],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY"
+     ],
+     "base": false,
+     "basis": [
+      {
+       "theme_id": "SRC-ATL105-PDF-001:8.2",
+       "quote": "Restaurant credit card sales are terminal-capture and initiated as POS Authorization Only transactions."
+      },
+      {
+       "theme_id": "SRC-ATL105-PDF-001:Appendix AF",
+       "quote": "Incremental Auth Data contains the Transaction ID which must be unique per terminal to any open Incremental Auth purchase"
+      }
+     ],
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "split_from": null,
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "status": "active",
+     "tier": "verified",
+     "reason": null,
+     "capabilities": [],
+     "short_label": "Hospitality · attended POS"
+    },
+    {
+     "id": "HOSPITALITY-UNATTENDED",
+     "kind": "industry",
+     "industry": "4.2",
+     "industry_label": "Hospitality",
+     "industry_page": 50,
+     "attendance": "unattended",
+     "terminal_type": "CAT",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY"
+     ],
+     "base": false,
+     "basis": [],
+     "terminal_profile": {
+      "attendance": "unattended",
+      "operator": "customer",
+      "premise": "on",
+      "device": "pos_terminal"
+     },
+     "profile": {
+      "class_code": "100",
+      "type_code": "01",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Unattended on premise customer-operated point-of-service terminal",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "point-of-service terminal",
+      "device_distinct": false
+     },
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "status": "candidate",
+     "tier": "candidate",
+     "pending_sme": true,
+     "reason": "no verified rule or theme profile binds this industry and attendance: built with baseline tests for SME review",
+     "capabilities": [],
+     "short_label": "Hospitality · unattended CAT"
+    },
+    {
+     "id": "SUPERMARKET-ATTENDED",
+     "kind": "industry",
+     "industry": "4.3",
+     "industry_label": "Supermarket",
+     "industry_page": 50,
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY",
+      "RETURN",
+      "BALANCE_INQUIRY"
+     ],
+     "base": false,
+     "basis": [],
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "status": "candidate",
+     "tier": "candidate",
+     "pending_sme": true,
+     "reason": "no verified rule or theme profile binds this industry and attendance: built with baseline tests for SME review",
+     "capabilities": [],
+     "short_label": "Supermarket · attended POS"
+    },
+    {
+     "id": "SUPERMARKET-UNATTENDED",
+     "kind": "industry",
+     "industry": "4.3",
+     "industry_label": "Supermarket",
+     "industry_page": 50,
+     "attendance": "unattended",
+     "terminal_type": "CAT",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY"
+     ],
+     "base": false,
+     "basis": [],
+     "terminal_profile": {
+      "attendance": "unattended",
+      "operator": "customer",
+      "premise": "on",
+      "device": "pos_terminal"
+     },
+     "profile": {
+      "class_code": "100",
+      "type_code": "01",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Unattended on premise customer-operated point-of-service terminal",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "point-of-service terminal",
+      "device_distinct": false
+     },
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "status": "candidate",
+     "tier": "candidate",
+     "pending_sme": true,
+     "reason": "no verified rule or theme profile binds this industry and attendance: built with baseline tests for SME review",
+     "capabilities": [],
+     "short_label": "Supermarket · unattended CAT"
+    },
+    {
+     "id": "MAIL_ORDER-ATTENDED",
+     "kind": "industry",
+     "industry": "4.4",
+     "industry_label": "Mail Order",
+     "industry_page": 50,
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [],
+     "rules": [],
+     "categories": [],
+     "base": false,
+     "basis": [],
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "status": "excluded",
+     "tier": "excluded",
+     "reason": "the industry is card-not-present: its scenarios run in CARD_NOT_PRESENT-2100",
+     "capabilities": [],
+     "short_label": "Mail Order · attended POS"
+    },
+    {
+     "id": "MAIL_ORDER-UNATTENDED",
+     "kind": "industry",
+     "industry": "4.4",
+     "industry_label": "Mail Order",
+     "industry_page": 50,
+     "attendance": "unattended",
+     "terminal_type": "CAT",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [],
+     "rules": [],
+     "categories": [],
+     "base": false,
+     "basis": [],
+     "terminal_profile": {
+      "attendance": "unattended",
+      "operator": "customer",
+      "premise": "on",
+      "device": "pos_terminal"
+     },
+     "profile": {
+      "class_code": "100",
+      "type_code": "01",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Unattended on premise customer-operated point-of-service terminal",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "point-of-service terminal",
+      "device_distinct": false
+     },
+     "status": "excluded",
+     "tier": "excluded",
+     "reason": "the industry is card-not-present: its scenarios run in CARD_NOT_PRESENT-2100",
+     "capabilities": [],
+     "short_label": "Mail Order · unattended CAT"
+    },
+    {
+     "id": "UTILITIES-ATTENDED",
+     "kind": "industry",
+     "industry": "4.5",
+     "industry_label": "Utilities",
+     "industry_page": 50,
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY",
+      "RETURN",
+      "BALANCE_INQUIRY"
+     ],
+     "base": false,
+     "basis": [],
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "status": "candidate",
+     "tier": "candidate",
+     "pending_sme": true,
+     "reason": "no verified rule or theme profile binds this industry and attendance: built with baseline tests for SME review",
+     "capabilities": [],
+     "short_label": "Utilities · attended POS"
+    },
+    {
+     "id": "UTILITIES-UNATTENDED",
+     "kind": "industry",
+     "industry": "4.5",
+     "industry_label": "Utilities",
+     "industry_page": 50,
+     "attendance": "unattended",
+     "terminal_type": "CAT",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY"
+     ],
+     "base": false,
+     "basis": [],
+     "terminal_profile": {
+      "attendance": "unattended",
+      "operator": "customer",
+      "premise": "on",
+      "device": "pos_terminal"
+     },
+     "profile": {
+      "class_code": "100",
+      "type_code": "01",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Unattended on premise customer-operated point-of-service terminal",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "point-of-service terminal",
+      "device_distinct": false
+     },
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "status": "candidate",
+     "tier": "candidate",
+     "pending_sme": true,
+     "reason": "no verified rule or theme profile binds this industry and attendance: built with baseline tests for SME review",
+     "capabilities": [],
+     "short_label": "Utilities · unattended CAT"
+    },
+    {
+     "id": "PETROLEUM-ATTENDED",
+     "kind": "industry",
+     "industry": "4.6",
+     "industry_label": "Petroleum",
+     "industry_page": 50,
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [
+      "SRC-BUYPASS-PIPS-PDF-001:1",
+      "SRC-BUYPASS-PIPS-PDF-001:12.1",
+      "SRC-BUYPASS-PIPS-PDF-001:14.1",
+      "SRC-BUYPASS-PIPS-PDF-001:16.1",
+      "SRC-BUYPASS-PIPS-PDF-001:17",
+      "SRC-BUYPASS-PIPS-PDF-001:2.1",
+      "SRC-BUYPASS-PIPS-PDF-001:2.2",
+      "SRC-BUYPASS-PIPS-PDF-001:2.3",
+      "SRC-BUYPASS-PIPS-PDF-001:3.1",
+      "SRC-BUYPASS-PIPS-PDF-001:3.2",
+      "SRC-BUYPASS-PIPS-PDF-001:3.6",
+      "SRC-BUYPASS-PIPS-PDF-001:4.13",
+      "SRC-BUYPASS-PIPS-PDF-001:4.4",
+      "SRC-BUYPASS-PIPS-PDF-001:4.9",
+      "SRC-BUYPASS-PIPS-PDF-001:Appendix L",
+      "SRC-BUYPASS-PIPS-PDF-001:document",
+      "SRC-FISERV-EMV-GUIDE-PDF-001:14",
+      "SRC-FISERV-EMV-GUIDE-PDF-001:14.3",
+      "SRC-FISERV-EMV-GUIDE-PDF-001:14.7",
+      "SRC-FISERV-EMV-GUIDE-PDF-001:14.8"
+     ],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY",
+      "RETURN"
+     ],
+     "base": false,
+     "basis": [
+      {
+       "theme_id": "SRC-FISERV-EMV-GUIDE-PDF-001:14.3",
+       "quote": "Attended and AFD Terminals must support Online"
+      },
+      {
+       "theme_id": "SRC-BUYPASS-PIPS-PDF-001:1",
+       "quote": "BUYPASS Platform Petroleum Industry Processing Specifications"
+      },
+      {
+       "theme_id": "SRC-BUYPASS-PIPS-PDF-001:12.1",
+       "quote": "Only POS Capture Transaction is supported for Express Code processing (Card Type 095)."
+      },
+      {
+       "theme_id": "SRC-BUYPASS-PIPS-PDF-001:14.1",
+       "quote": "Fuel Price Updates apply only to the Primary Diesel product on commercial pumps"
+      }
+     ],
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "split_from": null,
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "status": "active",
+     "tier": "verified",
+     "reason": null,
+     "capabilities": [
+      "loyalty",
+      "purchase_card_data"
+     ],
+     "short_label": "Petroleum · attended POS"
+    },
+    {
+     "id": "PETROLEUM-UNATTENDED",
+     "kind": "industry",
+     "industry": "4.6",
+     "industry_label": "Petroleum",
+     "industry_page": 50,
+     "attendance": "unattended",
+     "terminal_type": "CAT",
+     "channel": "card_present",
+     "mcc": null,
+     "themes": [
+      "SRC-ATL105-PDF-001:8.1",
+      "SRC-BUYPASS-PIPS-PDF-001:1",
+      "SRC-BUYPASS-PIPS-PDF-001:12.1",
+      "SRC-BUYPASS-PIPS-PDF-001:14.1",
+      "SRC-BUYPASS-PIPS-PDF-001:16.1",
+      "SRC-BUYPASS-PIPS-PDF-001:17",
+      "SRC-BUYPASS-PIPS-PDF-001:2.1",
+      "SRC-BUYPASS-PIPS-PDF-001:2.2",
+      "SRC-BUYPASS-PIPS-PDF-001:2.3",
+      "SRC-BUYPASS-PIPS-PDF-001:3.1",
+      "SRC-BUYPASS-PIPS-PDF-001:3.2",
+      "SRC-BUYPASS-PIPS-PDF-001:3.3",
+      "SRC-BUYPASS-PIPS-PDF-001:3.4",
+      "SRC-BUYPASS-PIPS-PDF-001:3.6",
+      "SRC-BUYPASS-PIPS-PDF-001:4.13",
+      "SRC-BUYPASS-PIPS-PDF-001:4.4",
+      "SRC-BUYPASS-PIPS-PDF-001:4.9",
+      "SRC-BUYPASS-PIPS-PDF-001:Appendix L",
+      "SRC-BUYPASS-PIPS-PDF-001:document",
+      "SRC-FISERV-EMV-GUIDE-PDF-001:14",
+      "SRC-FISERV-EMV-GUIDE-PDF-001:14.7",
+      "SRC-FISERV-EMV-GUIDE-PDF-001:14.8"
+     ],
+     "rules": [],
+     "categories": [
+      "PURCHASE",
+      "AUTH_ONLY"
+     ],
+     "base": false,
+     "basis": [
+      {
+       "theme_id": "SRC-ATL105-PDF-001:8.1",
+       "quote": "Credit card transactions can only be stored for a maximum of 55 minutes before connecting to BUYPASS."
+      },
+      {
+       "theme_id": "SRC-BUYPASS-PIPS-PDF-001:3.3",
+       "quote": "The card must be presented for payment."
+      },
+      {
+       "theme_id": "SRC-BUYPASS-PIPS-PDF-001:3.4",
+       "quote": "CAT Purchase/Capture transaction completes a fuel purchase by forwarding final total purchase amount to BUYPASS."
+      },
+      {
+       "theme_id": "SRC-BUYPASS-PIPS-PDF-001:1",
+       "quote": "BUYPASS Platform Petroleum Industry Processing Specifications"
+      },
+      {
+       "page": 83,
+       "quote": "The following customer-activated transactions are supported for credit card processing:"
+      }
+     ],
+     "terminal_profile": {
+      "attendance": "unattended",
+      "operator": "customer",
+      "premise": "on",
+      "device": "fuel"
+     },
+     "profile": {
+      "class_code": "100",
+      "type_code": "07",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Unattended on premise customer-operated fuel machine",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "fuel machine",
+      "device_distinct": true
+     },
+     "split_from": null,
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "status": "active",
+     "tier": "verified",
+     "reason": null,
+     "capabilities": [
+      "loyalty",
+      "purchase_card_data"
+     ],
+     "short_label": "Petroleum · unattended CAT (fuel machine)"
+    },
+    {
+     "id": "MCC_5542",
+     "kind": "merchant_category",
+     "industry": null,
+     "industry_label": "Merchant category 5542 (Automated Fuel Dispensers)",
+     "mcc_meaning": "Automated Fuel Dispensers",
+     "attendance": "unattended",
+     "terminal_type": "CAT",
+     "channel": "card_present",
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "mcc": "5542",
+     "themes": [],
+     "rules": [
+      "BR-FISERV-EMV-GUIDE-76-11",
+      "BR-FISERV-EMV-GUIDE-77-2"
+     ],
+     "categories": [
+      "PURCHASE"
+     ],
+     "base": false,
+     "tier": "verified",
+     "terminal_profile": {
+      "attendance": "unattended",
+      "operator": "customer",
+      "premise": "on",
+      "device": "fuel"
+     },
+     "profile": {
+      "class_code": "100",
+      "type_code": "07",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Unattended on premise customer-operated fuel machine",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "fuel machine",
+      "device_distinct": false
+     },
+     "basis": [
+      {
+       "rule_id": "BR-FISERV-EMV-GUIDE-76-11",
+       "page": 76,
+       "quote": "Certification Analyst to properly ensure correct settlement.  1501 PIN Bypass is allowed on AFD in US region AFD CAT (MCC5542) solutions can support PIN Bypass in US Region"
+      },
+      {
+       "rule_id": "BR-FISERV-EMV-GUIDE-77-2",
+       "page": 77,
+       "quote": "When a CAID is sent in a credit message for MCC 5542, unless AVS is desired, do not use the\nFinal Amount Indicator (as per spec), as this will force the transaction to a credit network."
+      }
+     ],
+     "status": "active",
+     "reason": null,
+     "capabilities": [],
+     "short_label": "Merchant category 5542 (Automated Fuel Dispensers) · unattended CAT"
+    },
+    {
+     "id": "MCC_6051",
+     "kind": "merchant_category",
+     "industry": null,
+     "industry_label": "Merchant category 6051 (cryptocurrency purchase)",
+     "mcc_meaning": "cryptocurrency purchase",
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_present",
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "mcc": "6051",
+     "themes": [],
+     "rules": [
+      "BR-578-1"
+     ],
+     "categories": [
+      "PURCHASE"
+     ],
+     "base": false,
+     "tier": "verified",
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "basis": [
+      {
+       "rule_id": "BR-578-1",
+       "page": 578,
+       "quote": "the purchase of cryptocurrency, Visa and MasterCard are mandating this attribute in all the related transactions. Only MCC '6051' is applicable to"
+      }
+     ],
+     "status": "active",
+     "reason": null,
+     "capabilities": [],
+     "short_label": "Merchant category 6051 (cryptocurrency purchase) · attended POS"
+    },
+    {
+     "id": "MCC_6211",
+     "kind": "merchant_category",
+     "industry": null,
+     "industry_label": "Merchant category 6211 (high risk security)",
+     "mcc_meaning": "high risk security",
+     "attendance": "attended",
+     "terminal_type": "POS",
+     "channel": "card_present",
+     "presentation": {
+      "code": "0000",
+      "meaning": "Customer and card present",
+      "span": [
+       4,
+       7
+      ],
+      "page": 696,
+      "appendix": "Q"
+     },
+     "mcc": "6211",
+     "themes": [],
+     "rules": [
+      "BR-578-2"
+     ],
+     "categories": [
+      "PURCHASE"
+     ],
+     "base": false,
+     "tier": "verified",
+     "terminal_profile": {
+      "attendance": "attended",
+      "operator": "card_acceptor",
+      "premise": "on",
+      "device": "ecr"
+     },
+     "profile": {
+      "class_code": "010",
+      "type_code": "04",
+      "class_span": [
+       1,
+       3
+      ],
+      "type_span": [
+       9,
+       10
+      ],
+      "meaning": "Attended on premise Card acceptor-operated ECR",
+      "page": 693,
+      "appendix": "Q",
+      "device_label": "ECR",
+      "device_distinct": false
+     },
+     "basis": [
+      {
+       "rule_id": "BR-578-2",
+       "page": 578,
+       "quote": "Note - In order to provide greater visibility into transactions that involve high securities, MasterCard is mandating this attribute in all the related transactions. Only MCC '6211' is applicable to these transactions."
+      }
+     ],
+     "status": "active",
+     "reason": null,
+     "capabilities": [],
+     "short_label": "Merchant category 6211 (high risk security) · attended POS"
+    }
+   ],
+   "status": "built",
+   "mapping_status": "candidate",
+   "mapping_knowledge_base_hash": "8b39880d400f37cfa0383a3f2f3067a87d0a94e731899727ed0baeb4d36ba0eb",
+   "counts": {
+    "scenarios": 36,
+    "context_scenarios": 160,
+    "by_status": {
+     "spec_implied": 2,
+     "unconfirmed": 8,
+     "valid": 26
+    },
+    "requires_sme": 8,
+    "multi_leg": 0,
+    "with_preauthorized_variant": 8,
+    "with_gaps": 0,
+    "excluded": 90,
+    "leg_combinations": 34,
+    "by_program": {
+     "Credit": 36
+    },
+    "by_txn_category": {
+     "Purchase/Capture": 8,
+     "Mail/Phone Purchase": 2,
+     "Authorization Only": 8,
+     "Mail/Phone Authorization Only": 2,
+     "Merchandise Return": 8,
+     "Balance Inquiry": 8
+    },
+    "by_entry_mode": {
+     "EMV Contact Chip": 4,
+     "EMV Contactless Chip": 4,
+     "Magnetic Stripe": 4,
+     "Contactless Magnetic Stripe": 4,
+     "Manual / Keyed": 6,
+     "Chip Fallback": 4,
+     "Credential on File": 6,
+     "Contactless Mobile Commerce Device": 4
+    },
+    "supporting_rules": 576,
+    "response_check_rules": 14,
+    "supporting_rules_requiring_review": 354
+   },
+   "scenario_ids": [
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_FALLBACK",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE",
+    "TS-ATL105-CREDIT-MASTERCARD-MOTO_PURCHASE-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-MOTO_PURCHASE-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_FALLBACK",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE",
+    "TS-ATL105-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_CONTACT",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_CONTACTLESS",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-CONTACTLESS_MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_FALLBACK",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-CONTACTLESS_MOBILE",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-EMV_CONTACT",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-EMV_CONTACTLESS",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-CONTACTLESS_MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-EMV_FALLBACK",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-CONTACTLESS_MOBILE"
+   ],
+   "context_scenario_ids": [
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE@GENERAL_RETAIL-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MANUAL@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_FALLBACK@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MANUAL@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_FALLBACK@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE@HOSPITALITY-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE@HOSPITALITY-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MANUAL@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_FALLBACK@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MANUAL@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_FALLBACK@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_CONTACT@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_CONTACTLESS@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-MAGSTRIPE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-CONTACTLESS_MAGSTRIPE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-MANUAL@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_FALLBACK@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-CONTACTLESS_MOBILE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-EMV_CONTACT@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-EMV_CONTACTLESS@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-MAGSTRIPE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-CONTACTLESS_MAGSTRIPE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-MANUAL@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-EMV_FALLBACK@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-CONTACTLESS_MOBILE@SUPERMARKET-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE@SUPERMARKET-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MANUAL@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_FALLBACK@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MANUAL@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_FALLBACK@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_CONTACT@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_CONTACTLESS@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-MAGSTRIPE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-CONTACTLESS_MAGSTRIPE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-MANUAL@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_FALLBACK@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-CONTACTLESS_MOBILE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-EMV_CONTACT@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-EMV_CONTACTLESS@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-MAGSTRIPE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-CONTACTLESS_MAGSTRIPE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-MANUAL@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-EMV_FALLBACK@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-BALANCE_INQUIRY-CONTACTLESS_MOBILE@UTILITIES-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE@UTILITIES-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MANUAL@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_FALLBACK@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MANUAL@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_FALLBACK@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_CONTACT@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_CONTACTLESS@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-MAGSTRIPE@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-CONTACTLESS_MAGSTRIPE@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-MANUAL@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-EMV_FALLBACK@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-RETURN-CONTACTLESS_MOBILE@PETROLEUM-ATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACT@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-EMV_CONTACTLESS@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-MAGSTRIPE@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MAGSTRIPE@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-AUTH_ONLY-CONTACTLESS_MOBILE@PETROLEUM-UNATTENDED",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@MCC_5542",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@MCC_5542",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@MCC_5542",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@MCC_5542",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@MCC_5542",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@MCC_6051",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@MCC_6051",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@MCC_6051",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@MCC_6051",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MANUAL@MCC_6051",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_FALLBACK@MCC_6051",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@MCC_6051",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT@MCC_6211",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACTLESS@MCC_6211",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE@MCC_6211",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MAGSTRIPE@MCC_6211",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MANUAL@MCC_6211",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_FALLBACK@MCC_6211",
+    "TS-ATL105-CREDIT-MASTERCARD-PURCHASE-CONTACTLESS_MOBILE@MCC_6211"
+   ],
+   "leg_combination_ids": [
+    "TS-ATL105-CREDIT-MASTERCARD-VOID_RETURN-EMV_CONTACT",
+    "TS-ATL105-CREDIT-MASTERCARD-VOID_RETURN-EMV_CONTACTLESS",
+    "TS-ATL105-CREDIT-MASTERCARD-VOID_RETURN-MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-VOID_RETURN-CONTACTLESS_MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-VOID_RETURN-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-VOID_RETURN-EMV_FALLBACK",
+    "TS-ATL105-CREDIT-MASTERCARD-VOID_RETURN-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-VOID_RETURN-CONTACTLESS_MOBILE",
+    "TS-ATL105-CREDIT-MASTERCARD-REVERSAL-EMV_CONTACT",
+    "TS-ATL105-CREDIT-MASTERCARD-REVERSAL-EMV_CONTACTLESS",
+    "TS-ATL105-CREDIT-MASTERCARD-REVERSAL-MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-REVERSAL-CONTACTLESS_MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-REVERSAL-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-REVERSAL-EMV_FALLBACK",
+    "TS-ATL105-CREDIT-MASTERCARD-REVERSAL-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-REVERSAL-CONTACTLESS_MOBILE",
+    "TS-ATL105-CREDIT-MASTERCARD-MOTO_REVERSAL-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-MOTO_REVERSAL-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-TIMEOUT_REVERSAL-EMV_CONTACT",
+    "TS-ATL105-CREDIT-MASTERCARD-TIMEOUT_REVERSAL-EMV_CONTACTLESS",
+    "TS-ATL105-CREDIT-MASTERCARD-TIMEOUT_REVERSAL-MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-TIMEOUT_REVERSAL-CONTACTLESS_MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-TIMEOUT_REVERSAL-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-TIMEOUT_REVERSAL-EMV_FALLBACK",
+    "TS-ATL105-CREDIT-MASTERCARD-TIMEOUT_REVERSAL-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-TIMEOUT_REVERSAL-CONTACTLESS_MOBILE",
+    "TS-ATL105-CREDIT-MASTERCARD-CANCELLATION-EMV_CONTACT",
+    "TS-ATL105-CREDIT-MASTERCARD-CANCELLATION-EMV_CONTACTLESS",
+    "TS-ATL105-CREDIT-MASTERCARD-CANCELLATION-MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-CANCELLATION-CONTACTLESS_MAGSTRIPE",
+    "TS-ATL105-CREDIT-MASTERCARD-CANCELLATION-MANUAL",
+    "TS-ATL105-CREDIT-MASTERCARD-CANCELLATION-EMV_FALLBACK",
+    "TS-ATL105-CREDIT-MASTERCARD-CANCELLATION-CREDENTIAL_ON_FILE",
+    "TS-ATL105-CREDIT-MASTERCARD-CANCELLATION-CONTACTLESS_MOBILE"
+   ],
+   "excluded": [
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_PURCHASE-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Mail/Phone Purchase",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_PURCHASE",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Purchase",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_PURCHASE|entry_mode=EMV_CONTACT",
+       "pair": "Mail/Phone Purchase x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_PURCHASE-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Mail/Phone Purchase",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_PURCHASE",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Purchase",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_PURCHASE|entry_mode=EMV_CONTACTLESS",
+       "pair": "Mail/Phone Purchase x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_PURCHASE-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Mail/Phone Purchase",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_PURCHASE",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Purchase",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_PURCHASE|entry_mode=MAGSTRIPE",
+       "pair": "Mail/Phone Purchase x Magnetic Stripe",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_PURCHASE-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Mail/Phone Purchase",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_PURCHASE",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Purchase",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_PURCHASE|entry_mode=CONTACTLESS_MAGSTRIPE",
+       "pair": "Mail/Phone Purchase x Contactless Magnetic Stripe",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_PURCHASE-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Mail/Phone Purchase",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_PURCHASE",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Purchase",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_PURCHASE|entry_mode=EMV_FALLBACK",
+       "pair": "Mail/Phone Purchase x Chip Fallback",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_PURCHASE-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Mail/Phone Purchase",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_PURCHASE",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Purchase",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_PURCHASE|entry_mode=CONTACTLESS_MOBILE",
+       "pair": "Mail/Phone Purchase x Contactless Mobile Commerce Device",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Mail/Phone Authorization Only",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_AUTH_ONLY",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Authorization Only",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_AUTH_ONLY|entry_mode=EMV_CONTACT",
+       "pair": "Mail/Phone Authorization Only x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Mail/Phone Authorization Only",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_AUTH_ONLY",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Authorization Only",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_AUTH_ONLY|entry_mode=EMV_CONTACTLESS",
+       "pair": "Mail/Phone Authorization Only x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Mail/Phone Authorization Only",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_AUTH_ONLY",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Authorization Only",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_AUTH_ONLY|entry_mode=MAGSTRIPE",
+       "pair": "Mail/Phone Authorization Only x Magnetic Stripe",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Mail/Phone Authorization Only",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_AUTH_ONLY",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Authorization Only",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_AUTH_ONLY|entry_mode=CONTACTLESS_MAGSTRIPE",
+       "pair": "Mail/Phone Authorization Only x Contactless Magnetic Stripe",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Mail/Phone Authorization Only",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_AUTH_ONLY",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Authorization Only",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_AUTH_ONLY|entry_mode=EMV_FALLBACK",
+       "pair": "Mail/Phone Authorization Only x Chip Fallback",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_AUTH_ONLY-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Mail/Phone Authorization Only",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_AUTH_ONLY",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Authorization Only",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_AUTH_ONLY|entry_mode=CONTACTLESS_MOBILE",
+       "pair": "Mail/Phone Authorization Only x Contactless Mobile Commerce Device",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_REVERSAL-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Mail/Phone Reversal",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_REVERSAL",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Reversal",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_REVERSAL|entry_mode=EMV_CONTACT",
+       "pair": "Mail/Phone Reversal x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_REVERSAL-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Mail/Phone Reversal",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_REVERSAL",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Reversal",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_REVERSAL|entry_mode=EMV_CONTACTLESS",
+       "pair": "Mail/Phone Reversal x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_REVERSAL-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Mail/Phone Reversal",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_REVERSAL",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Reversal",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_REVERSAL|entry_mode=MAGSTRIPE",
+       "pair": "Mail/Phone Reversal x Magnetic Stripe",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_REVERSAL-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Mail/Phone Reversal",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_REVERSAL",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Reversal",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_REVERSAL|entry_mode=CONTACTLESS_MAGSTRIPE",
+       "pair": "Mail/Phone Reversal x Contactless Magnetic Stripe",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_REVERSAL-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Mail/Phone Reversal",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_REVERSAL",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Reversal",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_REVERSAL|entry_mode=EMV_FALLBACK",
+       "pair": "Mail/Phone Reversal x Chip Fallback",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-MOTO_REVERSAL-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Mail/Phone Reversal",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "MOTO_REVERSAL",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Mail/Phone Reversal",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:txn_category=MOTO_REVERSAL|entry_mode=CONTACTLESS_MOBILE",
+       "pair": "Mail/Phone Reversal x Contactless Mobile Commerce Device",
+       "state": "not_supported",
+       "basis": "derived_rule",
+       "source": "anchored:B-CARD-NOT-PRESENT",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 695,
+       "quote": "Mail and/or telephone order (customer not present)"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-ACCOUNT_VERIFICATION-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Account Verification",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "ACCOUNT_VERIFICATION",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Account Verification",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=ACCOUNT_VERIFICATION",
+       "pair": "Credit x Account Verification",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=ACCOUNT_VERIFICATION|entry_mode=EMV_CONTACT",
+       "pair": "Account Verification x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-ACCOUNT_VERIFICATION-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Account Verification",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "ACCOUNT_VERIFICATION",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Account Verification",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=ACCOUNT_VERIFICATION",
+       "pair": "Credit x Account Verification",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=ACCOUNT_VERIFICATION|entry_mode=EMV_CONTACTLESS",
+       "pair": "Account Verification x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-ACCOUNT_VERIFICATION-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Account Verification",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "ACCOUNT_VERIFICATION",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Account Verification",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=ACCOUNT_VERIFICATION",
+       "pair": "Credit x Account Verification",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-ACCOUNT_VERIFICATION-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Account Verification",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "ACCOUNT_VERIFICATION",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Account Verification",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=ACCOUNT_VERIFICATION",
+       "pair": "Credit x Account Verification",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-ACCOUNT_VERIFICATION-MANUAL",
+     "name": "ATL105 MasterCard Credit Manual / Keyed Account Verification",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "ACCOUNT_VERIFICATION",
+      "entry_mode": "MANUAL"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Account Verification",
+      "entry_mode": "Manual / Keyed"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=ACCOUNT_VERIFICATION",
+       "pair": "Credit x Account Verification",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-ACCOUNT_VERIFICATION-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Account Verification",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "ACCOUNT_VERIFICATION",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Account Verification",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=ACCOUNT_VERIFICATION",
+       "pair": "Credit x Account Verification",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-ACCOUNT_VERIFICATION-CREDENTIAL_ON_FILE",
+     "name": "ATL105 MasterCard Credit Credential on File Account Verification",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "ACCOUNT_VERIFICATION",
+      "entry_mode": "CREDENTIAL_ON_FILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Account Verification",
+      "entry_mode": "Credential on File"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=ACCOUNT_VERIFICATION",
+       "pair": "Credit x Account Verification",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-ACCOUNT_VERIFICATION-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Account Verification",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "ACCOUNT_VERIFICATION",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Account Verification",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=ACCOUNT_VERIFICATION",
+       "pair": "Credit x Account Verification",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-TOKEN_REGISTRATION-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Token Registration",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "TOKEN_REGISTRATION",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Token Registration",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=TOKEN_REGISTRATION",
+       "pair": "Credit x Token Registration",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=TOKEN_REGISTRATION|entry_mode=EMV_CONTACT",
+       "pair": "Token Registration x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-TOKEN_REGISTRATION-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Token Registration",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "TOKEN_REGISTRATION",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Token Registration",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=TOKEN_REGISTRATION",
+       "pair": "Credit x Token Registration",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=TOKEN_REGISTRATION|entry_mode=EMV_CONTACTLESS",
+       "pair": "Token Registration x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-TOKEN_REGISTRATION-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Token Registration",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "TOKEN_REGISTRATION",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Token Registration",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=TOKEN_REGISTRATION",
+       "pair": "Credit x Token Registration",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-TOKEN_REGISTRATION-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Token Registration",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "TOKEN_REGISTRATION",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Token Registration",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=TOKEN_REGISTRATION",
+       "pair": "Credit x Token Registration",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-TOKEN_REGISTRATION-MANUAL",
+     "name": "ATL105 MasterCard Credit Manual / Keyed Token Registration",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "TOKEN_REGISTRATION",
+      "entry_mode": "MANUAL"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Token Registration",
+      "entry_mode": "Manual / Keyed"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=TOKEN_REGISTRATION",
+       "pair": "Credit x Token Registration",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-TOKEN_REGISTRATION-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Token Registration",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "TOKEN_REGISTRATION",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Token Registration",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=TOKEN_REGISTRATION",
+       "pair": "Credit x Token Registration",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-TOKEN_REGISTRATION-CREDENTIAL_ON_FILE",
+     "name": "ATL105 MasterCard Credit Credential on File Token Registration",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "TOKEN_REGISTRATION",
+      "entry_mode": "CREDENTIAL_ON_FILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Token Registration",
+      "entry_mode": "Credential on File"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=TOKEN_REGISTRATION",
+       "pair": "Credit x Token Registration",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-TOKEN_REGISTRATION-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Token Registration",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "TOKEN_REGISTRATION",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Token Registration",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=TOKEN_REGISTRATION",
+       "pair": "Credit x Token Registration",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_ACTIVATION-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Activate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_ACTIVATION",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Activate",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_ACTIVATION",
+       "pair": "Credit x Activate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_ACTIVATION|entry_mode=EMV_CONTACT",
+       "pair": "Activate x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_ACTIVATION-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Activate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_ACTIVATION",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Activate",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_ACTIVATION",
+       "pair": "Credit x Activate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_ACTIVATION|entry_mode=EMV_CONTACTLESS",
+       "pair": "Activate x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_ACTIVATION-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Activate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_ACTIVATION",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Activate",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_ACTIVATION",
+       "pair": "Credit x Activate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_ACTIVATION-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Activate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_ACTIVATION",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Activate",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_ACTIVATION",
+       "pair": "Credit x Activate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_ACTIVATION-MANUAL",
+     "name": "ATL105 MasterCard Credit Manual / Keyed Activate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_ACTIVATION",
+      "entry_mode": "MANUAL"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Activate",
+      "entry_mode": "Manual / Keyed"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_ACTIVATION",
+       "pair": "Credit x Activate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_ACTIVATION-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Activate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_ACTIVATION",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Activate",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_ACTIVATION",
+       "pair": "Credit x Activate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_ACTIVATION-CREDENTIAL_ON_FILE",
+     "name": "ATL105 MasterCard Credit Credential on File Activate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_ACTIVATION",
+      "entry_mode": "CREDENTIAL_ON_FILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Activate",
+      "entry_mode": "Credential on File"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_ACTIVATION",
+       "pair": "Credit x Activate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_ACTIVATION-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Activate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_ACTIVATION",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Activate",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_ACTIVATION",
+       "pair": "Credit x Activate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_DEACTIVATION-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Deactivate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_DEACTIVATION",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Deactivate",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_DEACTIVATION",
+       "pair": "Credit x Deactivate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_DEACTIVATION|entry_mode=EMV_CONTACT",
+       "pair": "Deactivate x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_DEACTIVATION-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Deactivate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_DEACTIVATION",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Deactivate",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_DEACTIVATION",
+       "pair": "Credit x Deactivate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_DEACTIVATION|entry_mode=EMV_CONTACTLESS",
+       "pair": "Deactivate x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_DEACTIVATION-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Deactivate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_DEACTIVATION",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Deactivate",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_DEACTIVATION",
+       "pair": "Credit x Deactivate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_DEACTIVATION-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Deactivate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_DEACTIVATION",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Deactivate",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_DEACTIVATION",
+       "pair": "Credit x Deactivate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_DEACTIVATION-MANUAL",
+     "name": "ATL105 MasterCard Credit Manual / Keyed Deactivate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_DEACTIVATION",
+      "entry_mode": "MANUAL"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Deactivate",
+      "entry_mode": "Manual / Keyed"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_DEACTIVATION",
+       "pair": "Credit x Deactivate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_DEACTIVATION-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Deactivate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_DEACTIVATION",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Deactivate",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_DEACTIVATION",
+       "pair": "Credit x Deactivate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_DEACTIVATION-CREDENTIAL_ON_FILE",
+     "name": "ATL105 MasterCard Credit Credential on File Deactivate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_DEACTIVATION",
+      "entry_mode": "CREDENTIAL_ON_FILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Deactivate",
+      "entry_mode": "Credential on File"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_DEACTIVATION",
+       "pair": "Credit x Deactivate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_DEACTIVATION-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Deactivate",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_DEACTIVATION",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Deactivate",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_DEACTIVATION",
+       "pair": "Credit x Deactivate",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_BALANCE_MERGE-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Balance Merge",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_BALANCE_MERGE",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Balance Merge",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_BALANCE_MERGE",
+       "pair": "Credit x Balance Merge",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_BALANCE_MERGE|entry_mode=EMV_CONTACT",
+       "pair": "Balance Merge x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_BALANCE_MERGE-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Balance Merge",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_BALANCE_MERGE",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Balance Merge",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_BALANCE_MERGE",
+       "pair": "Credit x Balance Merge",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_BALANCE_MERGE|entry_mode=EMV_CONTACTLESS",
+       "pair": "Balance Merge x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_BALANCE_MERGE-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Balance Merge",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_BALANCE_MERGE",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Balance Merge",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_BALANCE_MERGE",
+       "pair": "Credit x Balance Merge",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_BALANCE_MERGE-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Balance Merge",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_BALANCE_MERGE",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Balance Merge",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_BALANCE_MERGE",
+       "pair": "Credit x Balance Merge",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_BALANCE_MERGE-MANUAL",
+     "name": "ATL105 MasterCard Credit Manual / Keyed Balance Merge",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_BALANCE_MERGE",
+      "entry_mode": "MANUAL"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Balance Merge",
+      "entry_mode": "Manual / Keyed"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_BALANCE_MERGE",
+       "pair": "Credit x Balance Merge",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_BALANCE_MERGE-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Balance Merge",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_BALANCE_MERGE",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Balance Merge",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_BALANCE_MERGE",
+       "pair": "Credit x Balance Merge",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_BALANCE_MERGE-CREDENTIAL_ON_FILE",
+     "name": "ATL105 MasterCard Credit Credential on File Balance Merge",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_BALANCE_MERGE",
+      "entry_mode": "CREDENTIAL_ON_FILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Balance Merge",
+      "entry_mode": "Credential on File"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_BALANCE_MERGE",
+       "pair": "Credit x Balance Merge",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_BALANCE_MERGE-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Balance Merge",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_BALANCE_MERGE",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Balance Merge",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_BALANCE_MERGE",
+       "pair": "Credit x Balance Merge",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_REPLACE_CARD-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Replace Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_REPLACE_CARD",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Replace Card",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_REPLACE_CARD",
+       "pair": "Credit x Replace Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_REPLACE_CARD|entry_mode=EMV_CONTACT",
+       "pair": "Replace Card x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_REPLACE_CARD-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Replace Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_REPLACE_CARD",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Replace Card",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_REPLACE_CARD",
+       "pair": "Credit x Replace Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_REPLACE_CARD|entry_mode=EMV_CONTACTLESS",
+       "pair": "Replace Card x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_REPLACE_CARD-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Replace Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_REPLACE_CARD",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Replace Card",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_REPLACE_CARD",
+       "pair": "Credit x Replace Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_REPLACE_CARD-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Replace Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_REPLACE_CARD",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Replace Card",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_REPLACE_CARD",
+       "pair": "Credit x Replace Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_REPLACE_CARD-MANUAL",
+     "name": "ATL105 MasterCard Credit Manual / Keyed Replace Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_REPLACE_CARD",
+      "entry_mode": "MANUAL"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Replace Card",
+      "entry_mode": "Manual / Keyed"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_REPLACE_CARD",
+       "pair": "Credit x Replace Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_REPLACE_CARD-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Replace Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_REPLACE_CARD",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Replace Card",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_REPLACE_CARD",
+       "pair": "Credit x Replace Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_REPLACE_CARD-CREDENTIAL_ON_FILE",
+     "name": "ATL105 MasterCard Credit Credential on File Replace Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_REPLACE_CARD",
+      "entry_mode": "CREDENTIAL_ON_FILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Replace Card",
+      "entry_mode": "Credential on File"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_REPLACE_CARD",
+       "pair": "Credit x Replace Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_REPLACE_CARD-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Replace Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_REPLACE_CARD",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Replace Card",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_REPLACE_CARD",
+       "pair": "Credit x Replace Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_RECHARGE-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Recharge Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_RECHARGE",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Recharge Card",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_RECHARGE",
+       "pair": "Credit x Recharge Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_RECHARGE|entry_mode=EMV_CONTACT",
+       "pair": "Recharge Card x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_RECHARGE-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Recharge Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_RECHARGE",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Recharge Card",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_RECHARGE",
+       "pair": "Credit x Recharge Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=SV_RECHARGE|entry_mode=EMV_CONTACTLESS",
+       "pair": "Recharge Card x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_RECHARGE-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Recharge Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_RECHARGE",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Recharge Card",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_RECHARGE",
+       "pair": "Credit x Recharge Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_RECHARGE-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Recharge Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_RECHARGE",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Recharge Card",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_RECHARGE",
+       "pair": "Credit x Recharge Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_RECHARGE-MANUAL",
+     "name": "ATL105 MasterCard Credit Manual / Keyed Recharge Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_RECHARGE",
+      "entry_mode": "MANUAL"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Recharge Card",
+      "entry_mode": "Manual / Keyed"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_RECHARGE",
+       "pair": "Credit x Recharge Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_RECHARGE-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Recharge Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_RECHARGE",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Recharge Card",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_RECHARGE",
+       "pair": "Credit x Recharge Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_RECHARGE-CREDENTIAL_ON_FILE",
+     "name": "ATL105 MasterCard Credit Credential on File Recharge Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_RECHARGE",
+      "entry_mode": "CREDENTIAL_ON_FILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Recharge Card",
+      "entry_mode": "Credential on File"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_RECHARGE",
+       "pair": "Credit x Recharge Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-SV_RECHARGE-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Recharge Card",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "SV_RECHARGE",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Recharge Card",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=SV_RECHARGE",
+       "pair": "Credit x Recharge Card",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_LOOKUP-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip RBC Loyalty Lookup",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_LOOKUP",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "RBC Loyalty Lookup",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_LOOKUP",
+       "pair": "Credit x RBC Loyalty Lookup",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=LOYALTY_LOOKUP|entry_mode=EMV_CONTACT",
+       "pair": "RBC Loyalty Lookup x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_LOOKUP-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip RBC Loyalty Lookup",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_LOOKUP",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "RBC Loyalty Lookup",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_LOOKUP",
+       "pair": "Credit x RBC Loyalty Lookup",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=LOYALTY_LOOKUP|entry_mode=EMV_CONTACTLESS",
+       "pair": "RBC Loyalty Lookup x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_LOOKUP-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe RBC Loyalty Lookup",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_LOOKUP",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "RBC Loyalty Lookup",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_LOOKUP",
+       "pair": "Credit x RBC Loyalty Lookup",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_LOOKUP-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe RBC Loyalty Lookup",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_LOOKUP",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "RBC Loyalty Lookup",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_LOOKUP",
+       "pair": "Credit x RBC Loyalty Lookup",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_LOOKUP-MANUAL",
+     "name": "ATL105 MasterCard Credit Manual / Keyed RBC Loyalty Lookup",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_LOOKUP",
+      "entry_mode": "MANUAL"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "RBC Loyalty Lookup",
+      "entry_mode": "Manual / Keyed"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_LOOKUP",
+       "pair": "Credit x RBC Loyalty Lookup",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_LOOKUP-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback RBC Loyalty Lookup",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_LOOKUP",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "RBC Loyalty Lookup",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_LOOKUP",
+       "pair": "Credit x RBC Loyalty Lookup",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_LOOKUP-CREDENTIAL_ON_FILE",
+     "name": "ATL105 MasterCard Credit Credential on File RBC Loyalty Lookup",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_LOOKUP",
+      "entry_mode": "CREDENTIAL_ON_FILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "RBC Loyalty Lookup",
+      "entry_mode": "Credential on File"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_LOOKUP",
+       "pair": "Credit x RBC Loyalty Lookup",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_LOOKUP-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device RBC Loyalty Lookup",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_LOOKUP",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "RBC Loyalty Lookup",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_LOOKUP",
+       "pair": "Credit x RBC Loyalty Lookup",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_ADVICE-EMV_CONTACT",
+     "name": "ATL105 MasterCard Credit EMV Contact Chip Loyalty Advice Function",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_ADVICE",
+      "entry_mode": "EMV_CONTACT"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Loyalty Advice Function",
+      "entry_mode": "EMV Contact Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_ADVICE",
+       "pair": "Credit x Loyalty Advice Function",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=LOYALTY_ADVICE|entry_mode=EMV_CONTACT",
+       "pair": "Loyalty Advice Function x EMV Contact Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_ADVICE-EMV_CONTACTLESS",
+     "name": "ATL105 MasterCard Credit EMV Contactless Chip Loyalty Advice Function",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_ADVICE",
+      "entry_mode": "EMV_CONTACTLESS"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Loyalty Advice Function",
+      "entry_mode": "EMV Contactless Chip"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_ADVICE",
+       "pair": "Credit x Loyalty Advice Function",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      },
+      {
+       "cell": "CELL:txn_category=LOYALTY_ADVICE|entry_mode=EMV_CONTACTLESS",
+       "pair": "Loyalty Advice Function x EMV Contactless Chip",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.14.2.4 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 161,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for EMV card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_ADVICE-MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Magnetic Stripe Loyalty Advice Function",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_ADVICE",
+      "entry_mode": "MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Loyalty Advice Function",
+      "entry_mode": "Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_ADVICE",
+       "pair": "Credit x Loyalty Advice Function",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_ADVICE-CONTACTLESS_MAGSTRIPE",
+     "name": "ATL105 MasterCard Credit Contactless Magnetic Stripe Loyalty Advice Function",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_ADVICE",
+      "entry_mode": "CONTACTLESS_MAGSTRIPE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Loyalty Advice Function",
+      "entry_mode": "Contactless Magnetic Stripe"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_ADVICE",
+       "pair": "Credit x Loyalty Advice Function",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_ADVICE-MANUAL",
+     "name": "ATL105 MasterCard Credit Manual / Keyed Loyalty Advice Function",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_ADVICE",
+      "entry_mode": "MANUAL"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Loyalty Advice Function",
+      "entry_mode": "Manual / Keyed"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_ADVICE",
+       "pair": "Credit x Loyalty Advice Function",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_ADVICE-EMV_FALLBACK",
+     "name": "ATL105 MasterCard Credit Chip Fallback Loyalty Advice Function",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_ADVICE",
+      "entry_mode": "EMV_FALLBACK"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Loyalty Advice Function",
+      "entry_mode": "Chip Fallback"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_ADVICE",
+       "pair": "Credit x Loyalty Advice Function",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_ADVICE-CREDENTIAL_ON_FILE",
+     "name": "ATL105 MasterCard Credit Credential on File Loyalty Advice Function",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_ADVICE",
+      "entry_mode": "CREDENTIAL_ON_FILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Loyalty Advice Function",
+      "entry_mode": "Credential on File"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_ADVICE",
+       "pair": "Credit x Loyalty Advice Function",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    },
+    {
+     "source_leg_id": "BR-CREDIT-MASTERCARD-LOYALTY_ADVICE-CONTACTLESS_MOBILE",
+     "name": "ATL105 MasterCard Credit Contactless Mobile Commerce Device Loyalty Advice Function",
+     "dimensions": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MASTERCARD",
+      "program": "CREDIT",
+      "txn_category": "LOYALTY_ADVICE",
+      "entry_mode": "CONTACTLESS_MOBILE"
+     },
+     "labels": {
+      "platform": "BUYPASS",
+      "spec": "ATL105",
+      "network": "MasterCard",
+      "program": "Credit",
+      "txn_category": "Loyalty Advice Function",
+      "entry_mode": "Contactless Mobile Commerce Device"
+     },
+     "reason": "not_supported",
+     "blocked_by": [
+      {
+       "cell": "CELL:program=CREDIT|txn_category=LOYALTY_ADVICE",
+       "pair": "Credit x Loyalty Advice Function",
+       "state": "not_supported",
+       "basis": "closed_list",
+       "source": "10.1.2 Supported Transaction Types",
+       "source_id": "SRC-ATL105-PDF-001",
+       "page": 83,
+       "quote": "Not in the list: The following point-of-sale transactions are supported for credit card processing:"
+      }
+     ]
+    }
+   ],
+   "citations": [
+    {
+     "source_id": null,
+     "source": "Appendix C",
+     "page": 511,
+     "quote": "03 MasterCard Credit"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "anchored:A-SALE-PREAUTH-TRACK",
+     "page": 81,
+     "quote": "If a Pre-Auth transaction is approved offline, the full track data must be sent. Also if a Sale transaction is approved offline, the full track data must be sent"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "anchored:A-CREDIT-MANUAL",
+     "page": 81,
+     "quote": "Manual entry is allowed on a credit card transaction"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "anchored:A-CREDIT-TRACK",
+     "page": 81,
+     "quote": "The default track that is sent to the host should be Track 2 if the device supports Track 2"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.1.2 Supported Transaction Types",
+     "page": 83,
+     "quote": "The following point-of-sale transactions are supported for credit card processing: ... Authorization Only"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.1.2 Supported Transaction Types",
+     "page": 83,
+     "quote": "The following point-of-sale transactions are supported for credit card processing: ... Balance Inquiry"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.1.2 Supported Transaction Types",
+     "page": 83,
+     "quote": "The following point-of-sale transactions are supported for credit card processing: ... Mail/Phone Authorization Only"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.1.2 Supported Transaction Types",
+     "page": 83,
+     "quote": "The following point-of-sale transactions are supported for credit card processing: ... Mail/Phone Purchase"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.1.2 Supported Transaction Types",
+     "page": 83,
+     "quote": "The following point-of-sale transactions are supported for credit card processing: ... Merchandise Return"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.1.2 Supported Transaction Types",
+     "page": 83,
+     "quote": "The following point-of-sale transactions are supported for credit card processing: ... Purchase/Capture"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "scoped:SR-CREDIT-CONTACTLESS-MAGSTRIPE",
+     "page": 86,
+     "quote": "When applied to credit card processing"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "anchored:A-CREDIT-RFID",
+     "page": 86,
+     "quote": "capture and transmit full, unaltered Track 2 data from a card without requiring the card to have contact with the point-of-sale device"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "scoped:SR-CREDIT-MOTO-MANUAL",
+     "page": 86,
+     "quote": "non-face-to-face environment, such as mail order, phone order"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.14.2.3 Supported Cards",
+     "page": 161,
+     "quote": "The following credit cards are supported for EMV processing: ... MasterCard"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.14.2.4 Supported Transaction Types",
+     "page": 161,
+     "quote": "The following point-of-sale transactions are supported for EMV card processing: ... Authorization Only"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.14.2.4 Supported Transaction Types",
+     "page": 161,
+     "quote": "The following point-of-sale transactions are supported for EMV card processing: ... Balance Inquiry"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.14.2.4 Supported Transaction Types",
+     "page": 161,
+     "quote": "The following point-of-sale transactions are supported for EMV card processing: ... Merchandise Return"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "10.14.2.4 Supported Transaction Types",
+     "page": 161,
+     "quote": "The following point-of-sale transactions are supported for EMV card processing: ... Purchase"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "anchored:A-CREDIT-FALLBACK",
+     "page": 162,
+     "quote": "If a chip card is presented at a chip capable terminal and a chip transaction cannot be performed, then the merchant may process the chip card as a magnetic stripe read"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "scoped:SR-CREDIT-EMV-FALLBACK",
+     "page": 162,
+     "quote": "the merchant may process the chip card as a magnetic stripe read (swipe)"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "scoped:SR-CREDIT-COF",
+     "page": 575,
+     "quote": "transactions (Authorization, Completion, Cancellation, Reversal etc.)"
+    },
+    {
+     "source_id": "SRC-ATL105-PDF-001",
+     "source": "anchored:APPJ-FN2-COF-CREDIT",
+     "page": 638,
+     "quote": "Entry Mode 10 is applicable to Visa Credit, MasterCard Credit, Discover Credit, and Amex transactions"
+    }
+   ]
+  }
+ ]
+}

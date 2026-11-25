@@ -1,0 +1,435 @@
+{
+ "edges": [
+  {
+   "id": "AUTH_ONLY>CANCELLATION",
+   "original": "AUTH_ONLY",
+   "follow_on": "CANCELLATION",
+   "flow_id": "FLOW-AUTH-CANCELLATION",
+   "flow_ids": {
+    "non_emv": "FLOW-AUTH-CANCELLATION",
+    "emv": "FLOW-EMV-AUTH-CANCELLATION"
+   },
+   "role": "cancellation",
+   "links": [
+    {
+     "type": "carry_request_field",
+     "element_name": "Sequence Number",
+     "source_rule_id": "BR-97-7",
+     "source_page": 83,
+     "rule": "§10.1.2.2/§10.2.2.2 (p.83/97): 'Element No.86 (Sequence Number)-present in the original transaction-must be present and identical in the Authorization Only Reversal transaction.' Element No. 78 (Prompt Code) must contain Transaction Type code 'S' — verified verbatim against raw/pdf_pages/page_0083.txt and page_0097.txt, 2026-10-01."
+    },
+    {
+     "type": "carry_response_field",
+     "element_name": "Approval Number",
+     "source_rule_id": "BR-85-2",
+     "source_page": 85,
+     "rule": "Plan v7 W2: p.85 'Element No. 5 (Approval Number)-present in the original transaction-must be present and identical in the Authorization Only Reversal transaction' - value from the original's RESPONSE (runtime link)."
+    },
+    {
+     "type": "carry_request_field",
+     "element_name": "Terminal Identifier",
+     "source_rule_id": "BR-40-2",
+     "source_page": 40,
+     "rule": "Plan v7 W2: a follow-on of the same transaction is sent by the same device as its original (stated for TOR p.40 'A TOR must be sent from the same device as the original financial transaction request'; applied to every follow-on for matching)."
+    }
+   ],
+   "dropped_links": [],
+   "basis": {
+    "page": 368,
+    "quote": "POS Mail/Phone Authorization Only [Transaction Type code",
+    "support_page": 85,
+    "support_quote": "must contain a Transaction Type code \"S\" to indicate"
+   },
+   "kind": "follow_on",
+   "forbidden_by": []
+  },
+  {
+   "id": "MOTO_AUTH_ONLY>CANCELLATION",
+   "original": "MOTO_AUTH_ONLY",
+   "follow_on": "CANCELLATION",
+   "flow_id": "FLOW-AUTH-CANCELLATION",
+   "flow_ids": {
+    "non_emv": "FLOW-AUTH-CANCELLATION",
+    "emv": "FLOW-EMV-AUTH-CANCELLATION"
+   },
+   "role": "cancellation",
+   "links": [
+    {
+     "type": "carry_request_field",
+     "element_name": "Sequence Number",
+     "source_rule_id": "BR-97-7",
+     "source_page": 83,
+     "rule": "§10.1.2.2/§10.2.2.2 (p.83/97): 'Element No.86 (Sequence Number)-present in the original transaction-must be present and identical in the Authorization Only Reversal transaction.' Element No. 78 (Prompt Code) must contain Transaction Type code 'S' — verified verbatim against raw/pdf_pages/page_0083.txt and page_0097.txt, 2026-10-01."
+    },
+    {
+     "type": "carry_response_field",
+     "element_name": "Approval Number",
+     "source_rule_id": "BR-85-2",
+     "source_page": 85,
+     "rule": "Plan v7 W2: p.85 'Element No. 5 (Approval Number)-present in the original transaction-must be present and identical in the Authorization Only Reversal transaction' - value from the original's RESPONSE (runtime link)."
+    },
+    {
+     "type": "carry_request_field",
+     "element_name": "Terminal Identifier",
+     "source_rule_id": "BR-40-2",
+     "source_page": 40,
+     "rule": "Plan v7 W2: a follow-on of the same transaction is sent by the same device as its original (stated for TOR p.40 'A TOR must be sent from the same device as the original financial transaction request'; applied to every follow-on for matching)."
+    }
+   ],
+   "dropped_links": [],
+   "basis": {
+    "page": 368,
+    "quote": "POS Mail/Phone Authorization Only [Transaction Type code",
+    "support_page": 85,
+    "support_quote": "must contain a Transaction Type code \"S\" to indicate"
+   },
+   "kind": "follow_on",
+   "forbidden_by": []
+  },
+  {
+   "id": "MOTO_PURCHASE>MOTO_REVERSAL",
+   "original": "MOTO_PURCHASE",
+   "follow_on": "MOTO_REVERSAL",
+   "flow_id": "FLOW-MOTO-REVERSAL",
+   "flow_ids": {
+    "non_emv": "FLOW-MOTO-REVERSAL",
+    "emv": null
+   },
+   "role": "moto_void",
+   "links": [
+    {
+     "type": "carry_request_field",
+     "element_name": "Sequence Number",
+     "source_rule_id": "BR-402-3",
+     "source_page": 402,
+     "rule": "The Sequence Number must be the Sequence Number contained in the original transaction (reversal matching)."
+    },
+    {
+     "type": "carry_response_field",
+     "element_name": "Approval Number",
+     "source_rule_id": "BR-368-5",
+     "source_page": 368,
+     "rule": "Plan v7 W2: Element 5 (p.368) 'Required on reversals for matching information to the original purchase' - the Approval Number returned in the original transaction's RESPONSE (runtime link, never invented)."
+    },
+    {
+     "type": "carry_request_field",
+     "element_name": "Terminal Identifier",
+     "source_rule_id": "BR-40-2",
+     "source_page": 40,
+     "rule": "Plan v7 W2: a follow-on of the same transaction is sent by the same device as its original (stated for TOR p.40 'A TOR must be sent from the same device as the original financial transaction request'; applied to every follow-on for matching)."
+    },
+    {
+     "type": "amount_relation",
+     "element_name": "Nonfuel Amount",
+     "source_rule_id": "BR-84-3",
+     "source_page": 84,
+     "rule": "Plan v7 W2: p.84 'The amount in a Reversal (Void) request must be the amount approved in the original transaction response' (full approval: equal to the original requested amount).",
+     "relation": "equal"
+    }
+   ],
+   "dropped_links": [],
+   "basis": {
+    "page": 546,
+    "quote": "C Mail/Phone Reversal Mail/Telephone reversal/void"
+   },
+   "kind": "follow_on",
+   "forbidden_by": []
+  },
+  {
+   "id": "PURCHASE>REVERSAL",
+   "original": "PURCHASE",
+   "follow_on": "REVERSAL",
+   "flow_id": "FLOW-SALE-VOID",
+   "flow_ids": {
+    "non_emv": "FLOW-SALE-VOID",
+    "emv": "FLOW-EMV-SALE-VOID"
+   },
+   "role": "void",
+   "links": [
+    {
+     "type": "carry_request_field",
+     "element_name": "Sequence Number",
+     "source_rule_id": "BR-402-3",
+     "source_page": 402,
+     "rule": "The Sequence Number must be the Sequence Number contained in the original transaction."
+    },
+    {
+     "type": "carry_response_field",
+     "element_name": "Approval Number",
+     "source_rule_id": "BR-368-5",
+     "source_page": 368,
+     "rule": "Plan v7 W2: Element 5 (p.368) 'Required on reversals for matching information to the original purchase' - the Approval Number returned in the original transaction's RESPONSE (runtime link, never invented)."
+    },
+    {
+     "type": "carry_request_field",
+     "element_name": "Terminal Identifier",
+     "source_rule_id": "BR-40-2",
+     "source_page": 40,
+     "rule": "Plan v7 W2: a follow-on of the same transaction is sent by the same device as its original (stated for TOR p.40 'A TOR must be sent from the same device as the original financial transaction request'; applied to every follow-on for matching)."
+    },
+    {
+     "type": "amount_relation",
+     "element_name": "Nonfuel Amount",
+     "source_rule_id": "BR-84-3",
+     "source_page": 84,
+     "rule": "Plan v7 W2: p.84 'The amount in a Reversal (Void) request must be the amount approved in the original transaction response' (full approval: equal to the original requested amount).",
+     "relation": "equal"
+    }
+   ],
+   "dropped_links": [],
+   "basis": {
+    "page": 546,
+    "quote": "8 Purchase reversal Purchase reversal/void"
+   },
+   "kind": "follow_on",
+   "forbidden_by": []
+  },
+  {
+   "id": "PURCHASE>TIMEOUT_REVERSAL",
+   "original": "PURCHASE",
+   "follow_on": "TIMEOUT_REVERSAL",
+   "flow_id": "FLOW-TIMEOUT-REVERSAL",
+   "flow_ids": {
+    "non_emv": "FLOW-TIMEOUT-REVERSAL",
+    "emv": "FLOW-EMV-TIMEOUT-REVERSAL"
+   },
+   "role": "timeout_reversal",
+   "links": [
+    {
+     "type": "carry_request_field",
+     "element_name": "Terminal Identifier",
+     "source_rule_id": "BR-38-4",
+     "source_page": 38,
+     "rule": "A TOR must be sent from the same device as the original financial transaction request that resulted in the TOR."
+    },
+    {
+     "type": "amount_relation",
+     "element_name": "Nonfuel Amount",
+     "source_rule_id": "BR-84-4",
+     "source_page": 84,
+     "rule": "Plan v7 W2: p.84 'The amount in a TOR request must be the amount requested in the original transaction'.",
+     "relation": "equal"
+    }
+   ],
+   "dropped_links": [
+    {
+     "type": "carry_request_field",
+     "from_step": 1,
+     "element_name": "Sequence Number",
+     "source_rule_id": "BR-38-9",
+     "source_page": null,
+     "rule": "The Sequence Number of a TOR must be the same as the Sequence Number of the financial transaction being reversed.",
+     "spec_anchor": {
+      "keywords": [
+       "sequence number of a tor",
+       "must be the same"
+      ],
+      "element_no": "86"
+     },
+     "drop_reason": "link has no cited page / rule"
+    }
+   ],
+   "basis": {
+    "page": 39,
+    "quote": "A TOR is generated when any of the following transactions is unsuccessful",
+    "support_quote": "Mail/Phone Purchase transaction"
+   },
+   "kind": "follow_on",
+   "forbidden_by": []
+  },
+  {
+   "id": "MOTO_PURCHASE>TIMEOUT_REVERSAL",
+   "original": "MOTO_PURCHASE",
+   "follow_on": "TIMEOUT_REVERSAL",
+   "flow_id": "FLOW-TIMEOUT-REVERSAL",
+   "flow_ids": {
+    "non_emv": "FLOW-TIMEOUT-REVERSAL",
+    "emv": "FLOW-EMV-TIMEOUT-REVERSAL"
+   },
+   "role": "timeout_reversal",
+   "links": [
+    {
+     "type": "carry_request_field",
+     "element_name": "Terminal Identifier",
+     "source_rule_id": "BR-38-4",
+     "source_page": 38,
+     "rule": "A TOR must be sent from the same device as the original financial transaction request that resulted in the TOR."
+    },
+    {
+     "type": "amount_relation",
+     "element_name": "Nonfuel Amount",
+     "source_rule_id": "BR-84-4",
+     "source_page": 84,
+     "rule": "Plan v7 W2: p.84 'The amount in a TOR request must be the amount requested in the original transaction'.",
+     "relation": "equal"
+    }
+   ],
+   "dropped_links": [
+    {
+     "type": "carry_request_field",
+     "from_step": 1,
+     "element_name": "Sequence Number",
+     "source_rule_id": "BR-38-9",
+     "source_page": null,
+     "rule": "The Sequence Number of a TOR must be the same as the Sequence Number of the financial transaction being reversed.",
+     "spec_anchor": {
+      "keywords": [
+       "sequence number of a tor",
+       "must be the same"
+      ],
+      "element_no": "86"
+     },
+     "drop_reason": "link has no cited page / rule"
+    }
+   ],
+   "basis": {
+    "page": 39,
+    "quote": "A TOR is generated when any of the following transactions is unsuccessful",
+    "support_quote": "Mail/Phone Purchase transaction"
+   },
+   "kind": "follow_on",
+   "forbidden_by": []
+  },
+  {
+   "id": "RETURN>VOID_RETURN",
+   "original": "RETURN",
+   "follow_on": "VOID_RETURN",
+   "flow_id": "FLOW-RETURN-VOID",
+   "flow_ids": {
+    "non_emv": "FLOW-RETURN-VOID",
+    "emv": "FLOW-EMV-RETURN-VOID"
+   },
+   "role": "void",
+   "links": [
+    {
+     "type": "carry_request_field",
+     "element_name": "Sequence Number",
+     "source_rule_id": "BR-402-3",
+     "source_page": 402,
+     "rule": "The Sequence Number must be the Sequence Number contained in the original transaction."
+    },
+    {
+     "type": "carry_request_field",
+     "element_name": "Terminal Identifier",
+     "source_rule_id": "BR-40-2",
+     "source_page": 40,
+     "rule": "Plan v7 W2: a follow-on of the same transaction is sent by the same device as its original (stated for TOR p.40 'A TOR must be sent from the same device as the original financial transaction request'; applied to every follow-on for matching)."
+    },
+    {
+     "type": "amount_relation",
+     "element_name": "Nonfuel Amount",
+     "source_rule_id": "BR-84-3",
+     "source_page": 84,
+     "rule": "Plan v7 W2: p.84 'The amount in a Reversal (Void) request must be the amount approved in the original transaction response' (full approval: equal to the original requested amount).",
+     "relation": "equal"
+    }
+   ],
+   "dropped_links": [],
+   "basis": {
+    "page": 546,
+    "quote": "U Void of a Merchandise Return Void of a merchandise return"
+   },
+   "kind": "follow_on",
+   "forbidden_by": []
+  },
+  {
+   "id": "AUTH_ONLY>PURCHASE",
+   "original": "AUTH_ONLY",
+   "follow_on": "PURCHASE",
+   "flow_id": "FLOW-AUTH-COMPLETION",
+   "flow_ids": {
+    "non_emv": "FLOW-AUTH-COMPLETION",
+    "emv": "FLOW-EMV-AUTH-COMPLETION"
+   },
+   "role": "completion",
+   "links": [
+    {
+     "type": "carry_request_field",
+     "element_name": "Sequence Number",
+     "source_rule_id": "BR-402-1",
+     "source_page": 402,
+     "rule": "Sequence Number must persist in all subsequent transactions associated with the initial authorization request."
+    },
+    {
+     "type": "carry_response_field",
+     "element_name": "Approval Number",
+     "source_rule_id": "BR-368-6",
+     "source_page": 368,
+     "rule": "Plan v7 W2: Element 5 (p.368) 'If it is included in a Purchase Request, then the Purchase Request is considered preauthorized' - the Authorization Only response's Approval Number (runtime link)."
+    },
+    {
+     "type": "carry_request_field",
+     "element_name": "Terminal Identifier",
+     "source_rule_id": "BR-40-2",
+     "source_page": 40,
+     "rule": "Plan v7 W2: a follow-on of the same transaction is sent by the same device as its original (stated for TOR p.40 'A TOR must be sent from the same device as the original financial transaction request'; applied to every follow-on for matching)."
+    }
+   ],
+   "dropped_links": [],
+   "basis": {
+    "relationship": "REL-ENT-ELEM-86-Authorization_Only",
+    "page": 409,
+    "quote": "In Purchase/Capture, Sequence Number is same as in Authorization Only request."
+   },
+   "kind": "preauthorized",
+   "forbidden_by": [
+    "BR-BUYPASS-PIPS-28-1"
+   ]
+  }
+ ],
+ "gaps": [],
+ "follow_ons": [
+  "CANCELLATION",
+  "MOTO_REVERSAL",
+  "REVERSAL",
+  "TIMEOUT_REVERSAL",
+  "VOID_RETURN"
+ ],
+ "originals": [
+  "AUTH_ONLY",
+  "BALANCE_INQUIRY",
+  "MOTO_AUTH_ONLY",
+  "MOTO_PURCHASE",
+  "PURCHASE",
+  "RETURN"
+ ],
+ "fault_follow_ons": {
+  "TIMEOUT_REVERSAL": [
+   "BR-39-1",
+   "BR-44-1",
+   "BR-43-2",
+   "BR-43-3",
+   "BR-45-2",
+   "BR-47-2",
+   "BR-47-7",
+   "BR-47-10",
+   "BR-83-1",
+   "BR-83-2",
+   "BR-89-10",
+   "BR-89-11",
+   "BR-89-13",
+   "BR-161-1",
+   "BR-409-4",
+   "BR-ATL105-TRANSARMOR-76-3",
+   "BR-BUYPASS-PIPS-17-7",
+   "BR-BUYPASS-PIPS-13-2"
+  ],
+  "VOID_RETURN": [
+   "BR-83-1"
+  ],
+  "REVERSAL": [
+   "BR-83-1",
+   "BR-409-4",
+   "BR-ATL105-TRANSARMOR-76-3"
+  ],
+  "MOTO_REVERSAL": [
+   "BR-83-1"
+  ]
+ },
+ "retry_follow_ons": {
+  "TIMEOUT_REVERSAL": [
+   "BR-47-1"
+  ]
+ },
+ "timed_edges": {}
+}

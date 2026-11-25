@@ -1,0 +1,290 @@
+{
+ "meta": {
+  "layer": "business_model",
+  "filter_name": "buypass-atl105-mastercard-credit-generated",
+  "build_id": "buypass-atl105-mastercard-credit-generated-35c195d1e7",
+  "run_id": "20261119T163049432850Z",
+  "state": "CANDIDATE",
+  "selection": {
+   "platform": [
+    "BUYPASS"
+   ],
+   "spec": [
+    "ATL105"
+   ],
+   "br_kind": [
+    "DATA_ELEMENT"
+   ]
+  },
+  "built_at": "2026-11-19T16:33:05.772678+00:00",
+  "mapping_status": "candidate",
+  "knowledge_base_hash": "8b39880d400f37cfa0383a3f2f3067a87d0a94e731899727ed0baeb4d36ba0eb",
+  "mapping_matches_knowledge_base": true,
+  "inputs_combined": "b21b5d7a5b3ca9518868a57f851e8def71050a8bea3f27020fade73a1e0064b6",
+  "parent_build": "buypass-atl105-mastercard-credit-generated-14606edd0c",
+  "dimension_mapping_hash": "76d4890063464fd02625ed19dbbc3a508aa71bcabede107984d42ab9197b01d7",
+  "spec": "ATL105",
+  "spec_version": "2026-4",
+  "config": "src/pipeline/config/business_model.json",
+  "br_kind": "DATA_ELEMENT",
+  "merchant_provenance": "placeholder",
+  "test_case_model": "transaction",
+  "transaction_catalog_version": null,
+  "pattern_scope": "reviewed",
+  "test_data": "rendered"
+ },
+ "plan_skips": [
+  {
+   "type": "BD1",
+   "field": "100/78",
+   "reason": "Prompt Code carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "type": "BD1",
+   "field": "111/111",
+   "reason": "Variable Information Indicator carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "type": "BD1",
+   "field": "111/112",
+   "reason": "Variable Information Length carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "type": "BD1",
+   "field": "111/113",
+   "reason": "Variable Information carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "type": "BD1",
+   "field": "130/190",
+   "reason": "EMV Chip Data is a TLV set ('EMV data elements include a series of TLV (Tag/Length/Value)', p.478): its at-limit value is real tags totalling exactly 999 bytes, not filler - not generated"
+  },
+  {
+   "type": "BD1",
+   "field": "109/78",
+   "reason": "Prompt Code carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "type": "BD1",
+   "field": "100/78",
+   "reason": "Prompt Code carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "type": "field_checks",
+   "field": "110/12",
+   "message": "Financial Transaction Request",
+   "reason": "ELEMENT_NUMBER_REUSED: field 'Alternate MICR IND' (1 bytes, p.245) carries element 239, catalogued as 'Enhanced Fleet Data' (999 bytes); its own attributes are not catalogued - SME"
+  },
+  {
+   "type": "BD1",
+   "field": "111/111",
+   "reason": "Variable Information Indicator carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "type": "BD1",
+   "field": "111/112",
+   "reason": "Variable Information Length carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "type": "BD1",
+   "field": "111/113",
+   "reason": "Variable Information carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "type": "BD1",
+   "field": "118/78",
+   "reason": "Prompt Code carries the scenario's own dimension codes; its at-limit value is every valid code (covered by P1/P2)"
+  },
+  {
+   "segment_check": {
+    "message": "EMV Financial Transaction Request",
+    "segment": "151",
+    "reason": "value not ready: Market Basket Data"
+   }
+  },
+  {
+   "segment_check": {
+    "message": "Electronic Mail Request",
+    "segment": "109",
+    "reason": "N8 not built — no other segment is sent with it, its position cannot be violated"
+   }
+  },
+  {
+   "segment_check": {
+    "message": "Financial Transaction Request",
+    "segment": "151",
+    "reason": "value not ready: Market Basket Data"
+   }
+  },
+  {
+   "segment_check": {
+    "message": "Totals Request",
+    "segment": "105",
+    "reason": "N8 not built — no other segment is sent with it, its position cannot be violated"
+   }
+  },
+  {
+   "segment_check": {
+    "message": "Totals with Proprietary Data Load Request",
+    "segment": "119",
+    "reason": "N8 not built — no other segment is sent with it, its position cannot be violated"
+   }
+  },
+  {
+   "segment_check": {
+    "message": "TransArmor Key Load Request",
+    "segment": "116",
+    "reason": "N8 not built — no other segment is sent with it, its position cannot be violated"
+   }
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — 101 Fleet Data Segment present",
+   "reason": "segment domain Fleet not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — 103 EBT Data Segment present",
+   "reason": "segment domain EBT not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — 108 Loyalty Card Data Segment present",
+   "reason": "segment domain Loyalty not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — 135 Moneris Data Segment (Request) present",
+   "reason": "no carrier sends segment(s) 135 in EMV Financial Transaction Request (segment applicability)"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — 143 Tax by Product Data Segment present with 102",
+   "reason": "no carrier sends segment(s) 102, 143 in EMV Financial Transaction Request (segment applicability)"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — 145 Enhanced Fleet Request present",
+   "reason": "segment domain Fleet not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — 156 EV Charging Data Segment present with 102",
+   "reason": "segment brand VISA not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — segments 101+145 together",
+   "reason": "segment domain Fleet not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — segments 102+143+156 together",
+   "reason": "segment brand VISA not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — generic profile: segments 102, 104, 111, 114, 135, 143, 153, 156",
+   "reason": "segment brand VISA not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — EBT profile: segments 102, 103, 104, 111, 114, 135, 143, 153, 156",
+   "reason": "segment domain EBT not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — Fleet profile: segments 101, 102, 104, 111, 114, 135, 143, 145, 153, 156",
+   "reason": "segment domain Fleet not in this selection"
+  },
+  {
+   "segment_check": "Segment — EMV Financial Transaction Request — Loyalty profile: segments 102, 104, 108, 111, 114, 135, 143, 153, 156",
+   "reason": "segment domain Loyalty not in this selection"
+  },
+  {
+   "segment_check": "Negative — EMV Financial Transaction Request — required segment 130 EMV Request Data Segment omitted",
+   "reason": "covered by N-A2 in every EMV scenario"
+  },
+  {
+   "segment_check": "Negative — EMV Financial Transaction Request — 143 sent without its corequisite 102",
+   "reason": "no carrier sends segment(s) 102, 143 in EMV Financial Transaction Request (segment applicability)"
+  },
+  {
+   "segment_check": "Negative — EMV Financial Transaction Request — 156 sent without its corequisite 102",
+   "reason": "segment brand VISA not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — 101 Fleet Data Segment present",
+   "reason": "segment domain Fleet not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — 103 EBT Data Segment present",
+   "reason": "segment domain EBT not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — 108 Loyalty Card Data Segment present",
+   "reason": "segment domain Loyalty not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — 110 Check Data Segment present",
+   "reason": "segment domain Check not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — 113 ECA/ TeleCheck Data Segment Format ® present",
+   "reason": "no carrier sends segment(s) 113 in Financial Transaction Request (segment applicability)"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — 135 Moneris Data Segment (Request) present",
+   "reason": "no carrier sends segment(s) 135 in Financial Transaction Request (segment applicability)"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — 143 Tax by Product Data Segment present with 102",
+   "reason": "no carrier sends segment(s) 102, 143 in Financial Transaction Request (segment applicability)"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — 145 Enhanced Fleet Request present",
+   "reason": "segment domain Fleet not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — 156 EV Charging Data Segment present with 102",
+   "reason": "segment brand VISA not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — segments 101+145 together",
+   "reason": "segment domain Fleet not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — segments 102+143+156 together",
+   "reason": "segment brand VISA not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — generic profile: segments 102, 104, 111, 113, 114, 123, 135, 143, 153, 156",
+   "reason": "segment brand VISA not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — Check profile: segments 102, 104, 110, 111, 113, 114, 123, 135, 143, 153, 156",
+   "reason": "segment domain Check not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — EBT profile: segments 102, 103, 104, 111, 113, 114, 123, 135, 143, 153, 156",
+   "reason": "segment domain EBT not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — Fleet profile: segments 101, 102, 104, 111, 113, 114, 123, 135, 143, 145, 153, 156",
+   "reason": "segment domain Fleet not in this selection"
+  },
+  {
+   "segment_check": "Segment — Financial Transaction Request — Loyalty profile: segments 102, 104, 108, 111, 113, 114, 123, 135, 143, 153, 156",
+   "reason": "segment domain Loyalty not in this selection"
+  },
+  {
+   "segment_check": "Negative — Financial Transaction Request — 143 sent without its corequisite 102",
+   "reason": "no carrier sends segment(s) 102, 143 in Financial Transaction Request (segment applicability)"
+  },
+  {
+   "segment_check": "Negative — Financial Transaction Request — 156 sent without its corequisite 102",
+   "reason": "segment brand VISA not in this selection"
+  },
+  {
+   "segment": "109",
+   "element": "Text Data Length",
+   "reason": "length relation not built: a field of the pair is conditional, so the carrier may not send it"
+  },
+  {
+   "type": "N-C5",
+   "table": "013",
+   "reason": "Table 013 Special Payments Indicator Information: no single-leg carrier sends it (its rule needs a leg setting or flow role) - its codes are exercised by the flow templates that set it"
+  }
+ ],
+ "compose_skips": [],
+ "disabled_types": [],
+ "rejected_patterns": []
+}

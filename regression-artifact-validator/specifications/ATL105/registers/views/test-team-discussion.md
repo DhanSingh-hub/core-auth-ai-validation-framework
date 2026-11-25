@@ -4,7 +4,7 @@
 
 Items the Test Team can decide internally: process, tooling, fixtures and validator policy.
 
-**Status:** 13 open, 2 resolved (15 total).
+**Status:** 13 open, 3 resolved (16 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -23,6 +23,7 @@ Items the Test Team can decide internally: process, tooling, fixtures and valida
 | [TT-0013](#tt-0013) | Decide the encoding for multi-element sourceAnchors in rule catalogs | OPEN | Test Team | 2026-09-29 |
 | [TT-0014](#tt-0014) | Adopt a request data-section convention: Data Section 2 holds only Segment 100 | RESOLVED | Test Team | 2026-09-29 |
 | [TT-0015](#tt-0015) | Correct the shared AI JSON envelope field names in Segment 100, 109, 116 and 118 validators | OPEN | Test Team | 2026-09-30 |
+| [TT-0016](#tt-0016) | Ingest the Secure Transport (Datawire) documents that ATL105 Section 3.3 refers to for Internet connectivity | RESOLVED | Test Team | 2026-10-28 |
 
 <a id="tt-0001"></a>
 ## TT-0001: Run the full JUnit suite on a machine with Nexus access
@@ -213,3 +214,22 @@ Cross-checked against every Chapter 11 layout in the PDF and every Chapter 12 pl
 Segment 109, Segment 100, Segment 116 and Segment 118 validators use legacy `MessageFormatVersionIdentifier` and `NumberOfSegments` keys, while the repository AI JSON contract uses `MessageType` and `NumSegments`. Segment 109 was independently corrected in this pass; the other validators still need the same review and focused tests. Check the corresponding root keys and preserve each message family's own structure.
 
 **Related:** [AIF-0014](ai-feedback.md#aif-0014), [AIF-0015](ai-feedback.md#aif-0015)
+
+<a id="tt-0016"></a>
+## TT-0016: Ingest the Secure Transport (Datawire) documents that ATL105 Section 3.3 refers to for Internet connectivity
+
+- **Status:** RESOLVED
+- **Owner:** Test Team
+- **Raised:** 2026-10-28 by Test Solution training assistant
+
+ATL105 2026-4 Section 3.3 (lines 2813-2815, PDF p.49; identical in 2026-3) sends Internet support to the Secure Transport section of the First Data web site, whose URL is stale. The user supplied 13 files on 2026-10-28: the generic Unix Source Code API Guide 4.6.3 and XML Interface Reference Guide 3.3, and the Datawire Secure Transport package for Rapid Connect. The sources are First Data/Fiserv confidential and this repository is public.
+
+**Evidence:**
+
+- `specifications/ATL105/docs/test-validation-strategy/SecureTransport-Training-Knowledge.md`
+- `specifications/ATL105/docs/specs/kb/secure-transport/secure-transport-rule-catalog.md`
+- `specifications/ATL105/docs/specs/kb/secure-transport/secure-transport-source-manifest.json`
+- `scripts/build-secure-transport-ingestion.py`
+- `scripts/verify-secure-transport-ingestion.py`
+
+**Resolution (2026-10-28, Test Team):** Ingested at documentation level. 13 hash-pinned files (292 PDF pages) were split into 107 chapter/phase files whose concatenation equals the extracted text, and kept local (git-ignored). Trained 687 rules (416 testable) in the KB rule catalog, 125 scenarios, 104 conflicts, 19 SME queries Q-ST-01 to Q-ST-19, 9 gaps and 8 backlog items. The SME queries stay in the training record because they belong to no ATL105 segment. Rules are PROVISIONAL and outside ATL105 coverage; Rapid Connect values never apply to BUYPASS without SME confirmation.

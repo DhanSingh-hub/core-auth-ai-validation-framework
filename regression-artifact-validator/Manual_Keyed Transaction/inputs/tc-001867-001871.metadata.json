@@ -1,0 +1,134 @@
+{
+  "source": "Test cases TC-001867..TC-001871 supplied in chat 2026-11-01 (build buypass-atl105-mastercard-credit-bada93f456). Only fields used for validation are retained.",
+  "common_spec_basis": [
+    {"source_id": null, "page": 511, "quote": "03 MasterCard - Authorizer Type: Credit"},
+    {"source_id": "SRC-ATL105-PDF-001", "page": 83, "quote": "The following point-of-sale transactions are supported for credit card processing: ... Purchase/Capture"},
+    {"source_id": "SRC-ATL105-PDF-001", "page": 81, "quote": "Manual entry is allowed on a credit card transaction"}
+  ],
+  "field_citations": [
+    {"field": "POS Entry Mode table (Table 005)", "cited_page": 548, "topic_ref": "APPI-005",
+     "where": "test case request -> Variable Information Data Segment -> Variable Information Indicator / Length / Information (source_page), every step"}
+  ],
+  "test_cases": [
+    {
+      "id": "TC-001867", "display_id": "BR1_TS5_TC1", "template_id": "T1-PUR", "status": "ready",
+      "name": "MasterCard Credit Purchase/Capture - Manual/Keyed - Purchase approved",
+      "dimensions": {"network": "MASTERCARD", "program": "CREDIT", "txn_category": "PURCHASE", "entry_mode": "MANUAL"},
+      "polarity": "Positive", "flags": ["MERCHANT_PLACEHOLDER"],
+      "expected_response": {"response_code": {"tier": "ASSERT", "value": "0"}, "alternatives": ["F"]},
+      "spec_basis": [{"page": 545, "quote": "0 POS Purchase/Capture Point-of-sale purchase/preauthorized completion"}],
+      "steps": [
+        {"step": 1, "role": "purchase", "code": "0", "td": "TD-TC-001867.json",
+         "tc_request": {"Information Byte": "0", "Terminal Identifier": "JX72948216050257001", "Prompt Code": "0020",
+                        "Account Number": "5100586947757353", "Card Discretionary Block Data": "0730", "Nonfuel Amount": "1500",
+                        "Sequence Number": "018671", "Approval Number": null, "Partial Approval Indicator": "1",
+                        "VI 005": "011", "VI 031": "12"},
+         "expected_rc": "0"}
+      ]
+    },
+    {
+      "id": "TC-001868", "display_id": "BR1_TS5_TC3", "template_id": "T2-3SWIPES", "status": "ready",
+      "name": "MasterCard Credit Purchase/Capture - Manual/Keyed - 3 failed swipes -> keyed entry -> approved",
+      "dimensions": {"network": "MASTERCARD", "program": "CREDIT", "txn_category": "PURCHASE", "entry_mode": "MANUAL"},
+      "polarity": "Positive", "flags": ["MERCHANT_PLACEHOLDER"],
+      "expected_response": {"response_code": {"tier": "ASSERT", "value": "0"}, "alternatives": ["F"]},
+      "spec_basis": [
+        {"page": 81, "quote": "If the device is unable to read the card's magnetic strip, it should prompt the user to swipe the card again-up to three times."},
+        {"page": 81, "quote": "If unable to read the magnetic strip after three attempts, the device should prompt for manual entry of the Account Number and Expiration Date (Format: MMYY)."}
+      ],
+      "device_checkpoints": [
+        "the device asks for a re-swipe after each of the first three failed reads",
+        "after the third failed read it prompts for manual entry of Account Number and Expiration Date (MMYY)",
+        "the receipt and journal show '*' before the Account Number"
+      ],
+      "device_refs": ["S10.1.1.3", "S10.1.1.3-STAR"],
+      "steps": [
+        {"step": 1, "role": "purchase", "code": "0", "td": "TD-TC-001868.json",
+         "tc_request": {"Information Byte": "0", "Terminal Identifier": "JX72948216050257001", "Prompt Code": "0020",
+                        "Account Number": "5100586947757353", "Card Discretionary Block Data": "0730", "Nonfuel Amount": "1500",
+                        "Sequence Number": "018681", "Approval Number": null, "Partial Approval Indicator": "1",
+                        "VI 005": "011", "VI 031": "12"},
+         "expected_rc": "0"}
+      ]
+    },
+    {
+      "id": "TC-001869", "display_id": "BR1_TS5_TC4", "template_id": "T2-RFID-TERMINAL", "status": "ready",
+      "name": "MasterCard Credit Purchase/Capture - Manual/Keyed - Swiped/keyed at RFID-equipped terminal -> approved",
+      "dimensions": {"network": "MASTERCARD", "program": "CREDIT", "txn_category": "PURCHASE", "entry_mode": "MANUAL"},
+      "polarity": "Positive", "flags": ["MERCHANT_PLACEHOLDER"],
+      "execution": "Terminal has a contactless (RFID) receiver attached and no chip reader; the card is swiped or keyed",
+      "expected_response": {"response_code": {"tier": "ASSERT", "value": "0"}, "alternatives": ["F"]},
+      "spec_basis": [
+        {"page": 86, "quote": "Even if the transaction is swiped, manually keyed, or uses a card type for which RFID is not applicable, Point-of-Sale Entry Mode must be populated correctly in the transaction request from the point-of-sale when an RFID receiver is present."},
+        {"page": 639, "quote": "If a Contactless MSR is attached to the POS device and it has no chip capability, then all transactions will use Terminal PIN Entry Capability Mode code 8"}
+      ],
+      "steps": [
+        {"step": 1, "role": "purchase", "code": "0", "td": "TD-TC-001869.json",
+         "tc_request": {"Information Byte": "0", "Terminal Identifier": "JX72948216050257001", "Prompt Code": "0020",
+                        "Account Number": "5157031214639283", "Card Discretionary Block Data": "0928", "Nonfuel Amount": "1500",
+                        "Sequence Number": "018691", "Approval Number": null, "Partial Approval Indicator": "1",
+                        "VI 005": "018", "VI 031": "12"},
+         "expected_rc": "0"}
+      ]
+    },
+    {
+      "id": "TC-001870", "display_id": "BR1_TS5_TC5", "template_id": "T4-PUR-SPLIT", "status": "needs_client_input",
+      "name": "MasterCard Credit Purchase/Capture - Manual/Keyed - Partial approval -> remainder on 2nd card (split tender)",
+      "dimensions": {"network": "MASTERCARD", "program": "CREDIT", "txn_category": "PURCHASE", "entry_mode": "MANUAL"},
+      "polarity": "Positive", "flags": ["MERCHANT_PLACEHOLDER", "NEEDS_CLIENT_INPUT"],
+      "expected_response": {"response_code": {"tier": "ASSERT", "value": "0"}},
+      "spec_basis": [
+        {"page": 84, "quote": "A Response Code (Element No. 83) value of F (Indicates \"approval, partial amount approved.\")"},
+        {"page": 84, "quote": "Partial Approval transactions are supported for: POS Purchase, POS Authorization Only, CAT Authorization Only"},
+        {"page": 84, "quote": "Approved Amount (Element No. 6) contains the approved partial amount, and the POS device must prompt for payment of the remaining balance due on the sale."},
+        {"page": 87, "quote": "A Split Tender transaction results when a Partial Approval is returned to the POS in the transaction response.",
+         "context_note": {"cited_ref": "S10.1.6.1.3", "primary_ref": "S10.1.2.1-REMAIN", "reason": "that section is about FSA/HRA healthcare benefit cards"}}
+      ],
+      "steps": [
+        {"step": 1, "role": "purchase", "code": "0", "td": "TD-TC-001870.step1.purchase.json",
+         "tc_request": {"Information Byte": "0", "Terminal Identifier": "JX72948216050257001", "Prompt Code": "0020",
+                        "Account Number": "5193121507140804", "Card Discretionary Block Data": "0129", "Nonfuel Amount": "1500",
+                        "Sequence Number": "018701", "Approval Number": null, "Partial Approval Indicator": "1",
+                        "VI 005": "011", "VI 031": "12"},
+         "expected_rc": "F"},
+        {"step": 2, "role": "split_tender", "code": "0", "of": 1, "td": "TD-TC-001870.step2.split-tender.json",
+         "tc_request": {"Information Byte": "0", "Terminal Identifier": "JX72948216050257001", "Prompt Code": "0020",
+                        "Account Number": "5164918772290387", "Card Discretionary Block Data": "0627", "Nonfuel Amount": "08073891",
+                        "Sequence Number": "018702", "Approval Number": null, "Partial Approval Indicator": "1",
+                        "VI 005": "011", "VI 031": "12"},
+         "runtime": {"Nonfuel Amount": "requested amount (step 1) minus Approved Amount (Element 6) of step 1 response (p.84)"},
+         "expected_rc": "0"}
+      ]
+    },
+    {
+      "id": "TC-001871", "display_id": "BR1_TS5_TC6", "template_id": "T4-PUR-REVERSAL", "status": "needs_client_input",
+      "name": "MasterCard Credit Purchase/Capture - Manual/Keyed - Partial approval -> Purchase Reversal of approved amount",
+      "dimensions": {"network": "MASTERCARD", "program": "CREDIT", "txn_category": "PURCHASE", "entry_mode": "MANUAL"},
+      "polarity": "Positive", "flags": ["MERCHANT_PLACEHOLDER", "NEEDS_CLIENT_INPUT"],
+      "expected_response": {"response_code": {"tier": "FLAG", "value": "0"}},
+      "spec_basis": [
+        {"page": 84, "quote": "A Response Code (Element No. 83) value of F (Indicates \"approval, partial amount approved.\")"},
+        {"page": 84, "quote": "Partial Approval transactions are supported for: POS Purchase, POS Authorization Only, CAT Authorization Only"},
+        {"page": 84, "quote": "The amount in a Reversal (Void) request must be the amount approved in the original transaction response when a transaction has been partially approved."}
+      ],
+      "steps": [
+        {"step": 1, "role": "purchase", "code": "0", "td": "TD-TC-001871.step1.purchase.json",
+         "tc_request": {"Information Byte": "0", "Terminal Identifier": "JX72948216050257001", "Prompt Code": "0020",
+                        "Account Number": "5114395400539140", "Card Discretionary Block Data": "0731", "Nonfuel Amount": "1500",
+                        "Sequence Number": "018711", "Approval Number": null, "Partial Approval Indicator": "1",
+                        "VI 005": "011", "VI 031": "12"},
+         "expected_rc": "F"},
+        {"step": 2, "role": "reversal", "code": "8", "of": 1, "td": "TD-TC-001871.step2.reversal.json",
+         "tc_request": {"Information Byte": "0", "Terminal Identifier": "JX72948216050257001", "Prompt Code": "8020",
+                        "Account Number": "5114395400539140", "Card Discretionary Block Data": "3107", "Nonfuel Amount": "73622739",
+                        "Sequence Number": "018711", "Approval Number": "2J0775", "Partial Approval Indicator": "1",
+                        "VI 005": "011", "VI 031": "12"},
+         "runtime": {"Nonfuel Amount": "Approved Amount (Element 6) of step 1 partial-approval response (p.84)",
+                     "Approval Number": "Approval Number (Element 5) of step 1 response (p.368)"},
+         "link_citation": {"element": "Approval Number", "cited_page": 85, "cited_ref": "S10.1.2.2", "step_ref": "APPG-8", "correct_ref": "EL5-REV",
+                           "reason": "it covers the Authorization Only Reversal (Transaction Type S, reversing Authorization Only codes 3 and 5), while this step is a Purchase Reversal (Prompt Code 8020, Transaction Type 8)"},
+         "expected_rc": "0"}
+      ]
+    }
+  ]
+}

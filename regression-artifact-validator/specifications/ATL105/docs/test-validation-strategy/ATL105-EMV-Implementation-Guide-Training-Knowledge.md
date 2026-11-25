@@ -3,6 +3,7 @@
 **Training subject:** Fiserv *EMV and Chip Implementation Guide*, Generic Edition, Version 2025.RG20 (12 August 2025)<br>
 **Required by:** BUYPASS Platform ATL105 Message Format Specifications 2026-4, Section 10.14 (EMV Processing Requirements)<br>
 **Ingested:** 2026-10-27 by the Core Auth Test Validation Team<br>
+**Verified:** 2026-10-28 against the source PDF (revision 1.1; repeatable check in [§19](#19-how-to-reuse-this-memory), step 8)<br>
 **Applies to:** ATL105 §10.14, Segments 130/131/132, Appendices R/S/T, and Elements 30, 83, 187-194 in EMV contexts<br>
 **Parent strategy:** [Core Auth Regression Test Validation Strategy](Core-Auth-Regression-Test-Validation-Strategy.md#emv-companion-reference-intake-october-2026)<br>
 **Training handbook:** [ATL105 Segment Training Handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#emv-companion-reference-overlay-october-2026)
@@ -57,7 +58,7 @@ The "First Data EMV Implementation Guide" named by ATL105 is now published as th
 
 | Item | Value |
 | --- | --- |
-| Companion document | `Fiserv_Generic_EMV_Implementation_Guide_v2025_RG20_081225.pdf`. This is a local copy in the trainer's workspace (framework root). It is **not committed**, because this GitHub repository is public. Get the current version from the Fiserv Direct Platform Specifications portal (Developer Studio) and check it against the SHA-256 below. |
+| Companion document | `Fiserv_Generic_EMV_Implementation_Guide_v2025_RG20_081225.pdf`, kept locally in `docs/specs/` and **not committed** (untracked), because this GitHub repository is public. Get the current version from the Fiserv Direct Platform Specifications portal (Developer Studio) and check it against the SHA-256 below. |
 | Title / edition / version | EMV and Chip Implementation Guide, Generic Edition, Revised Format, v2025.RG20, 12 August 2025 |
 | Size / pages | 6,704,094 bytes / 212 pages |
 | SHA-256 | `A79B133C950CA2A0734E8D38D07AAE140A254E0069A4FC3F61D653CCC1489EF4` |
@@ -66,10 +67,12 @@ The "First Data EMV Implementation Guide" named by ATL105 is now published as th
 | Extraction | `pypdf` text with `--- PAGE N ---` markers (10,773 lines), used for this training only and not committed |
 | Bound ATL105 release | [BUYPASS_Platform_ATL105_Message_Format_Specifications_2026-4.pdf](../specs/BUYPASS_Platform_ATL105_Message_Format_Specifications_2026-4.pdf), SHA-256 `568C04D3081CAC6C5CC545ADEE9C6F8F3A34334E788FDF5EE0260FFEF57C77AF`, text in [extracted_text_new.txt](../specs/extracted_text_new.txt) |
 
-**Extraction limits:**
+**Extraction limits** (confirmed by the 2026-10-28 verification; see [§19](#19-how-to-reuse-this-memory)):
 
-- Chapter 1 ("Requirements", "Best Practices" and "Tables" index pages, PDF pp.15-22) is rendered as image fragments and has no extractable text. Every RQ requirement used here was taken from its full statement in the body chapters. The Chapter 1 index itself was not verified.
-- §14.9 embeds an attachment, "State of California and Oklahoma Chip Card.pdf", which could not be extracted.
+- Chapter 1 (the "Requirements", "Best Practices" and "Tables" index pages, pp.15-22) is rendered as image fragments and has no extractable text. Every RQ used here comes from its full statement in the body chapters, and all 92 body RQs are covered. The Chapter 1 index itself was not verified.
+- p.30 (§2.7 Announcements, "DISCOVER:") contains a **broken linked image in the PDF itself**, so the Discover announcement is not available in this version. Request it from Fiserv ([§17.3](#173-external-documents-named-by-the-guide-and-not-supplied-new-missing-references)).
+- pp.176-177 (§14.6 Fleetcor) hold the Fuelman TAC values and the 9F6E fleet-data layout only as images. They were rendered, read and transcribed into [§9.5](#95-fuelman-parameters-recovered-from-image-only-pages-pp176-177).
+- p.180 (§14.9) embeds an attachment, "State of California and Oklhaoma Chip Card.pdf" (sic), which cannot be extracted.
 - The guide marks requirements with `RQ nnnn` and best practices with `BP nnnn`. In the body text, the BP labels are mostly images. BP numbers quoted here come from the revision history or from adjacent text.
 
 ## 3. Precedence and Evidence Rules
@@ -114,21 +117,21 @@ These dispositions are documentation dispositions. The SME/TBA communication reg
 | Gap | Where it was open | Guide evidence | Disposition | Remaining action |
 | --- | --- | --- | --- | --- |
 | GAP-EMV-01 | ATL105 §10.14 "Refer to First Data EMV Implementation Guide" | Whole guide, v2025.RG20 | **INGESTED** (this file) | Keep the overlay hash-pinned. Re-ingest when a new guide version is supplied. |
-| GAP-EMV-02 | Appendix R "complete list of EMV tags: contact your BUYPASS representative"; Appendix R Deferred Work 3 | Table 25 (Auth / Reverse / Settle / Response tag matrix, PDF pp.118-119) and Table 26 (formats, PDF pp.121-138) | **EVIDENCE_SUPPLIED**: Fiserv-generic tag catalog in [§6](#6-emv-tag-catalog-for-element-190) | The guide says the table is illustrative and "not hard-coded". BuyPass confirmation is still required (Q-EMV-01). |
-| GAP-EMV-03 | `BR-SEG100-APPR-CROSS-FIELD`, `SEG130-SME-003` / `P-03`, gap-register "no general amount/currency formula" | RQ3400, RQ3500, RQ3700, RQ4200, RQ1400; Table 6; Table 28; §10.1.3; §4.8 (9A) | **EVIDENCE_SUPPLIED**: candidate formulas XF-001 to XF-011 in [§7](#7-chip-to-atl105-cross-field-rules) | Run them as `REVIEW_REQUIRED` checks until the SME confirms (Q-EMV-02). |
+| GAP-EMV-02 | Appendix R: "For complete list of EMV tags, please contact your BUYPASS representative"; Appendix R Deferred Work 3 | Table 25 (Auth / Reverse / Settle / Response tag matrix, PDF pp.118-119) and Table 26 (formats, PDF pp.121-138) | **EVIDENCE_SUPPLIED**: Fiserv-generic tag catalog in [§6](#6-emv-tag-catalog-for-element-190) | The guide says the table is illustrative and "not hard-coded". BuyPass confirmation is still required (Q-EMV-01). |
+| GAP-EMV-03 | `BR-SEG100-APPR-CROSS-FIELD`, `SEG130-SME-003` / `P-03`, and the gap register's note that no general amount/currency formula is stated | RQ3400, RQ3500, RQ3700, RQ4200, RQ1400; Table 6; Table 28; §10.1.3; §4.8 (9A) | **EVIDENCE_SUPPLIED**: candidate formulas XF-001 to XF-011 in [§7](#7-chip-to-atl105-cross-field-rules) | Run them as `REVIEW_REQUIRED` checks until the SME confirms (Q-EMV-02). |
 | GAP-EMV-04 | `SEG130-SME-008` / `SEG130-SME-012`: no Appendix E code exists for the §10.14.2.3 brands | Table 4 and Table 63 AID lists, Table 12 (US CAIDs), Table 13 (message type) | **PROPOSED_RESOLUTION**: decide EMV eligibility and brand from the AID in Element 190 (84/9F06). Appendix E applies only to fleet, proprietary and debit card types ([§9.1](#91-atl105-product-to-aid-bridge-closes-the-sme-008012-path)). | The SME accepts the AID-based method. |
 | GAP-EMV-05 | `SEG130-SME-009` / `SEG130-SME-013`: "Generic Proprietary (Some issuers participating)" | Chapter 14 non-brand AIDs: ExxonMobil/Citi, Sunoco/Citi, Wawa/Citi, Fleetcor (Fuelman, Gascard/FleetWide, Comdata) | **PARTIAL**: candidate participant list | Confirm the BuyPass deployment for each issuer. |
 | GAP-EMV-06 | `SEG130-SME-004` / `SEG130-R-010`: cryptogram authenticity | §3.2 Table 2 and §13: brand L3 certification on ICCSimTMat with card logs (RQ7200) | **CONFIRMED EXTERNAL**: out of message-validator scope permanently; certification evidence comes from the Fiserv/brand process | Keep `EXTERNAL_FIXTURE_REQUIRED`. |
-| GAP-EMV-07 | `BR-SEG100-APPS-CA-EMV-LINK`, `SEG130-SME-002`: no AID-to-key formula | Table 15 ("Index identifies the key in conjunction with the RID"); §4.2 (AID = RID + PIX); tag 8F; Voyager uses Mastercard CA keys; PLCC AIDs have no CAPK index | **EVIDENCE_SUPPLIED**: key = (RID of selected AID, CA PK Index 8F). See [§12](#12-ca-public-key-capk-rules). | A real CAPK file is still external. Tag 8F is not sent in Element 190, so only RID coverage is observable. |
+| GAP-EMV-07 | `BR-SEG100-APPS-CA-EMV-LINK`, `SEG130-SME-002`: no AID-to-key formula | Table 15 (Index: "Identifies the Certification Authority Public Key in conjunction with the RID"); §4.2 (AID = RID + PIX); tag 8F; Voyager uses Mastercard CA keys; PLCC AIDs have no CAPK index | **EVIDENCE_SUPPLIED**: key = (RID of selected AID, CA PK Index 8F). See [§12](#12-ca-public-key-capk-rules). | A real CAPK file is still external. Tag 8F is not sent in Element 190, so only RID coverage is observable. |
 | GAP-EMV-08 | Appendix S Exponent "03 or 216+1" (superscript lost); the KB uses `065537` | Table 15: Exponent "03" or **"010001"** ("3" or "2^16+1") | **CORRECTION_REQUIRED**: the 6-character form is hex `010001` | Fix `BR-SEG100-APPS-EXPONENT-VALUE` and its checksum fixtures (backlog B-01). |
 | GAP-EMV-09 | Appendix S RID length: KB accepts 1-10 characters | Table 15: RID A/N 10, for example `A000000003`. ATL105 also gives AN 10. | **TIGHTEN**: exactly 10 hex characters | Backlog B-08. |
 | GAP-EMV-10 | Appendix S Modulus "Hex Var.": no maximum | Table 15: Modulus Hex, variable, maximum 496 | **EVIDENCE_SUPPLIED**: maximum 496 hex characters (248 bytes) | Backlog B-08. |
 | GAP-EMV-11 | `SEG130-R-017` / `EMV-130-TX-005/008`: EMV data on reversals | Table 10 (reversal reason to 1st/2nd Generate AC data); RQ4600 | **EXTENDED**: ATL105 "not required" still governs absence; the guide governs content when present ([§8](#8-lifecycle-rules)) | Backlog B-06. |
-| GAP-EMV-12 | [Fallback note](../specs/kb/segment-130/emv-entry-mode-fallback-sme-tba-note.md) open item: "80/90 or spec equivalent" | RQ4400 (fallback entry mode, "ex. '80'"); Discover empty-candidate-list rule | **RESOLVED_FROM_SOURCE**: ATL105 Appendix J defines 80 (chip fallback to swipe), 79 (fallback to manual) and 90 (MSR). The guide corroborates 80. | Update the note (backlog B-10). |
+| GAP-EMV-12 | [Fallback note](../specs/kb/segment-130/emv-entry-mode-fallback-sme-tba-note.md) open item: entry mode `80`/`90` "or spec equivalent" | RQ4400 (fallback entry mode, "ex. '80'"); Discover empty-candidate-list rule | **RESOLVED_FROM_SOURCE**: ATL105 Appendix J defines 80 (chip fallback to swipe), 79 (fallback to manual) and 90 (MSR). The guide corroborates 80. | Update the note (backlog B-10). |
 | GAP-EMV-13 | `SEG131-SME-003`: "Source: Device" on Segment 131 chip data | Table 25: response tags 71, 72, 8A and 91 have source "Issuer"; 9F36 and DF3F come from the chip | **EVIDENCE_SUPPLIED**: supports host/issuer-originated response chip data | The SME confirms a spec-defect log. |
 | GAP-EMV-14 | `SEG130-SME-010`: what Segment 131 echoes when Element 187 is omitted | Not addressed. The guide covers only CAPK status and download (§6.1.1). | **OPEN** | Unchanged |
 | GAP-EMV-15 | `SEG130-SME-007` / `SEG130-SME-011`: Appendix T Table 002 (CARC) in requests | Not addressed. The guide has no Appendix T content. | **OPEN** | Unchanged |
-| GAP-EMV-16 | `SEG131-SME-001/002`, `SEG132-SME-001` to `006` (BuyPass wire layout) | Not addressed. §6.3 adds only "download from one data center" and "replace the whole file". | **OPEN** | Unchanged |
+| GAP-EMV-16 | `SEG131-SME-001/002`, `SEG132-SME-001` to `006` (BuyPass wire layout) | Not addressed. §6.3 adds only that the file is downloaded from a single data center and that a new file replaces the old one. | **OPEN** | Unchanged |
 | GAP-EMV-17 | §10.14.2.5 receipts; §10.14.3 EMV PIN | Chapter 7 receipt mandates (RQ5800 to RQ6700); RQ1900 (online and offline PIN; UCAT offline plaintext PIN sunset dates) | **CORROBORATED (device scope)** | Certification evidence only |
 
 ## 5. Guide Content Map
@@ -233,7 +236,7 @@ Table notes from the guide (§9.1, PDF pp.118-120):
 | EMVIG-TAG-011 | TVR byte 4 bit 4 ("Merchant forced transaction online") set → suspicious. | RQ2500 (p.53); Table 57 (p.157) | none | REVIEW / `PROVISIONAL` |
 | EMVIG-TAG-012 | Tags must not be invented with false values. A zero-length TLV is tolerated: BP3000 allows it, while §9.1 says "do not create". | §9.1 (p.118); BP3000 (p.120) | Element 190 "exact values" | REVIEW / `PROVISIONAL` |
 | EMVIG-TAG-013 | If 9F6E is present, check length 5-32 (EBT list: 2) and upper-case values for Mastercard and Visa contactless. For Mastercard non-fleet, byte 3 bit 8 must be 0. For Mastercard fleet and Voyager, 9F6E carries Product Control / Third Party Data. | RQ4000 (p.64); §9.1 notes; Table 26 (pp.133-134); §14.3.3 | none | REVIEW / `PROVISIONAL` |
-| EMVIG-TAG-014 | EBT (AID A0000000044542) chip data. Mandatory: 9F26, 9F27, 9F10, 9F33, 9F37, 9F36, 95, 9A, 9C, 9F02, 5F2A, 82, 84, 9F1A. Conditional: 9F34, 9F03, 5F34, 9F6E, 9F1E. The set must "meet the 255 field length". | §14.9 (pp.179-180) | Segment 103 with 130 permitted ([Segment 130 module](../specs/kb/segment-130/README.md), Do-Not-Assume 1) | FAIL-candidate (mandatory set) / `PROVISIONAL` |
+| EMVIG-TAG-014 | EBT (AID A0000000044542) chip data. Mandatory: 9F26, 9F27, 9F10, 9F33, 9F37, 9F36, 95, 9A, 9C, 9F02, 5F2A, 82, 84, 9F1A. Conditional: 9F34, 9F03, 5F34, 9F6E, 9F1E. The set must "meet the 255-field length". | §14.9 (pp.179-180) | Segment 103 with 130 permitted ([Segment 130 module](../specs/kb/segment-130/README.md), Do-Not-Assume 1) | FAIL-candidate (mandatory set) / `PROVISIONAL` |
 
 ## 7. Chip-to-ATL105 Cross-Field Rules
 
@@ -326,7 +329,7 @@ ATL105 §10.14.2.3 names the EMV products by brand only. The Appendix E table-lo
 | PULSE | Through Common Debit AIDs. DNA cash back excludes PULSE (Table 9). | Dual (CAID) or single | Appendix C `06` |
 | Accel | Through Common Debit AIDs | Dual (CAID) or single | Appendix C `19` / `69` |
 | Shazam | Through Common Debit AIDs | Dual (CAID) or single | Appendix C `58` |
-| Generic Proprietary ("Some issuers participating") | Candidates (Chapter 14): ExxonMobil/Citi A0000000049999D8400320 / …21; Sunoco/Citi …24 / …25 / …26; Wawa/Citi …23; Fleetcor family: Fuelman/FleetWide A0000000049999C000170001, 2in1 …0002, 2in1 6 PID …0003, Comdata …0301 | Dual/Credit | Appendix E `056` Generic proprietary, `052` ExxonMobil, `085` Sunoco, `081` Fuelman/Gascard (partial table) |
+| Generic Proprietary ("Some issuers participating") | Candidates (Chapter 14; full list in [§9.4](#94-non-brand-aids-guide-table-63)): ExxonMobil/Citi A0000000049999D8400320 and A0000000049999D8400321; Sunoco/Citi A0000000049999D8400324, A0000000049999D8400325 and A0000000049999D8400326; Wawa/Citi A0000000049999D8400323; Fleetcor family: Fuelman/FleetWide A0000000049999C000170001, Fuelman 2in1 A0000000049999C000170002, Fuelman 2in1 6 PID A0000000049999C000170003, Comdata A0000000049999C000170301 | Dual/Credit | Appendix E `056` Generic proprietary, `052` ExxonMobil, `085` Sunoco, `081` Fuelman/Gascard (partial table) |
 | Voyager | A0000000049999C00016 (extension `YYYY`) | Dual/Credit | Appendix E `060`; Appendix C `94` |
 | Wright Express | A0000007681010 (WEX) | Dual/Credit | Appendix E `059`; Appendix C `72` (Wright Express), `57` (WEX ISO) |
 
@@ -374,7 +377,51 @@ Contactless (CL) PIN bypass and contact PIN bypass come from Table 4. CL CVM lim
 | EMVIG-AID-007 | Discover acceptance includes JCB, UnionPay and Diners AIDs (RQ1102). ATL105 §10.14.2.3 lists only Discover. Classify those chips under Discover acceptance. | RQ1102 (p.45) | §10.14.2.3 | REVIEW / `PROVISIONAL` |
 | EMVIG-AID-008 | **Voyager:** Mastercard RID and **Mastercard CA keys**. No cash back, no Quick Chip, **no contactless**. CVM: online enciphered PIN and No CVM are mandatory; no offline PIN; signature is mandatory only when attended. A blocked card terminates the transaction (no fallback). Settlement uses the 2nd Generate AC 9F26 with 9F27 `40` or `00`. Enhanced fleet prompting: 9F6E unique identifier `0003`/`8003` and product identifier `0001`. | §14.3 (pp.169-173); RQ7201-RQ7205 | §10.14.2.3 Voyager; Appendix E `060` | REVIEW / `PROVISIONAL` |
 | EMVIG-AID-009 | **WEX:** credit only, dual/credit, WEX-supplied TACs, brand-approved test tool. Fleet prompt tags DF30/DF31; their values are in a "Petroleum Implementation Guide" that was not supplied. | §14.4 (pp.173-174); Table 66 | §10.14.2.3 Wright Express; Appendix E `059` | REVIEW / `PROVISIONAL` |
-| EMVIG-AID-010 | **PLCC** (ExxonMobil/Citi, Sunoco/Citi, Wawa/Citi): Mastercard RID, credit only, no PIN, not offline, **no CAPK index**. Sunoco supports contactless from June 2023; the others have no contactless. **Fleetcor / Fuelman / Comdata:** dual only; CVM list `1F00` (No CVM); no ARPC; always online; floor limit 0; no issuer scripts. | §14.5-14.8 (pp.175-179) | §10.14.2.3 Generic Proprietary | REVIEW / `PROVISIONAL` |
+| EMVIG-AID-010 | **PLCC** (ExxonMobil/Citi, Sunoco/Citi, Wawa/Citi): Mastercard RID, credit only, no PIN, not offline, **no CAPK index**. Sunoco supports contactless from June 2023; the others have no contactless. **Fleetcor / Fuelman / Comdata:** dual only; CVM list `1F00` (No CVM); no ARPC; always online; floor limit 0; no issuer scripts. Fuelman 9F6E fleet data: Proprietary Data byte 3 = `01`; byte 4 one of `00`, `04`, `0C`, `0D`; byte 5 usually `40` (vehicle card) ([§9.5](#95-fuelman-parameters-recovered-from-image-only-pages-pp176-177)). | §14.5-14.8 (pp.175-179) | §10.14.2.3 Generic Proprietary | REVIEW / `PROVISIONAL` |
+
+### 9.4 Non-brand AIDs (guide Table 63)
+
+All are Global Credit AIDs sent as dual/credit messages (Table 63, p.168), except EBT (Table 4, p.45).
+
+| Application | AID | Notes |
+| --- | --- | --- |
+| Voyager | A0000000049999C00016 (extension `YYYY`) | Mastercard RID and Mastercard CA keys (EMVIG-AID-008) |
+| WEX | A0000007681010 | Credit only (EMVIG-AID-009) |
+| Fuelman/FleetWide/etc. | A0000000049999C000170001 | Fleetcor (EMVIG-AID-010) |
+| Fuelman 2in1 | A0000000049999C000170002 | Fleetcor |
+| Fuelman 2in1 6 PID | A0000000049999C000170003 | For sites or cards that support prompts of up to 6 digits |
+| Comdata | A0000000049999C000170301 | Only for sites sending Comdata proprietary-format transactions; sent in Tag 84 |
+| ExxonMobil/Citi Private Label | A0000000049999D8400320 | PLCC; no CAPK index |
+| ExxonMobil/Citi Business CC | A0000000049999D8400321 | PLCC; no CAPK index |
+| Sunoco PLCC Consumer | A0000000049999D8400324 | PLCC; contactless from June 2023 |
+| Sunoco PLCC Commercial | A0000000049999D8400325 | PLCC |
+| Sunoco PLCC Amtrak | A0000000049999D8400326 | PLCC |
+| Wawa PLCC Consumer | A0000000049999D8400323 | Table 63 prints the RID as `A00000000A` (typo, [§16.2](#162-guide-internal-inconsistencies)) |
+| EBT | A0000000044542 | EBT, single message (Table 4) |
+
+AID priority at Fuelman sites (p.178): a Comdata site lists Comdata first, then Fuelman 2in1 6 PID (6-digit prompt sites only), Fuelman 2in1, Fuelman/FleetWide and Mastercard. Other sites use the same order without Comdata.
+
+### 9.5 Fuelman parameters recovered from image-only pages (pp.176-177)
+
+These values exist only as images in the PDF. They were rendered and transcribed on 2026-10-28.
+
+**Terminal Action Codes (Fuelman profile §6.9):** device configuration, not carried in an ATL105 message (INFO).
+
+| Interface | Denial | Online | Default |
+| --- | --- | --- | --- |
+| Contact | `00 00 00 00 00` | `FE 50 BC 98 00` | `FE 50 BC 80 00` |
+| Contactless | `00 00 00 00 00` | `F4 50 84 80 0C` | `F4 50 84 80 0C` |
+
+**9F6E Third Party Data, Proprietary Data component** (Mastercard Fleet Card definition). This is observable in Element 190 when 9F6E is present (REVIEW, EMVIG-AID-010).
+
+| Byte | Meaning | Fuelman values |
+| --- | --- | --- |
+| 1-2 | Product Identifier `0001` = Fleet Card Extension | `0001` |
+| 3 | Mastercard Product Restriction Code: bits 2-1 `10` = fuel only, `01` = fuel and other products and services; bits 8-3 RFU | Always `01` |
+| 4 | Mastercard Product Type Code: bit 4 prompt for odometer, bit 3 driver number, bit 2 vehicle number, bit 1 ID/job number; bits 8-5 RFU | `0C` (odometer and driver number), `00` (no prompt), `04` (driver number), `0D` (odometer, driver number and ID/job number) |
+| 5 | Card type: bit 8 driver card, bit 7 vehicle card; bits 6-1 RFU | Usually `40` (vehicle card) |
+
+Fuelman does not use the vehicle-or-driver-number field or the Fleet Prompt Script File.
 
 ## 10. Entry Mode and Fallback Rules
 
@@ -436,7 +483,7 @@ The ATL105 Element 83 column is a **candidate** mapping (Q-EMV-10). Table 7 uses
 | Hash Algorithm Indicator | N 2, `01` (SHA-1) | `01` only | Unchanged |
 | Public Key Algorithm Indicator | N 2, `01` (RSA) | `01` only | Unchanged |
 | RID | AN 10 (for example `A000000003`) | A/N 10 | **Exactly 10 hex characters.** The KB currently accepts 1-10 (B-08). |
-| Index | Hex 2 | Hex 2; "identifies the CA Public Key in conjunction with the RID" | Unchanged |
+| Index | Hex 2 | Hex 2; "Identifies the Certification Authority Public Key in conjunction with the RID" | Unchanged |
 | Modulus | Hex, variable | Hex, variable, **maximum 496** | Add the 496 hex-character maximum (248 bytes) (B-08) |
 | Exponent | N, 2 or 6: "03 or 216+1" (the superscript was lost in extraction) | **`03` or `010001`** ("3" or "2^16+1") | **Use `03` or `010001`.** The KB value `065537` is incorrect (B-01). |
 | Check Sum | Hex 40, SHA-1 over RID, Index, Modulus and Exponent | Same | Recompute over hex-decoded bytes. Exponent 65537 is the bytes `01 00 01`. |
@@ -613,6 +660,32 @@ Expected outcomes for guide-derived rules are candidate oracles. They do not cou
 | EMV-TS-052 | Production CAPK material found in the repository or test fixtures | **Fail** (process / R003) | CAPK-007 | EXECUTABLE |
 | EMV-TS-053 | Genuine cryptogram (ARQC/TC) and CAPK authenticity | Not assessable by the message validator | GAP-EMV-06 | EXTERNAL_FIXTURE_REQUIRED |
 
+### 14.6 Rule-coverage completion (added by the 2026-10-28 verification)
+
+The ingestion verification found 19 testable rules with no scenario. Each one gets a scenario below. Seven rules are informational (their last table cell starts with "INFO"). EMV-TS-051 already exercises CAPK-008; the other six (LC-013, LC-015, LC-017, RSP-006, FB-007 and AID-006) need no scenario.
+
+| ID | Scenario | Expected outcome | Rules | Readiness |
+| --- | --- | --- | --- | --- |
+| EMV-TS-054 | Reversal whose Segment 130 carries the Table 25 "Reverse" set, including 9F24. Variant: the reversal also carries 9F6E. | Pass. Variant → review (9F6E is `N` in the Reverse column). A reversal with no EMV data is covered by TS-024. | TAG-002 | REVIEW_REQUIRED |
+| EMV-TS-055 | Completion chip data with 84, 8A, 91 and 9F5B ("Settle" column). Variant: it also carries 4F, 5F30, 9F06, 9F07, 9F0A or 9F7C. | Pass. Variant → review (not expected in Settle). Neither 84 nor 9F06 → **fail** (ATL105 Element 190, as TS-006). | TAG-003 | REVIEW_REQUIRED |
+| EMV-TS-056 | Segment 131 chip data holding only 91 and 8A. Variant: it also carries a terminal-originated tag such as 9F26. | Pass. Variant → review. Another issuer tag not in the list → INFO. | TAG-004 | REVIEW_REQUIRED |
+| EMV-TS-057 | 9F27 compared with the message role: online authorization `80`; offline-approved upload `40`; online refund `00` or `80`. Variant: online authorization with `40` or `00`. | Pass. Variant → review. | TAG-008 | REVIEW_REQUIRED |
+| EMV-TS-058 | Value-domain violations: 9A or 5F24 with month `13`; 9F35 `27`; 9F34 byte 3 `03`; 9F53 `42` (ASCII `B`); 5F2A not an ISO 4217 numeric code | Invalid date → fail-candidate (format). Every other case → review (domain). | TAG-009 | REVIEW_REQUIRED |
+| EMV-TS-059 | Element 190 with a zero-length TLV (for example `9F1E00`). Variant: a tag the card did not supply, filled with placeholder values (for example 9F26 all zeros). | Zero-length → tolerated (INFO; BP3000 versus §9.1). Placeholder → review. | TAG-012 | REVIEW_REQUIRED |
+| EMV-TS-060 | E102 holds a US state code (Appendix D) with 9F1A `0840`, or a Canadian province with `0124`. Variants: a US state with `0124`; a US territory or military code. | Pass. State/country mismatch → review. Territory or military → review (SME). | XF-004 | REVIEW_REQUIRED |
+| EMV-TS-061 | Request expiration date (YYMM) differs from 5F24 YYMM. Variant: 5F24 is in the past. | Mismatch → review, where the expiration date is observable (producer mapping boundary). Expired → not a request-format failure (INFO). | XF-008 | REVIEW_REQUIRED |
+| EMV-TS-062 | 9F33 byte 2 bit 7 (enciphered PIN online) is set while Appendix J position 3 is not `1`. Variant: 9F35 is an attended type (21-23) in a CAT/AFD context. | Review | XF-010 | REVIEW_REQUIRED |
+| EMV-TS-063 | Reversal (not a TOR) of a transaction the host did not approve. Variant: a TOR after no host response. | Review. Variant (TOR) → pass (timeout exception). | LC-004 | REVIEW_REQUIRED |
+| EMV-TS-064 | Host-approved contact chip purchase; the card is removed before the 2nd Generate AC and the device sends a reversal | Reversal carries 1st Generate AC data (9F27 `80`, 9F26 equal to the original request) → pass. 2nd Generate AC data → review. Quick Chip or contactless → not applicable. | LC-012 | REVIEW_REQUIRED |
+| EMV-TS-065 | Message mixing 1st and 2nd Generate AC values (for example 9F26 and 9F27 from the 2nd, with 95 and 9F10 from the 1st), with the Generate AC capture supplied | Review. Without the capture → not assessable. | LC-016 | EXTERNAL_FIXTURE_REQUIRED |
+| EMV-TS-066 | Discover-accepting terminal reads JCB A0000000651010 or UnionPay Credit A000000333010102 | Classified under Discover acceptance (Appendix C `04`) → pass. Not classified, or rejected as unsupported → review. | AID-007 | REVIEW_REQUIRED |
+| EMV-TS-067 | CAID dual-message transaction (for example Visa US Common Debit A0000000980840 routed dual): the response must identify the authorizing network | Element 7 Appendix C authorizer code present and consistent with the §10.14.2.5 single/dual disposition → pass. Absent or inconsistent → review. | RSP-005 | REVIEW_REQUIRED |
+| EMV-TS-068 | WEX AID A0000007681010 in a credit/dual request. Variant: the same AID in a debit/single request. | Pass. Variant → review (credit only). DF30/DF31 prompt values → not assessable (Petroleum Implementation Guide not supplied). | AID-009 | REVIEW_REQUIRED |
+| EMV-TS-069 | Fuelman A0000000049999C000170001 with 9F6E Proprietary Data byte 3 `01`, byte 4 `0C` and byte 5 `40` ([§9.5](#95-fuelman-parameters-recovered-from-image-only-pages-pp176-177)). Variant: ExxonMobil/Citi PLCC A0000000049999D8400320 with an online PIN or contactless entry (`07`). | Pass. 9F6E byte 3 other than `01`, or byte 4 outside {`00`, `04`, `0C`, `0D`} → review. PLCC variant → review (no PIN; only Sunoco PLCC supports contactless, from June 2023). | AID-010 | REVIEW_REQUIRED |
+| EMV-TS-070 | Successful CAPK download (Element 194), then the device's next request | Next Element 187 equals the new file checksum → pass. Equals the old checksum (merged or not replaced) → review. Lifecycle check `12.22-CAPK-008`. | CAPK-004 | REVIEW_REQUIRED |
+| EMV-TS-071 | Loaded CAPK file compared with the RIDs seen in 84/9F06 (first 10 hex characters) across the run | At least one key per RID accepted for offline data authentication → pass. An accepted RID with no key → review. PLCC AIDs (no CAPK index) and Voyager (Mastercard keys) need no key of their own. | CAPK-006 | REVIEW_REQUIRED |
+| EMV-TS-072 | Fallback prompt is cancelled: (a) the card is then inserted or tapped; (b) the swipe shows a service code other than 2xx/6xx | (a) Processed as EMV (entry mode `05` or `07`, Segment 130 present) → pass. (b) Ordinary MSR entry mode `90` → pass. Either one coded as fallback `80` → review. | FB-006 | REVIEW_REQUIRED |
+
 ## 15. Synthetic Test-Data Guidance
 
 - Use synthetic or approved masked data only. Never use real PANs, track data, PIN blocks, production CAPK, or cryptograms from live cards (R003; CAPK-007).
@@ -733,7 +806,8 @@ These must be added to the communication register (B-10). Answers must cite a so
 | Mastercard M/Chip Requirements; Mastercard Fleet Card specification | §4.6.2 (RQ2301), §14.6 | PIN bypass on CAT; 9F6E fleet data |
 | Expresspay EMV Implementation Guide Special Bulletin (Nov 2019) | §2.7 | Amex CAID with Expresspay 3.1 |
 | EMVCo Books and Type Approval Bulletin #11; PIN pad vendor kernel interface documents | §2.3, §3.1 | Kernel behavior, recertification |
-| Embedded "State of California and Oklahoma Chip Card.pdf" | §14.9 (p.180) | EBT chip specifics |
+| Embedded "State of California and Oklhaoma Chip Card.pdf" (sic) | §14.9 (p.180) | EBT chip specifics |
+| §2.7 Discover announcement (broken linked image in the PDF) | §2.7 (p.30) | Discover acceptance announcement; content not available in v2025.RG20 |
 
 ## 18. Implementation Follow-Up Backlog
 
@@ -769,10 +843,12 @@ Nothing in this list has been implemented. Under the handbook's [Automatic Updat
 5. **Generating test data.** Follow [§15](#15-synthetic-test-data-guidance); never use real card, key or cryptogram material.
 6. **When an SME answers a Q-EMV item.** Record the answer in the communication register, then update the affected rule status here and in the strategy, in the same change.
 7. **When a new external reference is found.** Add it to [§17.3](#173-external-documents-named-by-the-guide-and-not-supplied-new-missing-references) instead of inventing its content.
+8. **Verify the ingestion after any edit to this memory.** From `regression-artifact-validator`, run [`scripts/verify-emv-guide-ingestion.py`](../../../../scripts/verify-emv-guide-ingestion.py). Without the PDF it checks this record's internal consistency: counts, scenario coverage of every non-INFO rule, links and image-only acknowledgements. When the untracked PDF is in `docs/specs/`, it also checks the source: SHA-256, coverage of all 92 body RQs and their page citations, Tables 7, 10, 14/15, 25 and 28, the AID lists both ways, the EBT list, and every quotation of 18 characters or more. Exit codes: `0` pass, `1` fail, `2` PDF or `pypdf` unavailable (source checks NOT_ASSESSED). Its regression test is [`scripts/test_verify_emv_guide_ingestion.py`](../../../../scripts/test_verify_emv_guide_ingestion.py).
 
 ## 20. Revision History
 
 | Version | Date | Change |
 | --- | --- | --- |
 | 1.0 | 2026-10-27 | First ingestion of the EMV and Chip Implementation Guide v2025.RG20 against ATL105 2026-4 §10.14. Includes: source binding; precedence and evidence rules; 17 gap dispositions; Table 25/26 tag catalog; 14 tag, 11 cross-field, 17 lifecycle, 10 AID, 7 fallback, 6 response and 8 CAPK rules; RQ traceability index; 53 scenarios; conflict register; 11 SME queries; 11 backlog items. |
+| 1.1 | 2026-10-28 | Independent ingestion verification against the PDF (SHA-256 unchanged). Confirmed: all 92 body RQs covered; every RQ index and inline page citation correct; Tables 7, 10, 14/15, 25 (39 rows) and 28 and the EBT list match the source. Fixed: eight quotations that paraphrased the source now use exact wording or are no longer quoted (§2, §4, §6, §12, §17.3); abbreviated non-brand AIDs written in full (§9.1) and listed in the new §9.4. Added: §9.5, the Fuelman TAC and 9F6E values transcribed from image-only pp.176-177; extraction limits for p.30 (broken Discover image) and p.180; the Discover announcement in §17.3; 19 scenarios EMV-TS-054 to EMV-TS-072, so every non-INFO rule has a scenario (§14.6); and the repeatable verification step (§19). Executable training (oracle, `referenceTraining` entry) is still pending (B-11). |
 
