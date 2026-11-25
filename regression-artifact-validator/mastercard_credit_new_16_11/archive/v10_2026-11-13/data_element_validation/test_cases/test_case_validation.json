@@ -1,0 +1,138 @@
+{
+ "meta": {
+  "layer": "business_model",
+  "filter_name": "buypass-atl105-mastercard-credit-generated",
+  "build_id": "buypass-atl105-mastercard-credit-generated-990cffb6e6",
+  "run_id": "20261113T174819423244Z",
+  "state": "CANDIDATE",
+  "selection": {
+   "platform": [
+    "BUYPASS"
+   ],
+   "spec": [
+    "ATL105"
+   ],
+   "br_kind": [
+    "DATA_ELEMENT"
+   ]
+  },
+  "built_at": "2026-11-13T17:49:58.028944+00:00",
+  "mapping_status": "candidate",
+  "knowledge_base_hash": "8b39880d400f37cfa0383a3f2f3067a87d0a94e731899727ed0baeb4d36ba0eb",
+  "mapping_matches_knowledge_base": true,
+  "inputs_combined": "266ab93e4b541d79e88ae16df2b508ed26227c626807a631d695cb397967c0dd",
+  "parent_build": "buypass-atl105-mastercard-credit-generated-08eda64f5c",
+  "dimension_mapping_hash": "76d4890063464fd02625ed19dbbc3a508aa71bcabede107984d42ab9197b01d7",
+  "spec": "ATL105",
+  "spec_version": "2026-4",
+  "config": "src/pipeline/config/business_model.json",
+  "br_kind": "DATA_ELEMENT",
+  "merchant_provenance": "placeholder",
+  "test_case_model": "transaction",
+  "transaction_catalog_version": null,
+  "pattern_scope": "reviewed",
+  "test_data": "rendered"
+ },
+ "valid": true,
+ "findings": [],
+ "coverage_gaps": [
+  {
+   "kind": "message_format_not_planned",
+   "scenario_id": null,
+   "message": "Loyalty Card Transaction Request",
+   "reason": "no carrier in the dimension mapping sends this message and it is not a card-less operation (transaction_patterns.json operation_codes)"
+  },
+  {
+   "kind": "message_format_not_planned",
+   "scenario_id": null,
+   "message": "ECA/TeleCheck Service Transaction Request",
+   "reason": "no carrier in the dimension mapping sends this message and it is not a card-less operation (transaction_patterns.json operation_codes)"
+  },
+  {
+   "kind": "segment_not_planned",
+   "scenario_id": null,
+   "segment": "101",
+   "message": "EMV Financial Transaction Request",
+   "reason": "no carrier scenario in the dimension mapping sends this segment; on TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT: NOT_APPLICABLE: 'Sent only on transactions requiring fleet data.' (p.168) [BR-226-1]"
+  },
+  {
+   "kind": "segment_not_planned",
+   "scenario_id": null,
+   "segment": "103",
+   "message": "EMV Financial Transaction Request",
+   "reason": "no carrier scenario in the dimension mapping sends this segment; on TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT: NOT_APPLICABLE: 'Sent only on transactions requiring EBT data.' (p.168)"
+  },
+  {
+   "kind": "segment_not_planned",
+   "scenario_id": null,
+   "segment": "135",
+   "message": "EMV Financial Transaction Request",
+   "reason": "no carrier scenario in the dimension mapping sends this segment; on TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT: NOT_APPLICABLE: 'This segment contains data required by the Moneris authorizer.' (p.277) [BR-168-7]"
+  },
+  {
+   "kind": "segment_not_planned",
+   "scenario_id": null,
+   "segment": "143",
+   "message": "EMV Financial Transaction Request",
+   "reason": "no carrier scenario in the dimension mapping sends this segment; on TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT: EXCLUDED_BY_SPEC: 'included if instructed by your' (p.168) [BR-206-9]"
+  },
+  {
+   "kind": "segment_not_planned",
+   "scenario_id": null,
+   "segment": "145",
+   "message": "EMV Financial Transaction Request",
+   "reason": "no carrier scenario in the dimension mapping sends this segment; on TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT: NOT_APPLICABLE: 'The Enhanced Fleet Request Segment contains fleet data that applies to the enhanced fleet' (p.289)"
+  },
+  {
+   "kind": "segment_not_planned",
+   "scenario_id": null,
+   "segment": "151",
+   "message": "EMV Financial Transaction Request",
+   "reason": "no carrier scenario in the dimension mapping sends this segment; on TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT: NOT_APPLICABLE: 'This section describes Data Segment No. 151, Incomm OTC Market Basket Data (Input)' (p.308)"
+  },
+  {
+   "kind": "segment_not_planned",
+   "scenario_id": null,
+   "segment": "156",
+   "message": "EMV Financial Transaction Request",
+   "reason": "no carrier scenario in the dimension mapping sends this segment; on TS-ATL105-CREDIT-MASTERCARD-PURCHASE-EMV_CONTACT: NOT_APPLICABLE: 'This segment is sent for an EV charging transaction only (EV fuel code in Product Code Segment 102).' (p.318)"
+  },
+  {
+   "kind": "segment_not_planned",
+   "scenario_id": null,
+   "segment": "113",
+   "message": "Financial Transaction Request",
+   "reason": "no carrier scenario in the dimension mapping sends this segment; on TS-ATL105-CREDIT-MASTERCARD-PURCHASE-MAGSTRIPE: NOT_APPLICABLE: 'This section describes Data Segment No. 113, ECA/ TeleCheck Data Segment.' (p.249)"
+  },
+  {
+   "kind": "check_class_not_generated",
+   "scenario_id": null,
+   "template": "field_separator",
+   "reason": "Field Separators are a wire-encoding concern; the QE-shaped test data has none to remove or add (harness-level wire mutation needed)"
+  },
+  {
+   "kind": "check_class_not_generated",
+   "scenario_id": null,
+   "template": "variable_information_table_structure",
+   "reason": "sub-table id / sub-table length faults inside a table's data (207 Appendix I tables) need a per-table composition path; Table ID (N-C5), Variable Information Length (N-C12) and table codes with documented valid codes (N-C5, table_applicability.json valid_codes) are covered"
+  },
+  {
+   "kind": "check_class_not_generated",
+   "scenario_id": null,
+   "template": "emv_tlv_tag_structure",
+   "reason": "tag-level TLV faults inside EMV Chip Data need a TLV mutation; the EMV Chip Data Length relation (N-C12) is covered"
+  },
+  {
+   "kind": "check_class_not_generated",
+   "scenario_id": null,
+   "template": "conditional_field",
+   "reason": "Chapter 11 'C' fields whose condition is prose, not machine-readable: SME list"
+  },
+  {
+   "kind": "check_class_not_generated",
+   "scenario_id": null,
+   "template": "sub_field_position",
+   "reason": "an invalid code in one position of a composite field (Prompt Code 1 / 2-4, Table 005 1-2 / 3) is not generated yet"
+  }
+ ]
+}

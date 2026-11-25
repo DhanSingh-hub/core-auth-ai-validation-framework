@@ -1,0 +1,106 @@
+﻿rule_id,state,theme_id,page,kind,statement
+BR-255-1,claimed_no_template,SRC-ATL105-PDF-001:12.16,255,require,"Prompt Code valid values are 901, 902, 903, 904, 905."
+BR-255-2,claimed_no_template,SRC-ATL105-PDF-001:12.16,255,require,"Prompt Code, Pending valid values are 0901, 0902, 0904, 0981."
+BR-257-1,claimed_no_template,SRC-ATL105-PDF-001:12.16,257,info,Fields 14-20 are formatted as Custom Receipt Text Data when Prompt Code (Field 78) is 901.
+BR-257-2,claimed_no_template,SRC-ATL105-PDF-001:12.16,257,info,Fields are not separated by Field Separators; unpopulated fields are immediately followed by the next field.
+BR-260-7,claimed_no_template,SRC-ATL105-PDF-001:12.16,260,info,"Fields of Field Nos. 14-27 are not separated by Field Separators; when a field is not populated, next field immediately follows."
+BR-263-7,claimed_no_template,SRC-ATL105-PDF-001:12.17,263,info,Prompt Code field in Segment 119 has fixed value 990.
+BR-335-2,claimed_no_template,SRC-ATL105-PDF-001:12.47,335,info,Fields in the Store and Forward Data Segment are not separated by Field Separators; unpopulated fields are immediately followed by next field.
+BR-437-6,claimed_no_template,SRC-ATL105-PDF-001:13.2,437,require,Element 116=016 includes PIN-on-Receipt information.
+BR-49-1,claimed_no_template,SRC-ATL105-PDF-001:3.3,49,require,"Any location generating more than 1,500 transactions per month must subscribe to dial backup."
+BR-49-2,claimed_no_template,SRC-ATL105-PDF-001:3.3,49,require,"Any location generating more than 500,000 transactions per month must have at least two diverse connections supporting automatic rerouting."
+BR-572-2,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,572,forbid,"Sub-Table ID 05 Data '1' = Host Prompts supported, '0' = Host Prompts not supported."
+BR-577-6,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,577,require,Sub-Table Length is fixed at 001.
+BR-578-1,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,578,require,Only MCC '6051' is applicable to cryptocurrency purchase transactions.
+BR-578-2,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,578,require,Only MCC '6211' is applicable to high risk security transactions.
+BR-578-3,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,578,require,Merchants should include PAR request indicator if they opt to receive PAR data from the authorizer.
+BR-579-3,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,579,allow,Additional Re-Price Type values may be added beyond those listed.
+BR-581-3,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,581,forbid,UCAF Security Level position 3 value 0 means UCAF data collection is not supported.
+BR-581-4,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,581,allow,UCAF Security Level position 3 value 1 means data collection supported but UCAF data not populated.
+BR-581-5,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,581,allow,UCAF Security Level position 3 value 2 means data collection supported and UCAF data is present.
+BR-581-7,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,581,soft,"Position 1-2 value 21 is preferred, meaning channel encryption without cardholder certificate."
+BR-582-2,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,582,soft,UCAF field should only be used for MasterCard Accountholder Authentication Value (AAV).
+BR-593-6,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,593,allow,Valid value 'Y' indicates DAF indicator acceptance flag.
+BR-594-5,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,594,require,Sub-Table ID 16 valid code is D for Delayed Card Sale.
+BR-601-1,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,601,require,"Sub-Table Data (KSN) is required for AES DUKPT, TDES, and Ingenico OnGuard encryption types."
+BR-601-2,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,601,require,Sub-Table Data (Device Type) is required for AES DUKPT encryption type.
+BR-601-3,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,601,allow,Sub-Table Data (Device Type) is optional for TDES and Ingenico OnGuard encryption types.
+BR-608-5,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,608,require,"If Validation Flag is provided in initial transaction, it must be provided in all subsequent transactions with same value as initial or last Modification transaction."
+BR-612-1,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,612,require,First recurring registration and transaction for a cardholder in India requires additional factor authentication.
+BR-612-2,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,612,require,Subsequent recurring transactions do not require additional factor authentication.
+BR-612-3,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,612,require,"If cardholder modifies or revokes a standing instruction, additional factor authentication is required."
+BR-613-2,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,613,allow,Sub-table IDs 01 and 02 are mutually exclusive; merchant can send only one based on request type.
+BR-613-3,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,613,soft,"Merchant should send only the applicable indicator in the request message, based on type of request."
+BR-613-4,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,613,require,Sub-Table ID and Sub-Table Length valid values are 01-25.
+BR-614-1,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,614,require,Account Updater Request Indicator applicable only to Visa and MasterCard.
+BR-621-3,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,621,require,Service Location City Name must be present for all transactions when different from Acceptor City Name.
+BR-621-4,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,621,require,"For U.S. region, Service Location City Name must match the U.S. Postal Service list of acceptable cities and spellings."
+BR-623-3,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,623,require,"If an external payment gateway is involved, the corresponding merchant gateway ID has to be sent."
+BR-624-2,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,624,require,"If Sub-Table 01 field is sent in Auth, it should also be sent in its completion."
+BR-624-3,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,624,require,"Value ""2"" (Acquirer) expected when Sub-Table ID 02 contains ""4"" (Next Gen POI), ""5"" (Pay by Link), or ""6"" (X QR)."
+BR-624-4,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,624,soft,"Value ""0"" (Multi-Domain) expected when Sub-Table ID 02 contains ""0"" (Multi-Program)."
+BR-625-5,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,625,require,"If Sub Table ID 04 field is sent in Auth, it should also be sent in its completion."
+BR-631-4,claimed_no_template,SRC-ATL105-PDF-001:Appendix I,631,require,Sub-Table Length fixed value is 04 for Service Type sub-table.
+BR-659-4,claimed_no_template,SRC-ATL105-PDF-001:Appendix K,659,allow,Additional Re-Price Type values may be added beyond those listed.
+BR-664-5,claimed_no_template,SRC-ATL105-PDF-001:Appendix K,664,allow,DAF Indicator valid values are 01 through 07 representing different authentication/data types.
+BR-687-4,claimed_no_template,SRC-ATL105-PDF-001:Appendix N,687,info,Start Sentinel character is not displayed as part of Track data and is cut from the packet.
+BR-ATL105-TRANSARMOR-16-7,claimed_no_template,SRC-ATL105-TRANSARMOR-PDF-001:3.2,16,forbid,TransArmor Tokens cannot be used to initiate financial transactions.
+BR-ATL105-TRANSARMOR-28-5,claimed_no_template,SRC-ATL105-TRANSARMOR-PDF-001:3.9,28,require,"When a device moves lanes or is new, it must be re-registered using the Registration Process."
+BR-BUYPASS-PIPS-103-10,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,103,forbid,Preauthorization approved by VRU: terminal must not allow transaction to exceed amount authorized; completion sent when communication restored.
+BR-BUYPASS-PIPS-110-10,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,110,require,An offline capable terminal must support both DDA and CDA; SDA is optional.
+BR-BUYPASS-PIPS-110-11,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,110,require,An online-only terminal may support no offline CAM.
+BR-BUYPASS-PIPS-111-2,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,111,require,Magnetic stripe fallback must indicate 'Fallback to Magnetic Stripe'.
+BR-BUYPASS-PIPS-134-12,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,134,allow,Support for UUID is optional on ComCheck transactions.
+BR-BUYPASS-PIPS-134-13,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,134,allow,There are no valid follow-on transactions for ComCheck processing.
+BR-BUYPASS-PIPS-16-4,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,16,require,Controller/customer-activated device should support encryption.
+BR-BUYPASS-PIPS-16-7,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,16,require,Controller/device should have a system console.
+BR-BUYPASS-PIPS-177-4,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,177,allow,Value 0/1 indicates that either 0 or 1 is allowed for that bit.
+BR-BUYPASS-PIPS-178-4,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,178,allow,Value 0/1 indicates that either 0 or 1 is allowed for that bit.
+BR-BUYPASS-PIPS-187-5,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,187,allow,TACs may be adjusted based on terminal capabilities supported and approved by EMVCo.
+BR-BUYPASS-PIPS-21-4,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,21,forbid,A stored preauthorized completion transaction should never initiate a call to BUYPASS.
+BR-BUYPASS-PIPS-54-1,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,54,forbid,The device should not transmit the Start Sentinel in any transaction.
+BR-BUYPASS-PIPS-56-4,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,56,require,Field 10 fixed value is '?' terminating Track 2 data
+BR-BUYPASS-PIPS-64-1,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,64,forbid,The device should not transmit the Start Sentinel in any transaction.
+BR-BUYPASS-PIPS-66-1,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,66,require,"Service Prompt value 0 and 7-9 mean Reserved, no prompt required."
+BR-BUYPASS-PIPS-66-6,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,66,require,Service Prompt value 5 means no prompt is required.
+BR-BUYPASS-PIPS-84-1,claimed_no_template,SRC-BUYPASS-PIPS-PDF-001:Appendix L,84,allow,Partial match of AID is supported for Application Selection Indicator.
+BR-FISERV-EMV-GUIDE-100-5,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,100,require,Return and Refund Policies terms and conditions are mandatory on receipt.
+BR-FISERV-EMV-GUIDE-102-6,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,102,require,Amount Authorized (9F02) is printed with a decimal point.
+BR-FISERV-EMV-GUIDE-107-2,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,107,forbid,Tag 5F20 (Cardholder Name) must not be printed for Interac receipts
+BR-FISERV-EMV-GUIDE-107-6,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,107,require,Amount Authorized (Tag 9F02) is printed with a decimal point
+BR-FISERV-EMV-GUIDE-111-5,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,111,allow,"High Fallback rates may indicate need for training, possible fraud, or equipment malfunction."
+BR-FISERV-EMV-GUIDE-115-11,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,115,soft,Default TDOL (97) varies by Brand
+BR-FISERV-EMV-GUIDE-115-12,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,115,soft,TAC - Default varies by Project
+BR-FISERV-EMV-GUIDE-115-14,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,115,soft,TAC - Online varies by Project
+BR-FISERV-EMV-GUIDE-119-1,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,119,require,Tag 9F53 is required for Mastercard Credit and optional for Mastercard Debit AID.
+BR-FISERV-EMV-GUIDE-120-1,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,120,require,Tag 9F6E must be Upper Case for alpha values; consult Mastercard/Visa docs for valid Form Factor values; do not send if invalid.
+BR-FISERV-EMV-GUIDE-120-4,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,120,allow,Tag 9F0A is a new optional tag for Mastercard.
+BR-FISERV-EMV-GUIDE-134-2,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,134,require,Updating Protected Data Envelopes with PUT DATA command requires secure messaging.
+BR-FISERV-EMV-GUIDE-153-1,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,153,require,Mastercard only supports CDA as the Security Capability for contactless transactions.
+BR-FISERV-EMV-GUIDE-163-8,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,163,require,Currency symbol must be included unless transaction is in local currency of transaction country.
+BR-FISERV-EMV-GUIDE-175-2,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,175,soft,Terminal should select highest priority unblocked application when multiple applications present; cardholder not prompted.
+BR-FISERV-EMV-GUIDE-176-2,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,176,require,Fuelman cards expect terminals to perform Combined Data Authentication (CDA).
+BR-FISERV-EMV-GUIDE-195-1,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:14.8,195,require,PPSE is mandatory in all contactless implementations.
+BR-FISERV-EMV-GUIDE-36-8,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,36,require,Testing requires settlement and back-office testing to ensure no impact to proper transaction clearing.
+BR-FISERV-EMV-GUIDE-36-9,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,36,require,Client must perform an error-free 'Clean Run' of each Brand's test transactions after issues addressed and waivers obtained.
+BR-FISERV-EMV-GUIDE-37-3,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,37,require,"If test cases fail and are not covered by waivers, process returns to Test Certify Phase to correct and rerun."
+BR-FISERV-EMV-GUIDE-37-6,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,37,require,"If validation fails, a discussion takes place between client, Fiserv, and t3:Cert platform."
+BR-FISERV-EMV-GUIDE-38-8,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,38,require,New Terminal Deployment does not require extra certification for terminal families with an already certified member.
+BR-FISERV-EMV-GUIDE-43-2,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,43,require,"Partial Selection of AID must be supported, except for Union Pay AIDs due to unique extensions."
+BR-FISERV-EMV-GUIDE-46-2,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,46,require,"Final selection application names must be displayed to the cardholder only, not the clerk/cashier."
+BR-FISERV-EMV-GUIDE-46-5,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,46,forbid,"Candidate List Filter cannot isolate to a CAID, unlike Auto Select of CAID."
+BR-FISERV-EMV-GUIDE-48-1,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,48,require,All Offline CAM failures must be sent for online authorization via TAC settings.
+BR-FISERV-EMV-GUIDE-48-3,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,48,require,"If any offline CVM is supported by the kernel, all three (SDA, DDA, CDA) must be supported."
+BR-FISERV-EMV-GUIDE-48-4,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,48,require,CDA must be supported in a mode performing the CDA process; only CDA Mode 1 is permitted.
+BR-FISERV-EMV-GUIDE-54-1,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,54,forbid,Returned Application Cryptogram is always same or more restrictive than requested; chip cannot return TC if ARQC requested.
+BR-FISERV-EMV-GUIDE-58-4,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,58,forbid,Application Cryptogram returned by card will always be same or more restrictive than requested.
+BR-FISERV-EMV-GUIDE-67-4,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,67,require,DCC choice presented and chosen by cardholder prior to PIN entry and authentication.
+BR-FISERV-EMV-GUIDE-67-6,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,67,forbid,Application List should NOT be presented to cardholder for selection in this scenario.
+BR-FISERV-EMV-GUIDE-74-2,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,74,require,Mastercard Refund Authorization requires AAC for Contactless transactions (RQ 4701).
+BR-FISERV-EMV-GUIDE-77-6,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,77,require,Completion transactions must follow the pre-authorization message per industry rules and regulations.
+BR-FISERV-EMV-GUIDE-81-3,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,81,require,Referral transactions must be declined in 2nd Generate AC
+BR-FISERV-EMV-GUIDE-83-10,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,83,allow,Tag 9F36 (Application Transaction Counter/ATC) may be out of sequence for SAF transactions.
+BR-FISERV-EMV-GUIDE-83-2,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,83,soft,Fiserv strongly discourages offline approvals and recommends sending all transactions online for authorization.
+BR-FISERV-EMV-GUIDE-85-2,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,85,require,If CAID is present it must be selected (Auto Select of Common AID).
+BR-FISERV-EMV-GUIDE-95-5,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,95,require,"Exponent value must equal '3' or '216+1' (""010001"")."
+BR-FISERV-EMV-GUIDE-99-5,claimed_no_template,SRC-FISERV-EMV-GUIDE-PDF-001:8.5,99,require,Application Identifier numbers printed on receipt are truncated.

@@ -5,6 +5,7 @@
 **Current foundation specification:** BUYPASS Platform ATL105 Message Format Specification 2026-3  
 **Current input release:** BUYPASS Platform ATL105 Message Format Specifications 2026-4 (October 09, 2026), ingested as hash-pinned overlays; the core segment rule catalogs remain pinned to 2026-3  
 **Companion EMV reference:** Fiserv EMV and Chip Implementation Guide v2025.RG20, which ATL105 §10.14 requires to be used with ATL105; ingested 2026-10-27 (see [EMV Companion Reference Training Knowledge](ATL105-EMV-Implementation-Guide-Training-Knowledge.md))  
+**Transport reference:** Secure Transport (Datawire), the Internet transport that ATL105 §3.3 refers to; 13 documents ingested 2026-10-28 at documentation level (see [Secure Transport Reference Training Knowledge](SecureTransport-Training-Knowledge.md))  
 **Current foundation implementation:** ATL105 validation platform, first proven with Segment 100  
 **Current ATL105 delivery target:** All ATL105 segments, message categories, transaction flows, and appendices  
 **End goal:** A reusable Core Auth Test Solution that generates and validates test artifacts for any specification
@@ -30,6 +31,7 @@
 17. Appendix A: ATL105 Demonstration
 18. Appendix B: All-Specification End State
 19. Appendix C: EMV Companion Reference Summary
+20. Appendix D: Secure Transport Reference Summary
 
 ## Version History and Approvals
 
@@ -41,6 +43,8 @@
 | 0.5 | 2026-10-27 | Core Auth Test Validation Team | Ingested the missing ATL105 external reference Conexxus Payment System Product Codes v4.1 (Appendix K-27 Table 034), with an Element 77 crosswalk, PSPC BR/Test Coverage and Validation Strategy | Working review |
 | 0.6 | 2026-10-27 | Core Auth Test Validation Team | Ingested Conexxus PSPC v3.7 (`PaymentSystemProductCodes_3.pdf`). Trained both versions with a v3.7 → v4.1 diff (62 version-sensitive codes). Unbound Table 034 codes are judged against both versions. Recorded the Appendix F lineage and the [PSPC training record](Conexxus-PSPC-Training-Record.md). | Working review |
 | 0.7 | 2026-10-27 | Core Auth Test Validation Team | Ingested the EMV and Chip Implementation Guide v2025.RG20, the companion document that ATL105 2026-4 §10.14 refers to and that was missing in earlier training. Added the EMV companion intake section and precedence rules; guide-derived tag, cross-field, lifecycle, AID, fallback, response and CAPK rules; the Appendix S exponent correction; EMV scope, data, tools and environment notes; deliverable TD10; risks R009 and R010; and Appendix C. Merged with Develop: removed the merge-conflict markers committed in this table and renumbered the PSPC rows from 0.4/0.5 to 0.5/0.6. | Working review |
+| 0.8 | 2026-10-28 | Core Auth Test Validation Team | Verified the EMV guide ingestion against the PDF: all 92 body RQs and their page citations; Tables 7, 10, 14/15, 25 and 28; the AID lists; the EBT list; and every quotation. Corrected eight paraphrased quotations, wrote the abbreviated non-brand AIDs in full, and transcribed the Fuelman values that exist only as images. Added EMV-TS-054 to EMV-TS-072 so every non-INFO rule has a scenario (72 in total). Added the repeatable check `scripts/verify-emv-guide-ingestion.py` and its regression test, and updated the intake procedure status. | Working review |
+| 0.9 | 2026-10-28 | Core Auth Test Validation Team | Ingested the Secure Transport (Datawire) documents that ATL105 §3.3 refers to for Internet connectivity. **Sources:** 13 files (two generic guides and the Rapid Connect package), 292 PDF pages, split chapter/phase-wise into 107 local files proven complete. **Training, at documentation level:** 687 rules (416 testable) in a KB rule catalog, 125 scenarios, 104 conflicts (including the 1250-byte payload limit against the 4,000-byte §11.8.1 request), 19 SME queries, 9 gaps and 8 backlog items. **Strategy:** added the Secure Transport intake section, the external-reference row, deliverable TD11, risks R011 and R012, the Datawire staging environment and Appendix D. **Elsewhere:** register item TT-0016, `referenceTraining.secureTransport`, and the build/verify scripts and their test. The sources stay local because they are confidential and this repository is public. | Working review |
 
 | Role | Reviewer/Approver | Status |
 | --- | --- | --- |
@@ -206,15 +210,16 @@ Appendix R also defers the complete EMV tag list to "your BUYPASS representative
 
 On 2026-10-27 the Test Team ingested the document under its current name:
 
-- **Document:** Fiserv *EMV and Chip Implementation Guide*, Generic Edition, v2025.RG20 (12 August 2025, 212 pages), file `Fiserv_Generic_EMV_Implementation_Guide_v2025_RG20_081225.pdf`. The PDF is a local copy and is **not committed**, because this repository is public. Get it from the Fiserv Direct Platform Specifications portal.
+- **Document:** Fiserv *EMV and Chip Implementation Guide*, Generic Edition, v2025.RG20 (12 August 2025, 212 pages), file `Fiserv_Generic_EMV_Implementation_Guide_v2025_RG20_081225.pdf`. The PDF is kept locally in `docs/specs/` and is **not committed** (untracked), because this repository is public. Get it from the Fiserv Direct Platform Specifications portal.
 - **SHA-256:** `A79B133C950CA2A0734E8D38D07AAE140A254E0069A4FC3F61D653CCC1489EF4`
 - **Ingested as:** a separately hash-pinned **companion overlay**
+- **Verified:** 2026-10-28, independently against the PDF. The repeatable check is [`scripts/verify-emv-guide-ingestion.py`](../../../../scripts/verify-emv-guide-ingestion.py); all 26 record and source checks pass.
 
 The complete trained knowledge is the persistent memory for this topic: [ATL105 EMV Companion Reference Training Knowledge](ATL105-EMV-Implementation-Guide-Training-Knowledge.md). It contains:
 
 - gap register and tag catalog
 - rules: 14 tag, 11 cross-field, 17 lifecycle, 10 AID, 7 fallback, 6 response and 8 CAPK
-- RQ traceability index and 53 scenarios
+- RQ traceability index and 72 scenarios
 - conflicts, SME queries and implementation backlog
 
 **Precedence and evidence rules (mandatory):**
@@ -235,7 +240,7 @@ The complete trained knowledge is the persistent memory for this topic: [ATL105 
 | §10.14.2.4 "EMV data is not required on Reversal transactions" | Table 10 and RQ4600 (1st or 2nd Generate AC data by reversal reason; same tag list as the original) | Absence stays valid. When EMV data is present, its content is validated. |
 | Lifecycle | §5.10-5.20: completion reuses the original chip data and entry mode; partial approval (8A `10`, reversal on cardholder decline, settle at the partial amount); incremental authorization keyed without EMV data; SAF uses 1st Generate AC data; refunds; balance inquiry is never reversed | Lifecycle rules EMVIG-LC-001 to LC-017 |
 | `SEG130-SME-008/012` (no card-type codes for the §10.14.2.3 brands) | Tables 4, 12, 13 and 63 (AIDs, US Common Debit AIDs, message type by AID type) | Proposed AID-based EMV eligibility; product-to-AID bridge; PIN-bypass and cash-back rules by AID |
-| §10.14.4 fallback "80/90 or spec equivalent" | RQ4300-RQ4500, §5.8.1 (fallback not allowed), Discover empty-candidate-list rule | Appendix J `80`/`79`/`90` confirmed; fallback-eligibility checks |
+| §10.14.4 fallback entry mode `80`/`90` "or spec equivalent" | RQ4300-RQ4500, §5.8.1 (fallback not allowed), Discover empty-candidate-list rule | Appendix J `80`/`79`/`90` confirmed; fallback-eligibility checks |
 | Appendix S CA Public Key file | Tables 14 and 15, §6 | **Correction:** the 6-character exponent is hex `010001`, not `065537`. RID is exactly 10 characters; modulus is at most 496 hex characters; at most 6 active keys per RID. Element 30 = `9` and "RQST/CURRENT HASH MATCH" map to the guide's update / no-update status. |
 | Segment 131 response chip data | Table 7 (8A values), §4.12.2 (never both 71 and 72; scripts up to 128 bytes), RQ5500 (routing disclosure) | Response rules; candidate mapping from Element 83 to 8A |
 
@@ -264,13 +269,73 @@ These are listed in the knowledge file and must not be invented.
 | 1. Locate every dependency | Done: §10.14 (2026-3 p.10-79; 2026-4 p.10-80) and Appendix R |
 | 2. Authority | Done: ATL105 governs, and the guide is companion guidance |
 | 3. Version drift | Partial: the §10.14 reference note is present in both releases; a full Appendix R/S/T release diff is pending |
-| 4. Store the source | Partial: SHA-256 recorded. The PDF and its text extraction are not committed because this repository is public. |
-| 5-9. Oracle, validator, chain package, crosswalk, tests | Pending (backlog B-01 to B-09) |
+| 4. Store the source | Partial: SHA-256 recorded. The PDF is kept locally in `docs/specs/` but stays untracked, and its text extraction is not committed, because this repository is public. The verification script re-checks the local copy against the recorded SHA-256. |
+| 5-8. Oracle, validator, chain package, crosswalk | Pending (backlog B-01 to B-09) |
+| 9. Tests | Partial: source-fidelity and ATL105-anchor tests exist for the training record: [`verify-emv-guide-ingestion.py`](../../../../scripts/verify-emv-guide-ingestion.py) and [`test_verify_emv_guide_ingestion.py`](../../../../scripts/test_verify_emv_guide_ingestion.py). Their source checks need the local PDF. Boundary, TD-replay and output-equality tests wait for steps 5-8. |
 | 10. Coverage and strategy documents | Partial: one training-memory file. The per-reference `BR Coverage.md`, `Test Coverage.md` and `Validation Strategy.md` are pending (B-11). |
 | 11. KB links, register, training status | Partial: the KB index and affected notes are linked. The register (B-10) and the `referenceTraining` entry (B-11) are pending. |
-| 12. Regression tests | Not yet applicable: no code changed |
+| 12. Regression tests | Partial: the verification regressions pass (15 tests, 2026-10-28). Validator regressions follow B-01 to B-09. |
 
 Each code change must follow the handbook's Automatic Update Rule.
+
+### Secure Transport Reference Intake (October 2026)
+
+ATL105 2026-4 §3.3 Telecommunications Requirements (p.3-2; the same text is in 2026-3) says:
+
+> "For additional Internet support information, please refer to the Secure Transport section on the First Data® Web site (https://www.firstdata.com/en_us/customer-center/merchants/support/secure-transport-api)"
+
+The section names no document, and its URL now redirects to a generic Fiserv page. Before this intake the Test Solution had no Internet-transport knowledge. On 2026-10-28 the user supplied 13 Secure Transport files and asked for them to be read chapter by chapter, ingested and trained, with the memory kept here.
+
+- **Documents:**
+  - two generic guides: the Secure Transport Unix Source Code API Guide 4.6.3 (2015) and the Secure Transport XML Interface Reference Guide 3.3 (June 2022)
+  - the Datawire Secure Transport package for Rapid Connect, 2021-2022: XML/SOAP and SRS reference guides, parameters, TLS ciphers, root CAs, SRS steps, two certification forms, two schemas and a READ_ME
+- **Storage:** byte-for-byte in `docs/specs/secure-transport/`. The folder is git-ignored because the files are First Data/Fiserv confidential and this repository is public. Hashes, page ranges and chapter hashes are in the tracked [manifest](../specs/kb/secure-transport/secure-transport-source-manifest.json).
+- **Split:** 107 chapter/phase files covering 292 PDF pages, the Word forms, the schemas and the READ_ME. Each document's chapters concatenate to exactly its extracted text, and the 19 image pages were rendered and read.
+- **Memory:** the [Secure Transport Reference Training Knowledge](SecureTransport-Training-Knowledge.md) and the [rule catalog](../specs/kb/secure-transport/secure-transport-rule-catalog.md). They hold 687 rules (416 testable), 125 scenarios, 104 conflicts, 19 SME queries, 9 gaps and 8 backlog items.
+- **Verified:** `.\framework.ps1 -Task secure-transport-ingestion-check` passes every record and source check, including that every quotation is verbatim on its cited page.
+
+**Applicability rules (mandatory):**
+
+| Topic | Rule |
+| --- | --- |
+| Precedence | ATL105 governs the message. Secure Transport carries it as an opaque payload and never adds or overrides an ATL105 rule. |
+| Families | The generic guides apply to an ATL105 payload. The Rapid Connect package is evidence only. These Rapid Connect values never apply to BUYPASS without SME confirmation: `App` `RAPIDCONNECTSRS`, `ServiceID` `160`, the AuthKey and ClientRef formats, `xml_escape`/`cdata` payloads, URLs, timeouts and the certification forms. |
+| Status | Every rule is `PROVISIONAL` and documentation-level. No rule counts in ATL105 rule coverage or the canonical denominator. |
+| Provenance | Rules carry a transport anchor (document, version, page/phase/line), never an ATL105 `sourceAnchor`. |
+
+**What the Secure Transport training adds to ATL105 testing:**
+
+| ATL105 anchor | Finding | Effect |
+| --- | --- | --- |
+| §11.8.1 (4,000-byte EMV Financial Transaction Request) | The Unix library caps the payload at 1250 bytes (errors 47 and 51). | CF-ST-01 (HIGH). A large ATL105 message sent through the Unix library is `REVIEW_REQUIRED`. |
+| STX/FS/ETX message framing (§7.1, Chapter 11) | The generic `datawire` encoding escapes control bytes as `\|02`, `\|1C`, `\|03`. The Rapid Connect `xml_escape`/`cdata` encodings cannot carry them. | CF-ST-02 (HIGH), with an encode/decode round-trip scenario. |
+| §2.3 time-out reversals | The status and return-code tables say when a reversal is needed, and the three sources disagree (for example on code 204). | CF-ST-04 (HIGH); Q-ST-12 |
+| §3.3 Internet path and Appendix A TCP/IP header | Secure Transport delimits messages with HTTP and XML. Nothing says whether dial framing or the Appendix A header belongs in the payload. | Q-ST-06 |
+| §7.1 Communications Test | Ping is the transport health check. The Rapid Connect forms forbid the UMF EchoTest. | Q-ST-15 |
+
+**Still open:** Q-ST-01 to Q-ST-19. The most important are:
+
+- Q-ST-01: which documents §3.3 means, and whether BUYPASS uses Secure Transport
+- Q-ST-02 to Q-ST-04: the BUYPASS ServiceID, App and Auth values
+- Q-ST-05: the security baseline
+- Q-ST-08: the payload size
+- Q-ST-12: time-out reversals
+
+The queries are listed in the record because the communication register accepts SME queries only per ATL105 segment. `TT-0016` records the intake.
+
+**Progress against the [External Reference Document Training Procedure](#external-reference-document-training-procedure):**
+
+| Step | Status |
+| --- | --- |
+| 1. Locate every dependency | Done: §3.3, identical in 2026-3 and 2026-4, plus the related §2.3, §3.2, §3.3.2, §7.1, §11.8.1 and Appendix A anchors |
+| 2. Authority | Done: ATL105 governs. The generic guides govern the payload transport, and the Rapid Connect package is evidence only. |
+| 3. Version drift | Done for §3.3: identical in 2026-3 and 2026-4 |
+| 4. Store the source | Done locally: 13 hash-pinned files, page-marked text and verbatim chapter files. Not committed, because the repository is public. |
+| 5-8. Oracle, validator, chain package, crosswalk | Pending (backlog B-ST-01 to B-ST-06) |
+| 9. Tests | Partial: ingestion fidelity is tested by [`verify-secure-transport-ingestion.py`](../../../../scripts/verify-secure-transport-ingestion.py) and [`test_verify_secure_transport_ingestion.py`](../../../../scripts/test_verify_secure_transport_ingestion.py) |
+| 10. Coverage and strategy documents | Partial: the training record, rule catalog and KB note exist. Per-reference BR and Test Coverage documents wait for executable training. |
+| 11. KB links, register, training status | Done: KB index and note, handbook overlay, `TT-0016`, `referenceTraining.secureTransport` |
+| 12. Regression tests | Done for the ingestion checks; validator regressions follow the backlog |
 
 ### Proposed Coverage and Reporting Model (Pending Fiserv Leadership Approval)
 
@@ -347,6 +412,7 @@ Some ATL105 rules delegate their value lists to documents outside the specificat
 | --- | --- | --- | --- |
 | Conexxus Payment System Product Codes (PSPC) v3.7 (2015-09-04) and v4.1 (2022-05-12) | Appendix K-27: Table ID 034 Host-based Purchase Restriction values; gated by Appendix I-46 Table 049 Sub Table 18. ATL105 names no PSPC version. | Normative for Table 034 values; an unbound code must hold in both versions. Informative only for Element 77, which stays governed by Appendix F. | [Training record](Conexxus-PSPC-Training-Record.md), [README](pspc-payment-system-product-codes/README.md), [BR Coverage](pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md) |
 | Fiserv EMV and Chip Implementation Guide v2025.RG20 (2025-08-12), formerly the "First Data EMV Implementation Guide" | §10.14 EMV Processing Requirements: "must be used in conjunction with the ATL105 Message Format Specifications". Also the Appendix R full tag list ("contact your BUYPASS representative"), Segments 130/131/132 and Appendices R/S/T. | Companion guidance. ATL105 overrides it on any conflict, as the guide itself states. Guide-derived rules stay `PROVISIONAL`. | [Training memory](ATL105-EMV-Implementation-Guide-Training-Knowledge.md), documentation level only. Oracle, chain package, tests and per-reference coverage documents are pending (backlog B-04, B-05, B-07, B-11). |
+| Secure Transport (Datawire): the generic Unix Source Code API Guide 4.6.3 (2015) and XML Interface Reference Guide 3.3 (2022), plus the Datawire package for Rapid Connect (2021-2022) | §3.3 Telecommunications Requirements sends Internet support to "the Secure Transport section on the First Data® Web site". The related anchors are §2.3, §7.1, §11.8.1 and Appendix A. | Transport-layer reference. ATL105 governs the payload; Rapid Connect values are evidence only. Rules stay `PROVISIONAL`. | [Training memory](SecureTransport-Training-Knowledge.md) and [rule catalog](../specs/kb/secure-transport/secure-transport-rule-catalog.md), documentation level. Oracle and chain package are pending (B-ST-01 to B-ST-06). |
 
 The PSPC packages contain:
 
@@ -360,7 +426,9 @@ The open SME items are the PSPC version binding and Table 034 packing (SEG111-SM
 
 AI artifacts that cite PSPC are validated under rules VR-PSPC-01 to VR-PSPC-15.
 
-The EMV guide training is documentation level so far: 73 guide-derived rules and 53 scenarios, each with an expected outcome and readiness. It has no oracle, chain package or tests yet, so it adds no executable coverage. The guide PDF is not stored in `docs/specs/` because this repository is public. Progress against the procedure is listed in [EMV Companion Reference Intake](#emv-companion-reference-intake-october-2026).
+The EMV guide training is documentation level so far: 73 guide-derived rules and 72 scenarios, each with an expected outcome and readiness. It has no oracle or chain package yet, so it adds no executable coverage. The training record's fidelity to the guide is checked by `scripts/verify-emv-guide-ingestion.py`. The guide PDF is kept locally in `docs/specs/` but is not committed, because this repository is public. Progress against the procedure is listed in [EMV Companion Reference Intake](#emv-companion-reference-intake-october-2026).
+
+The Secure Transport training is also documentation level: 687 rules (416 testable) and 125 scenarios, each scenario with an expected outcome and readiness. It adds no executable coverage. `scripts/verify-secure-transport-ingestion.py` checks the training record against the local sources. The sources and their verbatim chapter split are kept locally in `docs/specs/secure-transport/` and are not committed. Progress against the procedure is listed in [Secure Transport Reference Intake](#secure-transport-reference-intake-october-2026).
 
 ### Out of Scope
 
@@ -522,10 +590,10 @@ For every new or changed rule, the trainer records the handbook's **Required Tra
 
 | Memory store | Location | What it holds |
 | --- | --- | --- |
-| Source transcriptions | `specifications/ATL105/docs/specs/extracted_text.txt` (2026-3), `extracted_text_new.txt` (2026-4), `extracted_text_pspc_v4.1.txt` and `extracted_text_pspc_v3.7.txt` (Conexxus PSPC) | Line-anchored text that every rule cites |
-| Knowledge base | `specifications/ATL105/docs/specs/kb/` ([index](../specs/kb/00-index.md)) | Segment, element and appendix training notes, rule catalogs, SME/TBA notes |
+| Source transcriptions | `specifications/ATL105/docs/specs/extracted_text.txt` (2026-3), `extracted_text_new.txt` (2026-4), `extracted_text_pspc_v4.1.txt` and `extracted_text_pspc_v3.7.txt` (Conexxus PSPC). The Secure Transport text and chapter/phase split are local only, in `specifications/ATL105/docs/specs/secure-transport/`, and are identified by the tracked [manifest](../specs/kb/secure-transport/secure-transport-source-manifest.json). | Line-anchored text that every rule cites |
+| Knowledge base | `specifications/ATL105/docs/specs/kb/` ([index](../specs/kb/00-index.md)) | Segment, element and appendix training notes, rule catalogs (including the Secure Transport [rule catalog](../specs/kb/secure-transport/secure-transport-rule-catalog.md)), SME/TBA notes |
 | Training handbook | [COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) | Mandatory process, gates, rules and lessons learned |
-| Strategy and coverage documents | `specifications/ATL105/docs/test-validation-strategy/` (this folder) | Strategy, validation plan, controls, per-reference training records (for example [Conexxus-PSPC-Training-Record.md](Conexxus-PSPC-Training-Record.md) and [ATL105-EMV-Implementation-Guide-Training-Knowledge.md](ATL105-EMV-Implementation-Guide-Training-Knowledge.md)), and per-reference BR/Test Coverage and Validation Strategy |
+| Strategy and coverage documents | `specifications/ATL105/docs/test-validation-strategy/` (this folder) | Strategy, validation plan, controls, per-reference training records (for example [Conexxus-PSPC-Training-Record.md](Conexxus-PSPC-Training-Record.md), [ATL105-EMV-Implementation-Guide-Training-Knowledge.md](ATL105-EMV-Implementation-Guide-Training-Knowledge.md) and [SecureTransport-Training-Knowledge.md](SecureTransport-Training-Knowledge.md)), and per-reference BR/Test Coverage and Validation Strategy |
 | Executable oracles | `src/main/resources/atl105/*.json` | Machine-readable source oracles (for example the Appendix F and PSPC product-code oracles) |
 | Validators and generators | `src/main/java/com/coreauth/validator/canonical/`, `.../coverage/` | Independent verdict logic and expected-label generators |
 | Tests | `src/test/java/com/coreauth/validator/` | Replay of every TD; source-fidelity checks |
@@ -920,6 +988,7 @@ The Test Validation Lead owns technical triage. The AI Solution Team owns candid
 | TD08 | Test Summary Report | Phase outcome, metrics, risks, and sign-off status |
 | TD09 | Transaction-Context Training Package | Business BR/FR/scenario matrix, canonical trained chains, review queue, context BR coverage report and training gate (first: Mastercard Credit Purchase) |
 | TD10 | EMV Companion Reference Training Knowledge | [Hash-pinned ingestion of the EMV and Chip Implementation Guide](ATL105-EMV-Implementation-Guide-Training-Knowledge.md): gap register, tag catalog, guide-derived rules, scenario catalog, conflicts, SME queries and implementation backlog |
+| TD11 | Secure Transport Reference Training Knowledge | [Hash-pinned ingestion of the 13 Secure Transport documents](SecureTransport-Training-Knowledge.md): local chapter/phase split, 687-rule catalog, ATL105 integration map, scenario catalog, conflicts, SME queries and backlog |
 
 ## Test Environments
 
@@ -932,6 +1001,7 @@ The Test Validation Lead owns technical triage. The AI Solution Team owns candid
 | Integration environment | Approved API/host contract testing |
 | Performance environment | Package-volume and throughput testing |
 | Fiserv host simulators / certification environment (external) | Brand certification and TOR testing. Test CAPK set only; it is never interchangeable with production CAPK. Production CAPK is loaded only at go-live. |
+| Datawire Secure Transport staging (external) | Internet-transport certification of a client: TLS suites, root CAs, host-name verification, SRS, sessions and timeouts. Use it only after Q-ST-01 confirms the path for BUYPASS, and never with production credentials. |
 
 ## Roles and Responsibilities / RACI Matrix
 
@@ -961,6 +1031,8 @@ The Test Validation Lead owns technical triage. The AI Solution Team owns candid
 | R008 | A business transaction context's scope or FR placement is heuristic, or its scenarios are shared by BRs with different anchors | Business coverage is over- or understated; shared scenarios silently fail canonical traceability | Versioned scope rule; keyword FR placement kept `REVIEW_REQUIRED`; only canonically valid chains counted; failing BRs listed in the review queue with reasons; split shared scenarios per BR | Test/TBA/SME |
 | R009 | The EMV companion guide is guidance-only and Fiserv-generic across five front ends. Tag meanings vary by brand. It has internal inconsistencies (for example 9F5B, 9F66, the TVR byte 5 table) and names further documents that were not supplied (BuyPass Petroleum Industry Specifications, Petroleum Implementation Guide, USPF AFD fallback best practices). | Guide-derived rules could be over-enforced on BuyPass, or applied with the wrong brand meaning | ATL105 precedence; companion provenance anchors; guide rules stay `PROVISIONAL` (FAIL-candidate or REVIEW) and outside certified coverage until SME confirmation (`Q-EMV-01` to `Q-EMV-11`); missing documents recorded, not inferred | Test/TBA/SME |
 | R010 | The Appendix S CAPK oracle accepts exponent `065537` and computes SHA-1 over its hex-decoded bytes, while the guide defines the 6-character exponent as hex `010001` | False pass on synthetic CAPK fixtures and false fail on genuine key records | Correct the value domain and checksum fixtures (backlog B-01) with negative tests; record the ATL105 "216+1" rendering as a specification defect (`Q-EMV-03`) | Test |
+| R011 | Secure Transport knowledge is applied to BUYPASS with Rapid Connect values (App `RAPIDCONNECTSRS`, ServiceID `160`, AuthKeys, `xml_escape`/`cdata`) or with the 2015 security defaults | Wrong transport expectations: false FAIL or false PASS on Internet connectivity | Family scope on every rule; Rapid Connect rules are evidence only; the stricter TLS baseline is checked as REVIEW; SME queries Q-ST-01 to Q-ST-05 | Test/TBA/SME |
+| R012 | Confidential Secure Transport sources, or their verbatim chapter text, are committed to this public repository | Disclosure of First Data/Fiserv confidential material | Git-ignore rules for the root originals and for `docs/specs/secure-transport/`. Tracked files hold only hashes, structure, short cited quotations and derived rules. The verifier checks that the ignore rules are present. | Test |
 
 ## Appendix A: ATL105 Demonstration
 
@@ -1007,7 +1079,25 @@ A new specification shall be integrated through a specification pack without cha
 | ATL105 scope served | §10.14; Segments 130, 131, 132; Appendices R, S, T; Elements 30, 83, 187-194 in EMV contexts |
 | Persistent knowledge (memory) | [ATL105-EMV-Implementation-Guide-Training-Knowledge.md](ATL105-EMV-Implementation-Guide-Training-Knowledge.md) |
 | Rule families | Tag catalog (EMVIG-TAG, 14), cross-field (EMVIG-XF, 11), lifecycle (EMVIG-LC, 17), AID/brand/routing (EMVIG-AID, 10), fallback (EMVIG-FB, 7), response (EMVIG-RSP, 6), CAPK (EMVIG-CAPK, 8) |
-| Scenarios | EMV-TS-001 to EMV-TS-053, with expected outcomes and readiness (`EXECUTABLE`, `REVIEW_REQUIRED`, `EXTERNAL_FIXTURE_REQUIRED`) |
+| Scenarios | EMV-TS-001 to EMV-TS-072, with expected outcomes and readiness (`EXECUTABLE`, `REVIEW_REQUIRED`, `EXTERNAL_FIXTURE_REQUIRED`); every rule not marked INFO has at least one scenario |
+| Verification | 2026-10-28, independently against the PDF: all 92 body RQs, their page citations, Tables 7, 10, 14/15, 25 and 28, the AID lists, the EBT list and every quotation match. Repeatable with [`scripts/verify-emv-guide-ingestion.py`](../../../../scripts/verify-emv-guide-ingestion.py); the source checks need the local, uncommitted PDF. |
 | Corrections identified | Appendix S exponent `010001` (not `065537`); RID exactly 10 characters; modulus at most 496 hex characters; the Appendix R example is not a valid AID or currency consistency oracle |
 | Open items | `Q-EMV-01` to `Q-EMV-11`; `SEG130-SME-010`, `-007`, `-011`; Segment 131/132 wire questions; three further external documents named by the guide but not supplied |
 | Governance | ATL105 precedence; guide-derived rules stay `PROVISIONAL` and outside certified coverage until SME/TBA confirmation; code follow-ups B-01 to B-11 must follow the handbook Automatic Update Rule |
+
+## Appendix D: Secure Transport Reference Summary
+
+| Item | Value |
+| --- | --- |
+| Reference | Secure Transport (Datawire), the Internet transport that ATL105 §3.3 refers to: "the Secure Transport section on the First Data® Web site". The section names no document, and its URL is stale. |
+| Documents | 13 files supplied on 2026-10-28. Generic: Unix Source Code API Guide 4.6.3 (2015) and XML Interface Reference Guide 3.3 (June 2022). The Datawire package for Rapid Connect (2021-2022): XML/SOAP guide 1.26, SRS guide 1.9, parameters, TLS ciphers, root CAs, SRS steps, compliance form 3.4.4, re-certification script 1.4, `rcxml.xsd`, the SRS schema and the READ_ME. |
+| Binding | Every SHA-256 is pinned in the [manifest](../specs/kb/secure-transport/secure-transport-source-manifest.json). The ATL105 anchor is 2026-4 `extracted_text_new.txt` lines 2813-2815 (PDF p.49, printed 3-2); 2026-3 is identical. |
+| Storage | Local only, in the git-ignored `docs/specs/secure-transport/`: sources, page-marked text, 107 chapter/phase files, 19 rendered pages and the reading digests |
+| ATL105 scope served | The §3.3 Internet path, plus §2.3 (time-out reversals), §3.2 (identifiers), §3.3.2 (diverse connections), §7.1/7.2 (Communications Test), §11.8.1 (4,000-byte request) and Appendix A (TCP/IP header) |
+| Persistent knowledge (memory) | [SecureTransport-Training-Knowledge.md](SecureTransport-Training-Knowledge.md), the [rule catalog](../specs/kb/secure-transport/secure-transport-rule-catalog.md) and the [KB note](../specs/kb/secure-transport/README.md) |
+| Rule families | ST-CON 53, ST-TLS 42, ST-REG 80, ST-DSC 55, ST-ENV 127, ST-SES 49, ST-HTTP 57, ST-TMO 40, ST-ERR 127, ST-CRT 57. Total 687: 361 generic and 326 Rapid Connect; 416 testable. |
+| Scenarios | ST-TS-001 to ST-TS-125, each with an expected outcome and readiness (`ARTIFACT_REVIEW`, `CERTIFICATION_ENVIRONMENT` or `SME_CONFIRMATION`). Every testable rule has at least one scenario. |
+| Key findings | CF-ST-01: the 1250-byte payload limit against the 4,000-byte §11.8.1 request. CF-ST-02: Rapid Connect encodings cannot carry STX, FS or ETX. CF-ST-03: the security baseline. CF-ST-04: return-code actions differ across the three sources. CF-ST-05: `StatusCode` `Timeout` differs by family. |
+| Verification | Repeatable with [`scripts/verify-secure-transport-ingestion.py`](../../../../scripts/verify-secure-transport-ingestion.py). The source checks need the local split. |
+| Open items | Q-ST-01 to Q-ST-19; GAP-ST-01 to GAP-ST-09; backlog B-ST-01 to B-ST-08 |
+| Governance | ATL105 precedence. Rules stay `PROVISIONAL` and outside certified coverage. Rapid Connect values never apply to BUYPASS without SME confirmation. Sources are never committed. |

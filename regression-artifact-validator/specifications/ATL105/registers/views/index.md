@@ -9,7 +9,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 | Channel | View | Use it when | OPEN | REOPENED | IN_DISCUSSION | ANSWERED | RESOLVED | DEFERRED | WITHDRAWN | SUPERSEDED | Total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 312 | 3 | 0 | 1 | 32 | 2 | 0 | 0 | 350 |
-| `TEST_TEAM` | [test-team-discussion.md](test-team-discussion.md) | The Test Team can decide it internally: process, tooling, fixtures, validator policy. | 13 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 15 |
+| `TEST_TEAM` | [test-team-discussion.md](test-team-discussion.md) | The Test Team can decide it internally: process, tooling, fixtures, validator policy. | 13 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 16 |
 | `AI_DEV_DISCUSSION` | [ai-dev-discussion.md](ai-dev-discussion.md) | Needs agreement with the AI developers: formats, naming, contracts. | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 5 |
 | `AI_FEEDBACK` | [ai-feedback.md](ai-feedback.md) | A confirmed defect with evidence that the AI Solution Team must correct. | 20 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 

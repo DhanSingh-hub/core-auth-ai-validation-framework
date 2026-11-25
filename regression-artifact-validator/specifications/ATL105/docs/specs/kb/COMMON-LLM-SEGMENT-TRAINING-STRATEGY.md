@@ -187,7 +187,28 @@ It is now ingested as a **separately hash-pinned companion overlay**: Fiserv *EM
 | Brand-dependent tags | Do not assume a single meaning for 9F5B, 9F66, 9F67, 9F69, 9F6C, 9F6D, 9F6E or `DFxx`. Table 25 is a tag *expectation*; v2019.RG1 removed "mandatory tags". |
 | Known corrections | Appendix S exponent is `010001`, not `065537` (B-01). The Appendix R example is not a positive AID or currency consistency oracle. Element 188 must mirror Tag 5F34. |
 | Missing references | The guide itself names documents that were not supplied (BuyPass Petroleum Industry Specifications, Petroleum Implementation Guide, USPF AFD Chip Fallback Best Practices). Record them; never infer their content. |
-| Remaining steps | Complete the strategy's [External Reference Document Training Procedure](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md#external-reference-document-training-procedure): oracle, validator, chain package and tests; per-reference `BR Coverage.md`, `Test Coverage.md` and `Validation Strategy.md`; register; and the `referenceTraining` entry. Keep the PDF out of this public repository. |
+| Verification | After any change to the training record, run `.\framework.ps1 -Task emv-guide-ingestion-check` from the validator module. Every check must pass before the record is relied on. Without the local PDF, only the record checks run (exit 2); never claim source fidelity from that result. Content that exists only as images (pp.15-22, p.30, pp.176-177, p.180) must be read from the rendered page and transcribed, or recorded as unreadable (L30). |
+| Remaining steps | Complete the strategy's [External Reference Document Training Procedure](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md#external-reference-document-training-procedure): oracle, validator, chain package and the remaining tests; per-reference `BR Coverage.md`, `Test Coverage.md` and `Validation Strategy.md`; register; and the `referenceTraining` entry. Keep the PDF out of this public repository. |
+
+## Secure Transport Transport-Layer Reference Overlay (October 2026)
+
+ATL105 §3.3 (2026-4 and 2026-3, p.3-2) points Internet connectivity to "the Secure Transport section on the First Data® Web site". It names no document, and the printed URL is stale.
+
+On 2026-10-28 the user supplied 13 Secure Transport (Datawire) files:
+
+- two generic guides: Unix Source Code API 4.6.3 and XML Interface 3.3
+- the Datawire package for Rapid Connect
+
+They are hash-pinned, split into 107 chapter/phase files and trained at documentation level. The memory is the [Secure Transport training knowledge](../../test-validation-strategy/SecureTransport-Training-Knowledge.md) with its [rule catalog](secure-transport/secure-transport-rule-catalog.md). Apply these rules whenever an artifact touches Internet transport, time-out reversals caused by transport outcomes, or message size and framing on the Internet path:
+
+| Training focus | Required behavior |
+| --- | --- |
+| Precedence | ATL105 governs the message. Secure Transport carries it as an opaque payload and never adds or overrides an ATL105 field, segment, length or response-code rule. |
+| Family scope | Rules marked `GENERIC` apply to an ATL105 payload. `RAPID_CONNECT` rules are evidence only. Never apply these Rapid Connect values to BUYPASS without SME confirmation: `App` `RAPIDCONNECTSRS`, `ServiceID` `160`, AuthKey formats, a `ClientRef` ending in a TPP ID, `xml_escape`/`cdata` payloads, Rapid Connect URLs and IPs, ClientTimeout ranges, the certification forms. |
+| Status | Every rule is `PROVISIONAL` and outside certified ATL105 coverage until the SME answers `Q-ST-01` to `Q-ST-19`. |
+| Known traps | The Unix library caps the payload at 1250 bytes; ATL105 §11.8.1 allows 4,000 (`CF-ST-01`). Rapid Connect encodings cannot carry STX, FS or ETX (`CF-ST-02`). Return code 204 has three different retry and reversal answers (`CF-ST-04`). `StatusCode` `Timeout` means different things in the two families (`CF-ST-05`). |
+| Confidentiality | Sources, text, chapter files and digests stay in the git-ignored `docs/specs/secure-transport/`. Tracked files hold structure, hashes, short cited quotations and derived rules. |
+| Verification | After any change to the record or the catalog, run `.\framework.ps1 -Task secure-transport-ingestion-check`. Without the local split only the record checks run (exit 2); never claim source fidelity from that result. |
 
 ## Communication Register
 
@@ -849,6 +870,25 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 Bind every review to the original file's SHA-256 and give each validation line exactly one assessment, so a changed or partially transcribed artifact fails the check instead of passing silently.
 
+**L30. Verify an ingested reference mechanically before trusting its memory.** The EMV guide training record looked complete, but an independent comparison with the PDF (2026-10-28) found four gaps:
+
+- Eight quotations were paraphrases.
+- Eight non-brand AIDs were abbreviated ("…21").
+- 19 testable rules had no scenario.
+- The Fuelman TAC and 9F6E values existed only as images, which text extraction cannot read.
+
+Every RQ and table value was correct, so a spot check would not have found these gaps. Pin the source hash and counts, compare every quotation, table, identifier and page citation with the source, and render pages whose content is image-only. Then keep the comparison as a repeatable check: [`verify-emv-guide-ingestion.py`](../../../../../scripts/verify-emv-guide-ingestion.py).
+
+**L31. When asked not to miss any detail, prove the split is complete instead of asserting it.** The Secure Transport ingestion (2026-10-28) had 13 files, 292 PDF pages and two Word forms. It met five practical traps:
+
+- The supplied folder nests three levels deep, so one path exceeded 260 characters. Use extended-length paths and short local names.
+- Word hung on a hidden prompt when saving `.doc` as `.docx`. Read `Content.Text` from a read-only, macro-disabled document instead.
+- `pypdf` splits words inside headings ("Res ponse"). Match chapter anchors with white space removed, and require each anchor exactly once.
+- Three PDFs have no bookmarks. Take chapter boundaries from the 16-point headings and check them against the printed table of contents.
+- Four parallel readers produced 687 candidate rules. Their quotations were trusted only after a script found each one on its cited page.
+
+The proof that nothing was dropped is mechanical: each document's chapter files concatenate to exactly its extracted text, and every chapter hash is pinned in a tracked manifest. Keep that check repeatable: [`verify-secure-transport-ingestion.py`](../../../../../scripts/verify-secure-transport-ingestion.py).
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -1003,3 +1043,5 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | 2026-10-26 | Retrained `MASTERCARD_CREDIT_PURCHASE` after Develop updated the Test Solution source package (the training test's source-hash check failed as designed): 168/189 BRs trained (88.9%), 21 queued, 189 TS / 226 TC / 230 TD, 68 executable TD. Gates and blockers unchanged. Anchors are now read from the canonical `sourceAnchors` field, with singular `sourceAnchor` made explicit by logged normalization; added L28. |
 | 2026-10-26 | Validated the original Mastercard Credit Purchase FR-matrix workbook (hash-bound) line by line against the Test Solution with `scripts/validate-mastercard-fr-matrix.py` and its regression test. Result `REJECTED_NOT_INTAKE_READY`: 5 contradicted field mappings, 29 lines needing correction, 17 needing external contracts or definitions, 0 of 37 expected results confirmable from the message alone. Recorded Test Solution findings MCV-T01 to MCV-T05 (including multi-segment scope exclusion and the TS-020 mapping); added L29. |
 | 2026-10-27 | Ingested the EMV companion reference that ATL105 §10.14 requires and that was missing in earlier training: Fiserv EMV and Chip Implementation Guide v2025.RG20, as a hash-pinned companion overlay. Added the [EMV Companion Reference Overlay](#emv-companion-reference-overlay-october-2026) rules (ATL105 precedence, companion anchors, `PROVISIONAL` guide rules, brand-dependent tags, known corrections, missing references) and the [training knowledge record](../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md): 17 gap dispositions; 73 guide-derived rules; 53 scenarios; 11 SME queries; backlog B-01 to B-11, including the Appendix S exponent `010001` correction. No validator code changed. |
+| 2026-10-28 | Verified the EMV guide ingestion independently against the PDF: SHA-256; all 92 body RQs and their page citations; Tables 7, 10, 14/15, 25 (39 rows) and 28; the AID lists; the EBT list; and every quotation of 18 characters or more. Corrected eight paraphrased quotations and wrote eight abbreviated non-brand AIDs in full. Transcribed the Fuelman TAC and 9F6E values from image-only pp.176-177, and recorded p.30 (broken Discover image) and p.180 (embedded attachment) as unreadable. Added EMV-TS-054 to EMV-TS-072, so all 66 testable rules have a scenario (72 in total). Added `scripts/verify-emv-guide-ingestion.py`, `scripts/test_verify_emv_guide_ingestion.py`, the overlay's Verification rule and L30. Executable training is still pending. |
+| 2026-10-28 | Ingested the 13 Secure Transport (Datawire) documents that ATL105 §3.3 refers to for Internet connectivity, at documentation level. Added the [Secure Transport Transport-Layer Reference Overlay](#secure-transport-transport-layer-reference-overlay-october-2026) and L31. The sources were hash-pinned, kept local and split into 107 chapter/phase files, proven complete by concatenation. The [training knowledge](../../test-validation-strategy/SecureTransport-Training-Knowledge.md) holds 687 rules (416 testable) in the [rule catalog](secure-transport/secure-transport-rule-catalog.md), 125 scenarios, 104 conflicts, 19 SME queries, 9 gaps and 8 backlog items. Also added `scripts/build-secure-transport-ingestion.py`, `scripts/verify-secure-transport-ingestion.py` and its test, `referenceTraining.secureTransport` and `TT-0016`. No validator code changed. |

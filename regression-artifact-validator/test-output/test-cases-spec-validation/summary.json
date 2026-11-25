@@ -1,0 +1,129 @@
+{
+  "test_cases": 241,
+  "spec_text": "C:\\Users\\F7OKAGW\\OneDrive - Fiserv Corp\\Documents\\Core_Auth_Updated_BRs\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text_new.txt",
+  "verdict": {
+    "FAIL": 232,
+    "REVIEW": 9
+  },
+  "rules": {
+    "TENDER_TYPE_VS_CARD": {
+      "severity": "FAIL",
+      "occurrences": 439,
+      "tcs": 232,
+      "example": "TC-002201 step=None 108/Payment Tender Type: 'VS' on a MasterCard transaction",
+      "spec_basis": "Element 148"
+    },
+    "CHECK_SEGMENT_ON_CREDIT": {
+      "severity": "FAIL",
+      "occurrences": 375,
+      "tcs": 206,
+      "example": "TC-002206 step=2 110,113: Check/ECA-TeleCheck data sent on a Credit (020) prompt code",
+      "spec_basis": "Appendix E p.521 (041/045/046 = Check)"
+    },
+    "FIXED_LENGTH": {
+      "severity": "FAIL",
+      "occurrences": 71,
+      "tcs": 65,
+      "example": "TC-002201 step=None 130 EMV Request Data Segment / EMV Card Sequence Number (el 188): length 2 != 3 ('25')",
+      "spec_basis": "Chapter 13 Element 188 (EMV Card Sequence Number): AN FIXED 3"
+    },
+    "TRACK_DATA_NOT_SENT": {
+      "severity": "FAIL",
+      "occurrences": 90,
+      "tcs": 63,
+      "example": "TC-002233 step=None 100/Card Discretionary Block Data: entry 90 (track read) but value is MMYY '1132' - must be all track data after '='",
+      "spec_basis": "Element 12 p.371"
+    },
+    "EMV_CSN_FORMAT": {
+      "severity": "FAIL",
+      "occurrences": 64,
+      "tcs": 58,
+      "example": "TC-002201 step=None 130/EMV Card Sequence Number: '25' must be 3 bytes right-aligned zero-padded (e.g. '025')",
+      "spec_basis": "Element 188"
+    },
+    "MAX_LENGTH": {
+      "severity": "FAIL",
+      "occurrences": 31,
+      "tcs": 31,
+      "example": "TC-002205 step=2 100 Standard Message Data Segment / Nonfuel Amount (el 58): length 8 > 7",
+      "spec_basis": "Chapter 13 Element 58 (Nonfuel Amount): N VARIABLE 7"
+    },
+    "ELEMENT_NO_COLLISION": {
+      "severity": "INFO",
+      "occurrences": 814,
+      "tcs": 232,
+      "example": "TC-002201 step=None 153 Network Token Data Request / Network Token Data (el 239): element 239 in Chapter 13 is 'Enhanced Fleet Data', not 'Network Token Data'; constraints not applied",
+      "spec_basis": "Chapter 13 Element 239"
+    },
+    "QUOTE_PARAPHRASED": {
+      "severity": "REVIEW",
+      "occurrences": 247,
+      "tcs": 241,
+      "example": "TC-002201 step=None spec_basis p.511: '03 MasterCard - Authorizer Type: Credit' is not verbatim; all its words occur on p.511",
+      "spec_basis": "2026-4 PDF"
+    },
+    "EMPTY_SEGMENT_EMITTED": {
+      "severity": "REVIEW",
+      "occurrences": 439,
+      "tcs": 232,
+      "example": "TC-002201 step=None 101 Fleet Data Segment, 103 EBT Data Segment, 104 Purchase Card Data Segment, 151 Request InComm OTC Market Basket Data: segment carries only Segment Type/Length - no data elements",
+      "spec_basis": "Chapter 12 segment layouts"
+    },
+    "LOYALTY_TRACK_IS_PAYMENT_PAN": {
+      "severity": "REVIEW",
+      "occurrences": 439,
+      "tcs": 232,
+      "example": "TC-002201 step=None 108/Loyalty Track 2 Data: loyalty track built from the payment PAN (no '=' separator)",
+      "spec_basis": "Element 147 / Element 12 track rules"
+    },
+    "PRODUCT_PRICE_ZERO": {
+      "severity": "REVIEW",
+      "occurrences": 439,
+      "tcs": 232,
+      "example": "TC-002201 step=None 102: Unit Price 0 x Qty 01 != Product Amount 1",
+      "spec_basis": "Element 76/81/107"
+    },
+    "PRODUCT_AMOUNT_VS_TOTAL": {
+      "severity": "REVIEW",
+      "occurrences": 431,
+      "tcs": 224,
+      "example": "TC-002201 step=None 102/Product Amount: Product Amount 1 vs Nonfuel Amount 1500",
+      "spec_basis": "Segment 102 / Element 58,76"
+    },
+    "FUEL_PRODUCT_AS_NONFUEL": {
+      "severity": "REVIEW",
+      "occurrences": 431,
+      "tcs": 224,
+      "example": "TC-002201 step=None 102/Product Code: motor-fuel code 001 but only Nonfuel Amount sent",
+      "spec_basis": "Appendix F (001-099 motor fuel) / Element 41,58"
+    },
+    "READY_WITH_PLACEHOLDERS": {
+      "severity": "REVIEW",
+      "occurrences": 125,
+      "tcs": 125,
+      "example": "TC-002201 step=None status: AWAITING_CLIENT_VALUE; MERCHANT_PLACEHOLDER",
+      "spec_basis": "Test-data readiness"
+    },
+    "QUOTE_PAGE_DRIFT": {
+      "severity": "REVIEW",
+      "occurrences": 58,
+      "tcs": 58,
+      "example": "TC-002201 step=None spec_basis p.161: 'The following credit cards are supported for EMV processing: ... MasterCard' found on p.160",
+      "spec_basis": "2026-4 PDF"
+    },
+    "SEQ_NOT_PERSISTED": {
+      "severity": "REVIEW",
+      "occurrences": 8,
+      "tcs": 8,
+      "example": "TC-002345 step=4 100/Sequence Number: completion_resubmitted: 000002 != original 000001 (Element 86: completion keeps the Auth Only number; p.40: each forwarded request gets a new one)",
+      "spec_basis": "Element 86 / p.40"
+    },
+    "EMV_AMOUNT_MISMATCH": {
+      "severity": "REVIEW",
+      "occurrences": 4,
+      "tcs": 4,
+      "example": "TC-002205 step=2 130/EMV Chip Data 9F02: 9F02=1500 vs request amount 24677595",
+      "spec_basis": "EMV Guide / Element 190"
+    }
+  }
+}
